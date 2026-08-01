@@ -6,5 +6,5 @@ export interface ICategoryRepository {
     delete(id: string): Promise<void>;
     findById(id: string): Promise<Category | null>;
     findAll(): Promise<Category[]>;
-    existsByName(name: string): Promise<boolean>;
+    findByName(name: string): Promise<Category | null>;
 }
