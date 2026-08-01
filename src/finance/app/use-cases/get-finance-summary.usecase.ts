@@ -1,6 +1,6 @@
-import { ITransactionRepository } from 'finance/domain/repositories/transaction-repository.interface';
-import { IWalletRepository } from 'finance/domain/repositories/wallet-repository.interface';
-import { IBaseUseCase } from 'shared/app/contracts/base-usecase.contract';
+import { ITransactionRepository } from '@/finance/domain/repositories/transaction-repository.interface';
+import { IWalletRepository } from '@/finance/domain/repositories/wallet-repository.interface';
+import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
 
 type GetFinanceSummaryInput = void;
 

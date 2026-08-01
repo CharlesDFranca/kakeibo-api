@@ -1,4 +1,4 @@
-import { BaseEntity } from 'shared/domain/entities/base-entity.entity';
+import { BaseEntity } from '@/shared/domain/entities/base-entity.entity';
 
 type WalletProps = {
     name: string;
@@ -39,7 +39,9 @@ export class Wallet extends BaseEntity<WalletProps> {
 
     public deposit(amount: number): void {
         if (amount <= 0) {
-            throw new Error('Cannot deposit an amount less than or equal to zero');
+            throw new Error(
+                'Cannot deposit an amount less than or equal to zero',
+            );
         }
 
         this.props.balance += amount;
@@ -63,9 +65,7 @@ export class Wallet extends BaseEntity<WalletProps> {
 
     public canWithdraw(amount: number): boolean {
         if (amount <= 0) {
-            throw new Error(
-                'Invalid amount',
-            );
+            throw new Error('Invalid amount');
         }
 
         return this.props.balance >= amount;

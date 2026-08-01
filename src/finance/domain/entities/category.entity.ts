@@ -1,4 +1,4 @@
-import { BaseEntity } from 'shared/domain/entities/base-entity.entity';
+import { BaseEntity } from '@/shared/domain/entities/base-entity.entity';
 
 type CategoryProps = {
     name: string;

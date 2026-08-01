@@ -1,7 +1,7 @@
-import { Category } from 'finance/domain/entities/category.entity';
-import { ICategoryRepository } from 'finance/domain/repositories/category-repository.interface';
-import { IBaseUseCase } from 'shared/app/contracts/base-usecase.contract';
-import { IIDGenerator } from 'shared/app/contracts/uuid-generator.contract';
+import { Category } from '@/finance/domain/entities/category.entity';
+import { ICategoryRepository } from '@/finance/domain/repositories/category-repository.interface';
+import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
+import { IIDGenerator } from '@/shared/app/contracts/id-generator.contract';
 
 type CreateCategoryInput = {
     name: string;

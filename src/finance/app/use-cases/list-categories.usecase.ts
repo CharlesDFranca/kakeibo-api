@@ -1,5 +1,5 @@
-import { ICategoryRepository } from 'finance/domain/repositories/category-repository.interface';
-import { IBaseUseCase } from 'shared/app/contracts/base-usecase.contract';
+import { ICategoryRepository } from '@/finance/domain/repositories/category-repository.interface';
+import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
 
 type ListCategoriesInput = void;
 

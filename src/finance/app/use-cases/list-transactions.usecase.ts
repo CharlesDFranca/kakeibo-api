@@ -1,6 +1,6 @@
-import { ITransactionRepository } from 'finance/domain/repositories/transaction-repository.interface';
-import { TransactionType } from 'finance/domain/value-objects/transaction-type.vo';
-import { IBaseUseCase } from 'shared/app/contracts/base-usecase.contract';
+import { ITransactionRepository } from '@/finance/domain/repositories/transaction-repository.interface';
+import { TransactionType } from '@/finance/domain/value-objects/transaction-type.vo';
+import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
 
 type ListTransactionsInput = void;
 

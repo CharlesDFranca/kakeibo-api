@@ -1,5 +1,5 @@
-import { IWalletRepository } from 'finance/domain/repositories/wallet-repository.interface';
-import { IBaseUseCase } from 'shared/app/contracts/base-usecase.contract';
+import { IWalletRepository } from '@/finance/domain/repositories/wallet-repository.interface';
+import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
 
 type RenameWalletInput = {
     id: string;

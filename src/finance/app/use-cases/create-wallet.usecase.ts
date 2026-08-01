@@ -1,7 +1,7 @@
-import { Wallet } from 'finance/domain/entities/wallet.entity';
-import { IWalletRepository } from 'finance/domain/repositories/wallet-repository.interface';
-import { IBaseUseCase } from 'shared/app/contracts/base-usecase.contract';
-import { IIDGenerator } from 'shared/app/contracts/id-generator.contract';
+import { Wallet } from '@/finance/domain/entities/wallet.entity';
+import { IWalletRepository } from '@/finance/domain/repositories/wallet-repository.interface';
+import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
+import { IIDGenerator } from '@/shared/app/contracts/id-generator.contract';
 
 type CreateWalletInput = {
     name: string;
