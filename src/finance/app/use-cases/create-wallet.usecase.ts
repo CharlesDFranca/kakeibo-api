@@ -1,7 +1,7 @@
 import { Wallet } from 'finance/domain/entities/wallet.entity';
 import { IWalletRepository } from 'finance/domain/repositories/wallet-repository.interface';
 import { IBaseUseCase } from 'shared/app/contracts/base-usecase.contract';
-import { IUUIDGenerator } from 'shared/app/contracts/uuid-generator.contract';
+import { IIDGenerator } from 'shared/app/contracts/id-generator.contract';
 
 type CreateWalletInput = {
     name: string;
@@ -17,7 +17,7 @@ export class CreateWalletUseCase implements IBaseUseCase<
 > {
     constructor(
         private readonly walletRepository: IWalletRepository,
-        private readonly idGenerator: IUUIDGenerator,
+        private readonly idGenerator: IIDGenerator,
     ) {}
 
     async execute(input: CreateWalletInput): Promise<CreateWalletOutput> {
