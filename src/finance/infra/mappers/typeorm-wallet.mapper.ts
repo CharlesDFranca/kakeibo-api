@@ -1,6 +1,8 @@
 import { WalletEntity } from '@/database/entities/typeorm-wallet.entity';
 import { Wallet } from '@/finance/domain/entities/wallet.entity';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class TypeOrmWalletMapper {
     public toDomain(raw: WalletEntity): Wallet {
         return new Wallet(

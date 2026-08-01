@@ -1,7 +1,9 @@
 import { TransactionEntity } from '@/database/entities/typeorm-transaction.entity';
 import { Transaction } from '@/finance/domain/entities/transaction.entity';
 import { TransactionType } from '@/finance/domain/value-objects/transaction-type.vo';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class TypeOrmTransactionMapper {
     public toDomain(raw: TransactionEntity): Transaction {
         return new Transaction(
