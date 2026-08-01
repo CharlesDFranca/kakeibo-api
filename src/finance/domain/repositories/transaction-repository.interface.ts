@@ -1,4 +1,4 @@
-import { Transaction } from '../entities/transation.entity';
+import { Transaction } from '../entities/transaction.entity';
 
 export interface ITransactionRepository {
     create(transaction: Transaction): Promise<void>;

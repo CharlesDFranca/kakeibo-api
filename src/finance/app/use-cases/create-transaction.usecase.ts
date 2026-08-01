@@ -1,8 +1,8 @@
-import { Transaction } from 'finance/domain/entities/transation.entity';
+import { Transaction } from 'finance/domain/entities/transaction.entity';
 import { ICategoryRepository } from 'finance/domain/repositories/category-repository.interface';
 import { ITransactionRepository } from 'finance/domain/repositories/transaction-repository.interface';
 import { IWalletRepository } from 'finance/domain/repositories/wallet-repository.interface';
-import { TransactionType } from 'finance/domain/value-objects/transation-type.vo';
+import { TransactionType } from 'finance/domain/value-objects/transaction-type.vo';
 import { IBaseUseCase } from 'shared/app/contracts/base-usecase.contract';
 import { IIDGenerator } from 'shared/app/contracts/uuid-generator.contract';
 
