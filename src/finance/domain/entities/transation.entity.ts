@@ -1,20 +1,20 @@
 import { BaseEntity } from 'shared/domain/entities/base-entity.entity';
-import { TransationType } from '../value-objects/transation-type.vo';
-import { ETransationStatus } from '../enums/transation-status.enum';
+import { TransactionType } from '../value-objects/transation-type.vo';
+import { ETransactionStatus } from '../enums/transation-status.enum';
 
-type TransationProps = {
+type TransactionProps = {
     description: string;
     amount: number;
-    type: TransationType;
+    type: TransactionType;
     date: Date;
     walletId: string;
     categoryId: string;
 };
 
-export class Transation extends BaseEntity<TransationProps> {
+export class Transaction extends BaseEntity<TransactionProps> {
     constructor(
         id: string,
-        props: TransationProps,
+        props: TransactionProps,
         createdAt: Date,
         updatedAt: Date,
     ) {
@@ -38,7 +38,7 @@ export class Transation extends BaseEntity<TransationProps> {
         return this.props.amount;
     }
 
-    public get type(): TransationType {
+    public get type(): TransactionType {
         return this.props.type;
     }
 
@@ -54,12 +54,12 @@ export class Transation extends BaseEntity<TransationProps> {
         return this.props.categoryId;
     }
 
-    public get status(): ETransationStatus {
+    public get status(): ETransactionStatus {
         const now = new Date();
 
         return this.date.getTime() > now.getTime()
-            ? ETransationStatus.PENDING
-            : ETransationStatus.COMPLETED;
+            ? ETransactionStatus.PENDING
+            : ETransactionStatus.COMPLETED;
     }
     //#endregion
 
@@ -76,10 +76,10 @@ export class Transation extends BaseEntity<TransationProps> {
     }
 
     public isPending(): boolean {
-        return this.status === ETransationStatus.PENDING;
+        return this.status === ETransactionStatus.PENDING;
     }
 
     public isCompleted(): boolean {
-        return this.status === ETransationStatus.COMPLETED;
+        return this.status === ETransactionStatus.COMPLETED;
     }
 }

@@ -1,4 +1,4 @@
-export enum ETransationStatus {
+export enum ETransactionStatus {
     PENDING,
     COMPLETED,
 }

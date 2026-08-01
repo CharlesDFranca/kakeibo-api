@@ -1,21 +1,21 @@
-import { ETransationType } from '../enums/transation-type.enum';
+import { ETransactionType } from '../enums/transation-type.enum';
 
-export class TransationType {
-    constructor(private _value: ETransationType) {}
+export class TransactionType {
+    constructor(private _value: ETransactionType) {}
 
-    public value(): ETransationType {
+    public value(): ETransactionType {
         return this._value;
     }
 
     public isIncome(): boolean {
-        return this.value() === ETransationType.INCOME;
+        return this.value() === ETransactionType.INCOME;
     }
 
     public isExpense(): boolean {
-        return this.value() === ETransationType.EXPENSE;
+        return this.value() === ETransactionType.EXPENSE;
     }
 
     public isTransfer(): boolean {
-        return this.value() === ETransationType.TRANSFER;
+        return this.value() === ETransactionType.TRANSFER;
     }
 }
