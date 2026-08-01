@@ -21,9 +21,7 @@ export class CreateWalletUseCase implements IBaseUseCase<
     ) {}
 
     async execute(input: CreateWalletInput): Promise<CreateWalletOutput> {
-        const existsByName = await this.walletRepository.existsByName(
-            input.name,
-        );
+        const existsByName = await this.walletRepository.findByName(input.name);
 
         if (existsByName) {
             throw new Error('Wallet already exists with this name');
