@@ -1,0 +1,10 @@
+import { Category } from '../entities/category.entity';
+
+export interface ICategoryRepository {
+    create(category: Category): Promise<void>;
+    update(category: Category): Promise<void>;
+    delete(id: string): Promise<void>;
+    findById(id: string): Promise<Category | null>;
+    findAll(): Promise<Category[]>;
+    existsByName(name: string): Promise<boolean>;
+}
