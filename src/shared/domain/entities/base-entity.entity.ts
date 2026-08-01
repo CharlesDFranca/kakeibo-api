@@ -47,7 +47,7 @@ export abstract class BaseEntity<Props> {
         return this.id === other.id;
     }
 
-    private isValidDate(date: Date): boolean {
+    protected isValidDate(date: Date): boolean {
         return !Number.isNaN(date.getTime());
     }
 }
