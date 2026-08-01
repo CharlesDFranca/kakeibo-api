@@ -6,5 +6,5 @@ export interface IWalletRepository {
     delete(id: string): Promise<void>;
     findById(id: string): Promise<Wallet | null>;
     findAll(): Promise<Wallet[]>;
-    existsByName(name: string): Promise<boolean>;
+    findByName(name: string): Promise<Wallet | null>;
 }
