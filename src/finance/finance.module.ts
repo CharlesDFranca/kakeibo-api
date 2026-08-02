@@ -20,9 +20,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { CategoryEntity } from '@/database/entities/typeorm-category.entity';
 import { WalletEntity } from '@/database/entities/typeorm-wallet.entity';
 import { TransactionEntity } from '@/database/entities/typeorm-transaction.entity';
+import { CategoryController } from './presentation/controllers/category.controller';
 
 @Module({
-    controllers: [],
+    controllers: [CategoryController],
     imports: [
         SharedModule,
         TypeOrmModule.forFeature([
