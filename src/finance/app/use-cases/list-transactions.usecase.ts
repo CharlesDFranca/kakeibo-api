@@ -11,7 +11,7 @@ type ListTransactionsOutput = {
     description: string;
     amount: number;
     date: Date;
-    type: TransactionType;
+    type: string;
 
     category: {
         id: string;
@@ -43,7 +43,7 @@ export class ListTransactionsUseCase implements IBaseUseCase<
             description: t.description,
             amount: t.amount,
             date: t.date,
-            type: t.type,
+            type: t.type.value(),
 
             category: {
                 id: t.category.id,

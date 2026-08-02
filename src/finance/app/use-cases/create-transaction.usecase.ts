@@ -1,4 +1,5 @@
 import { Transaction } from '@/finance/domain/entities/transaction.entity';
+import { ETransactionType } from '@/finance/domain/enums/transaction-type.enum';
 import type { ICategoryRepository } from '@/finance/domain/repositories/category-repository.interface';
 import type { ITransactionRepository } from '@/finance/domain/repositories/transaction-repository.interface';
 import type { IWalletRepository } from '@/finance/domain/repositories/wallet-repository.interface';
@@ -12,7 +13,7 @@ import { Inject, Injectable } from '@nestjs/common';
 type CreateTransactionInput = {
     description: string;
     amount: number;
-    type: TransactionType;
+    type: ETransactionType;
     date: Date;
     walletId: string;
     categoryId: string;
@@ -59,7 +60,7 @@ export class CreateTransactionUseCase implements IBaseUseCase<
                 description: input.description,
                 amount: input.amount,
                 date: input.date,
-                type: input.type,
+                type: new TransactionType(input.type),
                 categoryId: category.id,
                 walletId: wallet.id,
             },
