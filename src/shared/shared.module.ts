@@ -1,9 +1,6 @@
 import { Module } from '@nestjs/common';
 import { NodeCryptoIDGeneratorService } from './infra/services/id-generator.service';
-
-export const SHARED_TOKENS = {
-    ID_GENERATOR: Symbol('ID_GENERATOR'),
-};
+import { SHARED_TOKENS } from './shared.token';
 
 @Module({
     providers: [
