@@ -15,16 +15,22 @@ import { DeleteWalletUseCase } from './app/use-cases/delete-wallet.usecase';
 import { RenameWalletUseCase } from './app/use-cases/rename-wallet.usecase';
 import { GetFinanceSummaryUseCase } from './app/use-cases/get-finance-summary.usecase';
 import { SharedModule } from '@/shared/shared.module';
-
-export const FINANCE_TOKENS = {
-    CATEGORY_REPOSITORY: Symbol('CATEGORY_REPOSITORY'),
-    WALLET_REPOSITORY: Symbol('WALLET_REPOSITORY'),
-    TRANSACTION_REPOSITORY: Symbol('TRANSACTION_REPOSITORY'),
-};
+import { FINANCE_TOKENS } from './finance.tokens';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { CategoryEntity } from '@/database/entities/typeorm-category.entity';
+import { WalletEntity } from '@/database/entities/typeorm-wallet.entity';
+import { TransactionEntity } from '@/database/entities/typeorm-transaction.entity';
 
 @Module({
     controllers: [],
-    imports: [SharedModule],
+    imports: [
+        SharedModule,
+        TypeOrmModule.forFeature([
+            CategoryEntity,
+            WalletEntity,
+            TransactionEntity,
+        ]),
+    ],
     providers: [
         // #region use-cases
         CreateCategoryUseCase,
