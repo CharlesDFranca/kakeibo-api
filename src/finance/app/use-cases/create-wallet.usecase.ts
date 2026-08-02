@@ -1,7 +1,10 @@
 import { Wallet } from '@/finance/domain/entities/wallet.entity';
-import { IWalletRepository } from '@/finance/domain/repositories/wallet-repository.interface';
+import type { IWalletRepository } from '@/finance/domain/repositories/wallet-repository.interface';
+import { FINANCE_TOKENS } from '@/finance/finance.tokens';
 import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
-import { IIDGenerator } from '@/shared/app/contracts/id-generator.contract';
+import type { IIDGenerator } from '@/shared/app/contracts/id-generator.contract';
+import { SHARED_TOKENS } from '@/shared/shared.token';
+import { Inject, Injectable } from '@nestjs/common';
 
 type CreateWalletInput = {
     name: string;
@@ -11,12 +14,15 @@ type CreateWalletOutput = {
     id: string;
 };
 
+@Injectable()
 export class CreateWalletUseCase implements IBaseUseCase<
     CreateWalletInput,
     CreateWalletOutput
 > {
     constructor(
+        @Inject(FINANCE_TOKENS.WALLET_REPOSITORY)
         private readonly walletRepository: IWalletRepository,
+        @Inject(SHARED_TOKENS.ID_GENERATOR)
         private readonly idGenerator: IIDGenerator,
     ) {}
 

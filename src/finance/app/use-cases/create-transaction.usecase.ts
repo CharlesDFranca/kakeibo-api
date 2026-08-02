@@ -1,10 +1,13 @@
 import { Transaction } from '@/finance/domain/entities/transaction.entity';
-import { ICategoryRepository } from '@/finance/domain/repositories/category-repository.interface';
-import { ITransactionRepository } from '@/finance/domain/repositories/transaction-repository.interface';
-import { IWalletRepository } from '@/finance/domain/repositories/wallet-repository.interface';
+import type { ICategoryRepository } from '@/finance/domain/repositories/category-repository.interface';
+import type { ITransactionRepository } from '@/finance/domain/repositories/transaction-repository.interface';
+import type { IWalletRepository } from '@/finance/domain/repositories/wallet-repository.interface';
 import { TransactionType } from '@/finance/domain/value-objects/transaction-type.vo';
+import { FINANCE_TOKENS } from '@/finance/finance.tokens';
 import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
-import { IIDGenerator } from '@/shared/app/contracts/id-generator.contract';
+import type { IIDGenerator } from '@/shared/app/contracts/id-generator.contract';
+import { SHARED_TOKENS } from '@/shared/shared.token';
+import { Inject, Injectable } from '@nestjs/common';
 
 type CreateTransactionInput = {
     description: string;
@@ -19,14 +22,19 @@ type CreateTransactionOutput = {
     id: string;
 };
 
+@Injectable()
 export class CreateTransactionUseCase implements IBaseUseCase<
     CreateTransactionInput,
     CreateTransactionOutput
 > {
     constructor(
+        @Inject(FINANCE_TOKENS.TRANSACTION_REPOSITORY)
         private readonly transactionRepository: ITransactionRepository,
+        @Inject(FINANCE_TOKENS.WALLET_REPOSITORY)
         private readonly walletRepository: IWalletRepository,
+        @Inject(FINANCE_TOKENS.CATEGORY_REPOSITORY)
         private readonly categoryRepository: ICategoryRepository,
+        @Inject(SHARED_TOKENS.ID_GENERATOR)
         private readonly idGenerator: IIDGenerator,
     ) {}
 

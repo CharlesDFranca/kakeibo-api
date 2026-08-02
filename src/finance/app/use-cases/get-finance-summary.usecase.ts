@@ -1,6 +1,8 @@
-import { ITransactionRepository } from '@/finance/domain/repositories/transaction-repository.interface';
-import { IWalletRepository } from '@/finance/domain/repositories/wallet-repository.interface';
+import type { ITransactionRepository } from '@/finance/domain/repositories/transaction-repository.interface';
+import type { IWalletRepository } from '@/finance/domain/repositories/wallet-repository.interface';
+import { FINANCE_TOKENS } from '@/finance/finance.tokens';
 import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
+import { Inject, Injectable } from '@nestjs/common';
 
 type GetFinanceSummaryInput = void;
 
@@ -10,12 +12,15 @@ type GetFinanceSummaryOutput = {
     totalExpense: number;
 };
 
+@Injectable()
 export class GetFinanceSummaryUseCase implements IBaseUseCase<
     GetFinanceSummaryInput,
     GetFinanceSummaryOutput
 > {
     constructor(
+        @Inject(FINANCE_TOKENS.WALLET_REPOSITORY)
         private readonly walletRepository: IWalletRepository,
+        @Inject(FINANCE_TOKENS.TRANSACTION_REPOSITORY)
         private readonly transactionRepository: ITransactionRepository,
     ) {}
 

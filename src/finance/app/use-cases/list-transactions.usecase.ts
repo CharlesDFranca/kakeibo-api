@@ -1,6 +1,8 @@
-import { ITransactionRepository } from '@/finance/domain/repositories/transaction-repository.interface';
+import type { ITransactionRepository } from '@/finance/domain/repositories/transaction-repository.interface';
 import { TransactionType } from '@/finance/domain/value-objects/transaction-type.vo';
+import { FINANCE_TOKENS } from '@/finance/finance.tokens';
 import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
+import { Inject, Injectable } from '@nestjs/common';
 
 type ListTransactionsInput = void;
 
@@ -22,11 +24,13 @@ type ListTransactionsOutput = {
     };
 }[];
 
+@Injectable()
 export class ListTransactionsUseCase implements IBaseUseCase<
     ListTransactionsInput,
     ListTransactionsOutput
 > {
     constructor(
+        @Inject(FINANCE_TOKENS.TRANSACTION_REPOSITORY)
         private readonly transactionRepository: ITransactionRepository,
     ) {}
 

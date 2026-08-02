@@ -1,5 +1,7 @@
-import { IWalletRepository } from '@/finance/domain/repositories/wallet-repository.interface';
+import type { IWalletRepository } from '@/finance/domain/repositories/wallet-repository.interface';
+import { FINANCE_TOKENS } from '@/finance/finance.tokens';
 import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
+import { Inject, Injectable } from '@nestjs/common';
 
 type DeleteWalletInput = {
     id: string;
@@ -7,11 +9,15 @@ type DeleteWalletInput = {
 
 type DeleteWalletOutput = void;
 
+@Injectable()
 export class DeleteWalletUseCase implements IBaseUseCase<
     DeleteWalletInput,
     DeleteWalletOutput
 > {
-    constructor(private readonly walletRepository: IWalletRepository) {}
+    constructor(
+        @Inject(FINANCE_TOKENS.WALLET_REPOSITORY)
+        private readonly walletRepository: IWalletRepository,
+    ) {}
 
     async execute(input: DeleteWalletInput): Promise<DeleteWalletOutput> {
         if (!input.id && input.id.trim() === '') {

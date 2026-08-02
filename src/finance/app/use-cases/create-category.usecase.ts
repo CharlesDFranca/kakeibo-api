@@ -1,7 +1,10 @@
 import { Category } from '@/finance/domain/entities/category.entity';
-import { ICategoryRepository } from '@/finance/domain/repositories/category-repository.interface';
+import type { ICategoryRepository } from '@/finance/domain/repositories/category-repository.interface';
+import { FINANCE_TOKENS } from '@/finance/finance.tokens';
 import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
-import { IIDGenerator } from '@/shared/app/contracts/id-generator.contract';
+import type { IIDGenerator } from '@/shared/app/contracts/id-generator.contract';
+import { SHARED_TOKENS } from '@/shared/shared.token';
+import { Inject, Injectable } from '@nestjs/common';
 
 type CreateCategoryInput = {
     name: string;
@@ -11,12 +14,15 @@ type CreateCategoryOutput = {
     id: string;
 };
 
+@Injectable()
 export class CreateCategoryUseCase implements IBaseUseCase<
     CreateCategoryInput,
     CreateCategoryOutput
 > {
     constructor(
+        @Inject(FINANCE_TOKENS.CATEGORY_REPOSITORY)
         private readonly categoryRepository: ICategoryRepository,
+        @Inject(SHARED_TOKENS.ID_GENERATOR)
         private readonly idGenerator: IIDGenerator,
     ) {}
 
