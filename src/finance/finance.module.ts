@@ -23,9 +23,15 @@ import { TransactionEntity } from '@/database/entities/typeorm-transaction.entit
 import { CategoryController } from './presentation/controllers/category.controller';
 import { WalletController } from './presentation/controllers/wallet.controller';
 import { TransactionController } from './presentation/controllers/transaction.controller';
+import { FinanceController } from './finance.controller';
 
 @Module({
-    controllers: [CategoryController, WalletController, TransactionController],
+    controllers: [
+        CategoryController,
+        WalletController,
+        TransactionController,
+        FinanceController,
+    ],
     imports: [
         SharedModule,
         TypeOrmModule.forFeature([
