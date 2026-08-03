@@ -1,14 +1,14 @@
-import { Transaction } from '@/finance/domain/entities/transaction.entity';
-import { ETransactionType } from '@/finance/domain/enums/transaction-type.enum';
+import { ETransactionType } from '@/finance/wallets/domain/enums/transaction-type.enum';
 import type { ICategoryRepository } from '@/finance/domain/repositories/category-repository.interface';
-import type { ITransactionRepository } from '@/finance/domain/repositories/transaction-repository.interface';
+import type { ITransactionRepository } from '@/finance/wallets/domain/repositories/transaction-repository.interface';
 import type { IWalletRepository } from '@/finance/domain/repositories/wallet-repository.interface';
-import { TransactionType } from '@/finance/domain/value-objects/transaction-type.vo';
 import { FINANCE_TOKENS } from '@/finance/finance.tokens';
 import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
 import type { IIDGenerator } from '@/shared/app/contracts/id-generator.contract';
 import { SHARED_TOKENS } from '@/shared/shared.token';
 import { Inject, Injectable } from '@nestjs/common';
+import { Transaction } from '../../domain/entities/transaction.entity';
+import { TransactionType } from '../../domain/value-objects/transaction-type.vo';
 
 type CreateTransactionInput = {
     description: string;

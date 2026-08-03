@@ -1,4 +1,4 @@
-import type { ITransactionRepository } from '@/finance/domain/repositories/transaction-repository.interface';
+import type { ITransactionRepository } from '@/finance/wallets/domain/repositories/transaction-repository.interface';
 import type { IWalletRepository } from '@/finance/domain/repositories/wallet-repository.interface';
 import { FINANCE_TOKENS } from '@/finance/finance.tokens';
 import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
