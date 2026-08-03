@@ -1,3 +1,4 @@
 export const SHARED_TOKENS = {
     ID_GENERATOR: Symbol('ID_GENERATOR'),
+    PASSWORD_HASHER: Symbol('PASSWORD_HASHER'),
 };
