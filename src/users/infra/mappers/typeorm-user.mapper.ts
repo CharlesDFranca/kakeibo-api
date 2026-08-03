@@ -2,7 +2,9 @@ import { UserEntity } from '@/database/entities/typeorm-user.entity';
 import { User } from '@/users/domain/entities/user.entity';
 import { Email } from '@/users/domain/value-objects/email.vo';
 import { Username } from '@/users/domain/value-objects/username.vo';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class TypeormUserMapper {
     public toDomain(raw: UserEntity): User {
         return new User(
