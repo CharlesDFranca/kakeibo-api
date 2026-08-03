@@ -1,4 +1,4 @@
-import { UserEntity } from '@/database/entities/typeorm-user.entity';
+import { UserEntity } from '@/shared/database/entities/typeorm-user.entity';
 import { Injectable } from '@nestjs/common';
 import { User } from '../../domain/entities/user.entity';
 import { Email } from '../../domain/value-objects/email.vo';

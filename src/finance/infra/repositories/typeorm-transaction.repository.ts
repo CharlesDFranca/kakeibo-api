@@ -1,4 +1,4 @@
-import { TransactionEntity } from '@/database/entities/typeorm-transaction.entity';
+import { TransactionEntity } from '@/shared/database/entities/typeorm-transaction.entity';
 import { Transaction } from '@/finance/domain/entities/transaction.entity';
 import {
     ITransactionRepository,

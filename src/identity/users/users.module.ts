@@ -7,7 +7,7 @@ import { TypeormUserRepository } from './infra/repositories/typeorm-user.reposit
 import { TypeormUserMapper } from './infra/mappers/typeorm-user.mapper';
 import { SharedModule } from '@/shared/shared.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserEntity } from '@/database/entities/typeorm-user.entity';
+import { UserEntity } from '@/shared/database/entities/typeorm-user.entity';
 
 @Module({
     imports: [SharedModule, TypeOrmModule.forFeature([UserEntity])],
