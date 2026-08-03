@@ -1,4 +1,4 @@
-import { Category } from '@/finance/domain/entities/category.entity';
+import { Category } from '@/finance/categories/domain/entities/category.entity';
 import type { ICategoryRepository } from '@/finance/domain/repositories/category-repository.interface';
 import { FINANCE_TOKENS } from '@/finance/finance.tokens';
 import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';

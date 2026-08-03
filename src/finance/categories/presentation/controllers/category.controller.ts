@@ -1,5 +1,5 @@
-import { CreateCategoryUseCase } from '@/finance/app/use-cases/create-category.usecase';
-import { ListCategoriesUseCase } from '@/finance/app/use-cases/list-categories.usecase';
+import { CreateCategoryUseCase } from '@/finance/categories/app/use-cases/create-category.usecase';
+import { ListCategoriesUseCase } from '@/finance/categories/app/use-cases/list-categories.usecase';
 import {
     Body,
     Controller,

@@ -1,14 +1,13 @@
 import { Module } from '@nestjs/common';
-import { CreateCategoryUseCase } from './app/use-cases/create-category.usecase';
-import { TypeOrmCategoryRepository } from './infra/repositories/typeorm-category.repositoy';
+import { CreateCategoryUseCase } from './categories/app/use-cases/create-category.usecase';
 import { CreateWalletUseCase } from './app/use-cases/create-wallet.usecase';
 import { CreateTransactionUseCase } from './wallets/app/use-cases/create-transaction.usecase';
 import { TypeOrmWalletRepository } from './infra/repositories/typeorm-wallet.repository';
 import { TypeOrmTransactionRepository } from './wallets/infra/repositories/typeorm-transaction.repository';
-import { TypeOrmCategoryMapper } from './infra/mappers/typeorm-category.mapper';
+import { TypeOrmCategoryMapper } from './categories/infra/mappers/typeorm-category.mapper';
 import { TypeOrmWalletMapper } from './infra/mappers/typeorm-wallet.mapper';
 import { TypeOrmTransactionMapper } from './wallets/infra/mappers/typeorm-transaction.mapper';
-import { ListCategoriesUseCase } from './app/use-cases/list-categories.usecase';
+import { ListCategoriesUseCase } from './categories/app/use-cases/list-categories.usecase';
 import { ListTransactionsUseCase } from './wallets/app/use-cases/list-transactions.usecase';
 import { ListWalletsUseCase } from './app/use-cases/list-wallets.usecase';
 import { DeleteWalletUseCase } from './app/use-cases/delete-wallet.usecase';
@@ -17,13 +16,14 @@ import { GetFinanceSummaryUseCase } from './app/use-cases/get-finance-summary.us
 import { SharedModule } from '@/shared/shared.module';
 import { FINANCE_TOKENS } from './finance.tokens';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CategoryController } from './presentation/controllers/category.controller';
+import { CategoryController } from './categories/presentation/controllers/category.controller';
 import { WalletController } from './presentation/controllers/wallet.controller';
 import { TransactionController } from './wallets/presentation/controllers/transaction.controller';
 import { FinanceController } from './finance.controller';
 import { CategoryEntity } from '@/shared/infra/database/entities/typeorm-category.entity';
 import { TransactionEntity } from '@/shared/infra/database/entities/typeorm-transaction.entity';
 import { WalletEntity } from '@/shared/infra/database/entities/typeorm-wallet.entity';
+import { TypeOrmCategoryRepository } from './categories/infra/repositories/typeorm-category.repositoy';
 
 @Module({
     controllers: [
