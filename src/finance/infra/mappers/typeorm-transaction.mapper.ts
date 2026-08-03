@@ -1,6 +1,6 @@
-import { TransactionEntity } from '@/shared/database/entities/typeorm-transaction.entity';
 import { Transaction } from '@/finance/domain/entities/transaction.entity';
 import { TransactionType } from '@/finance/domain/value-objects/transaction-type.vo';
+import { TransactionEntity } from '@/shared/infra/database/entities/typeorm-transaction.entity';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()

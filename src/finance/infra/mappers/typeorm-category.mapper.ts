@@ -1,5 +1,5 @@
-import { CategoryEntity } from '@/shared/database/entities/typeorm-category.entity';
 import { Category } from '@/finance/domain/entities/category.entity';
+import { CategoryEntity } from '@/shared/infra/database/entities/typeorm-category.entity';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()

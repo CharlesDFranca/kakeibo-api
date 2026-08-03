@@ -17,13 +17,13 @@ import { GetFinanceSummaryUseCase } from './app/use-cases/get-finance-summary.us
 import { SharedModule } from '@/shared/shared.module';
 import { FINANCE_TOKENS } from './finance.tokens';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CategoryEntity } from '@/shared/database/entities/typeorm-category.entity';
-import { WalletEntity } from '@/shared/database/entities/typeorm-wallet.entity';
-import { TransactionEntity } from '@/shared/database/entities/typeorm-transaction.entity';
 import { CategoryController } from './presentation/controllers/category.controller';
 import { WalletController } from './presentation/controllers/wallet.controller';
 import { TransactionController } from './presentation/controllers/transaction.controller';
 import { FinanceController } from './finance.controller';
+import { CategoryEntity } from '@/shared/infra/database/entities/typeorm-category.entity';
+import { TransactionEntity } from '@/shared/infra/database/entities/typeorm-transaction.entity';
+import { WalletEntity } from '@/shared/infra/database/entities/typeorm-wallet.entity';
 
 @Module({
     controllers: [

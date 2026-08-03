@@ -1,4 +1,3 @@
-import { UserEntity } from '@/shared/database/entities/typeorm-user.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -7,6 +6,7 @@ import { IUserRepository } from '../../domain/repositories/user-repository.inter
 import { User } from '../../domain/entities/user.entity';
 import { Email } from '../../domain/value-objects/email.vo';
 import { Username } from '../../domain/value-objects/username.vo';
+import { UserEntity } from '@/shared/infra/database/entities/typeorm-user.entity';
 
 @Injectable()
 export class TypeormUserRepository implements IUserRepository {

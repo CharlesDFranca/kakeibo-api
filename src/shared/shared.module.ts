@@ -2,8 +2,11 @@ import { Module } from '@nestjs/common';
 import { NodeCryptoIDGeneratorService } from './infra/services/id-generator.service';
 import { SHARED_TOKENS } from './shared.token';
 import { BcryptPasswordHasher } from './infra/services/bcrypt-password-hasher.service';
+import { DatabaseModule } from './infra/database/database.module';
+import { RedisModule } from './infra/redis/redis.module';
 
 @Module({
+    imports: [DatabaseModule, RedisModule],
     providers: [
         {
             provide: SHARED_TOKENS.ID_GENERATOR,
@@ -14,6 +17,11 @@ import { BcryptPasswordHasher } from './infra/services/bcrypt-password-hasher.se
             useClass: BcryptPasswordHasher,
         },
     ],
-    exports: [SHARED_TOKENS.ID_GENERATOR, SHARED_TOKENS.PASSWORD_HASHER],
+    exports: [
+        DatabaseModule,
+        RedisModule,
+        SHARED_TOKENS.ID_GENERATOR,
+        SHARED_TOKENS.PASSWORD_HASHER,
+    ],
 })
 export class SharedModule {}

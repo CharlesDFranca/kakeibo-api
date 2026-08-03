@@ -1,5 +1,5 @@
-import { WalletEntity } from '@/shared/database/entities/typeorm-wallet.entity';
 import { Wallet } from '@/finance/domain/entities/wallet.entity';
+import { WalletEntity } from '@/shared/infra/database/entities/typeorm-wallet.entity';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()

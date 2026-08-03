@@ -1,10 +1,10 @@
-import { CategoryEntity } from '@/shared/database/entities/typeorm-category.entity';
 import { Category } from '@/finance/domain/entities/category.entity';
 import { ICategoryRepository } from '@/finance/domain/repositories/category-repository.interface';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { TypeOrmCategoryMapper } from '../mappers/typeorm-category.mapper';
+import { CategoryEntity } from '@/shared/infra/database/entities/typeorm-category.entity';
 
 @Injectable()
 export class TypeOrmCategoryRepository implements ICategoryRepository {
