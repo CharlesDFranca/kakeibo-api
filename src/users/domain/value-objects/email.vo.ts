@@ -19,10 +19,6 @@ export class Email {
         return this._value === other.value;
     }
 
-    public toString(): string {
-        return this._value;
-    }
-
     private static isValid(email: string): boolean {
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
