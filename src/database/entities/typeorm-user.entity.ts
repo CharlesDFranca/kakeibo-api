@@ -1,4 +1,3 @@
-import { Email } from '@/users/domain/value-objects/email.vo';
 import {
     Column,
     CreateDateColumn,

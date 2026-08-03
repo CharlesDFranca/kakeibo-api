@@ -1,13 +1,14 @@
-import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
-import type { IIDGenerator } from '@/shared/app/contracts/id-generator.contract';
-import type { IPasswordHasher } from '@/shared/app/contracts/password-hasher.contract';
-import type { IUserRepository } from '@/users/domain/repositories/user-repository.interface';
-import { SHARED_TOKENS } from '@/shared/shared.token';
-import { User } from '@/users/domain/entities/user.entity';
-import { Email } from '@/users/domain/value-objects/email.vo';
-import { USER_TOKENS } from '@/users/user.token';
-import { Inject, Injectable } from '@nestjs/common';
-import { Username } from '@/users/domain/value-objects/username.vo';
+import { IBaseUseCase } from "@/shared/app/contracts/base-usecase.contract";
+import type { IIDGenerator } from "@/shared/app/contracts/id-generator.contract";
+import type { IPasswordHasher } from "@/shared/app/contracts/password-hasher.contract";
+import { SHARED_TOKENS } from "@/shared/shared.token";
+import { Injectable, Inject } from "@nestjs/common";
+import { User } from "../../domain/entities/user.entity";
+import type { IUserRepository } from "../../domain/repositories/user-repository.interface";
+import { Email } from "../../domain/value-objects/email.vo";
+import { Username } from "../../domain/value-objects/username.vo";
+import { USER_TOKENS } from "../../user.token";
+
 
 type CreateUserInput = {
     name: string;

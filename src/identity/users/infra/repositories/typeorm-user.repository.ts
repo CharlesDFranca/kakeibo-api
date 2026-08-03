@@ -1,12 +1,12 @@
 import { UserEntity } from '@/database/entities/typeorm-user.entity';
-import { User } from '@/users/domain/entities/user.entity';
-import { IUserRepository } from '@/users/domain/repositories/user-repository.interface';
-import { Email } from '@/users/domain/value-objects/email.vo';
-import { Username } from '@/users/domain/value-objects/username.vo';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { TypeormUserMapper } from '../mappers/typeorm-user.mapper';
+import { IUserRepository } from '../../domain/repositories/user-repository.interface';
+import { User } from '../../domain/entities/user.entity';
+import { Email } from '../../domain/value-objects/email.vo';
+import { Username } from '../../domain/value-objects/username.vo';
 
 @Injectable()
 export class TypeormUserRepository implements IUserRepository {

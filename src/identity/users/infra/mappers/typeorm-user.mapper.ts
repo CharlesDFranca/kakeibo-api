@@ -1,8 +1,8 @@
 import { UserEntity } from '@/database/entities/typeorm-user.entity';
-import { User } from '@/users/domain/entities/user.entity';
-import { Email } from '@/users/domain/value-objects/email.vo';
-import { Username } from '@/users/domain/value-objects/username.vo';
 import { Injectable } from '@nestjs/common';
+import { User } from '../../domain/entities/user.entity';
+import { Email } from '../../domain/value-objects/email.vo';
+import { Username } from '../../domain/value-objects/username.vo';
 
 @Injectable()
 export class TypeormUserMapper {

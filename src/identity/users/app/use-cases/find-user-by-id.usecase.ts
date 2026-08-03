@@ -1,7 +1,7 @@
 import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
-import type { IUserRepository } from '@/users/domain/repositories/user-repository.interface';
-import { USER_TOKENS } from '@/users/user.token';
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
+import type { IUserRepository } from '../../domain/repositories/user-repository.interface';
+import { USER_TOKENS } from '../../user.token';
 
 type FindUserByIdInput = {
     id: string;
