@@ -5,15 +5,15 @@ import { FinanceModule } from './finance/finance.module';
 import { DatabaseModule } from './database/database.module';
 import { SharedModule } from './shared/shared.module';
 import { RedisModule } from './redis/redis.module';
-import { UsersModule } from './identity/users/users.module';
+import { IdentityModule } from './identity/identity.module';
 
 @Module({
     imports: [
         FinanceModule,
         DatabaseModule,
         SharedModule,
-        UsersModule,
         RedisModule,
+        IdentityModule,
     ],
     controllers: [AppController],
     providers: [AppService],
