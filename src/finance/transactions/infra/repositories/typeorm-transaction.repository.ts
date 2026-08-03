@@ -1,7 +1,7 @@
 import {
     ITransactionRepository,
     TransactionDetails,
-} from '@/finance/wallets/domain/repositories/transaction-repository.interface';
+} from '@/finance/transactions/domain/repositories/transaction-repository.interface';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';

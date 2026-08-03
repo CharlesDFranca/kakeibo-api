@@ -1,4 +1,4 @@
-import type { ICategoryRepository } from '@/finance/domain/repositories/category-repository.interface';
+import type { ICategoryRepository } from '@/finance/wallets/domain/repositories/category-repository.interface';
 import { FINANCE_TOKENS } from '@/finance/finance.tokens';
 import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
 import { Inject, Injectable } from '@nestjs/common';

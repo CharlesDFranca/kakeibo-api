@@ -1,5 +1,5 @@
-import { Wallet } from '@/finance/domain/entities/wallet.entity';
-import { IWalletRepository } from '@/finance/domain/repositories/wallet-repository.interface';
+import { Wallet } from '@/finance/wallets/domain/entities/wallet.entity';
+import { IWalletRepository } from '@/finance/wallets/domain/repositories/wallet-repository.interface';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';

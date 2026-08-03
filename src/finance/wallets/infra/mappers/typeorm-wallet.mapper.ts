@@ -1,4 +1,4 @@
-import { Wallet } from '@/finance/domain/entities/wallet.entity';
+import { Wallet } from '@/finance/wallets/domain/entities/wallet.entity';
 import { WalletEntity } from '@/shared/infra/database/entities/typeorm-wallet.entity';
 import { Injectable } from '@nestjs/common';
 

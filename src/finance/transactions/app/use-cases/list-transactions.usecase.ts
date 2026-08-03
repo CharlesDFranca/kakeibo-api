@@ -1,4 +1,4 @@
-import type { ITransactionRepository } from '@/finance/wallets/domain/repositories/transaction-repository.interface';
+import type { ITransactionRepository } from '@/finance/transactions/domain/repositories/transaction-repository.interface';
 import { FINANCE_TOKENS } from '@/finance/finance.tokens';
 import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
 import { Inject, Injectable } from '@nestjs/common';

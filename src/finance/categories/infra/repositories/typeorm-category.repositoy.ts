@@ -1,5 +1,5 @@
 import { Category } from '@/finance/categories/domain/entities/category.entity';
-import { ICategoryRepository } from '@/finance/domain/repositories/category-repository.interface';
+import { ICategoryRepository } from '@/finance/wallets/domain/repositories/category-repository.interface';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';

@@ -1,5 +1,5 @@
-import { Wallet } from '@/finance/domain/entities/wallet.entity';
-import type { IWalletRepository } from '@/finance/domain/repositories/wallet-repository.interface';
+import { Wallet } from '@/finance/wallets/domain/entities/wallet.entity';
+import type { IWalletRepository } from '@/finance/wallets/domain/repositories/wallet-repository.interface';
 import { FINANCE_TOKENS } from '@/finance/finance.tokens';
 import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
 import type { IIDGenerator } from '@/shared/app/contracts/id-generator.contract';

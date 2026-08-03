@@ -1,4 +1,4 @@
-import type { IWalletRepository } from '@/finance/domain/repositories/wallet-repository.interface';
+import type { IWalletRepository } from '@/finance/wallets/domain/repositories/wallet-repository.interface';
 import { FINANCE_TOKENS } from '@/finance/finance.tokens';
 import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
 import { Inject, Injectable } from '@nestjs/common';

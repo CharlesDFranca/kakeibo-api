@@ -1,6 +1,6 @@
-import { CreateTransactionUseCase } from '@/finance/wallets/app/use-cases/create-transaction.usecase';
-import { ListTransactionsUseCase } from '@/finance/wallets/app/use-cases/list-transactions.usecase';
-import { ETransactionType } from '@/finance/wallets/domain/enums/transaction-type.enum';
+import { CreateTransactionUseCase } from '@/finance/transactions/app/use-cases/create-transaction.usecase';
+import { ListTransactionsUseCase } from '@/finance/transactions/app/use-cases/list-transactions.usecase';
+import { ETransactionType } from '@/finance/transactions/domain/enums/transaction-type.enum';
 import { parseEnum } from '@/shared/utils/parse-enum';
 import {
     Body,

@@ -1,4 +1,4 @@
-import { ETransactionType } from '@/finance/wallets/domain/enums/transaction-type.enum';
+import { ETransactionType } from '@/finance/transactions/domain/enums/transaction-type.enum';
 import {
     Column,
     CreateDateColumn,

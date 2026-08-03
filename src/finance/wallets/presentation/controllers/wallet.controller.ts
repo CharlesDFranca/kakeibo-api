@@ -1,7 +1,7 @@
-import { CreateWalletUseCase } from '@/finance/app/use-cases/create-wallet.usecase';
-import { DeleteWalletUseCase } from '@/finance/app/use-cases/delete-wallet.usecase';
-import { ListWalletsUseCase } from '@/finance/app/use-cases/list-wallets.usecase';
-import { RenameWalletUseCase } from '@/finance/app/use-cases/rename-wallet.usecase';
+import { CreateWalletUseCase } from '@/finance/wallets/app/use-cases/create-wallet.usecase';
+import { DeleteWalletUseCase } from '@/finance/wallets/app/use-cases/delete-wallet.usecase';
+import { ListWalletsUseCase } from '@/finance/wallets/app/use-cases/list-wallets.usecase';
+import { RenameWalletUseCase } from '@/finance/wallets/app/use-cases/rename-wallet.usecase';
 import {
     Body,
     Controller,
