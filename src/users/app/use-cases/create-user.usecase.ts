@@ -7,9 +7,11 @@ import { User } from '@/users/domain/entities/user.entity';
 import { Email } from '@/users/domain/value-objects/email.vo';
 import { USER_TOKENS } from '@/users/user.token';
 import { Inject, Injectable } from '@nestjs/common';
+import { Username } from '@/users/domain/value-objects/username.vo';
 
 type CreateUserInput = {
     name: string;
+    username: string;
     email: string;
     password: string;
 };
@@ -31,10 +33,16 @@ export class CreateUserUseCase implements IBaseUseCase<
 
     async execute(input: CreateUserInput): Promise<CreateUserOutput> {
         const email = new Email(input.email);
+        const username = new Username(input.username);
 
-        const existingUser = await this.userRepository.findByEmail(email);
+        const emailAlredyUsed = await this.userRepository.findByEmail(email);
 
-        if (existingUser) throw new Error('User already exists');
+        if (emailAlredyUsed) throw new Error('Email already exists');
+
+        const usernameAlredyUsed =
+            await this.userRepository.findByUsername(username);
+
+        if (usernameAlredyUsed) throw new Error('Username already exists');
 
         const password = input.password.trim();
 
@@ -48,6 +56,7 @@ export class CreateUserUseCase implements IBaseUseCase<
             this.idGenerator.generate(),
             {
                 name: input.name,
+                username,
                 email,
                 passwordHash,
             },

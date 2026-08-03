@@ -1,8 +1,10 @@
 import { BaseEntity } from '@/shared/domain/entities/base-entity.entity';
 import { Email } from '../value-objects/email.vo';
+import { Username } from '../value-objects/username.vo';
 
 type UserProps = {
     name: string;
+    username: Username;
     email: Email;
     passwordHash: string;
 };
@@ -22,6 +24,10 @@ export class User extends BaseEntity<UserProps> {
 
     public get name(): string {
         return this.props.name;
+    }
+
+    public get username(): Username {
+        return this.props.username;
     }
 
     public get email(): Email {
