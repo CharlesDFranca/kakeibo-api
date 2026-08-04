@@ -29,5 +29,6 @@ import { UserEntity } from '@/shared/infra/database/entities/typeorm-user.entity
         TypeormUserMapper,
         //#endregion
     ],
+    exports: [USER_TOKENS.USER_REPOSITORY],
 })
 export class UsersModule {}
