@@ -8,6 +8,7 @@ import { Inject, Injectable } from '@nestjs/common';
 
 type CreateWalletInput = {
     name: string;
+    userId: string;
 };
 
 type CreateWalletOutput = {
@@ -27,7 +28,10 @@ export class CreateWalletUseCase implements IBaseUseCase<
     ) {}
 
     async execute(input: CreateWalletInput): Promise<CreateWalletOutput> {
-        const existsByName = await this.walletRepository.findByName(input.name);
+        const existsByName = await this.walletRepository.findUserWalletByName(
+            input.userId,
+            input.name,
+        );
 
         if (existsByName) {
             throw new Error('Wallet already exists with this name');
@@ -40,6 +44,7 @@ export class CreateWalletUseCase implements IBaseUseCase<
             {
                 name: input.name,
                 balance: 0,
+                userId: input.userId,
             },
             now,
             now,

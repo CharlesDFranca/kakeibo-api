@@ -4,7 +4,8 @@ import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
 import { Inject, Injectable } from '@nestjs/common';
 
 type DeleteWalletInput = {
-    id: string;
+    walletId: string;
+    userId: string;
 };
 
 type DeleteWalletOutput = void;
@@ -20,10 +21,13 @@ export class DeleteWalletUseCase implements IBaseUseCase<
     ) {}
 
     async execute(input: DeleteWalletInput): Promise<DeleteWalletOutput> {
-        if (!input.id && input.id.trim() === '') {
+        if (!input.walletId || input.walletId.trim() === '') {
             throw new Error('Error on delete.');
         }
 
-        await this.walletRepository.delete(input.id);
+        await this.walletRepository.deleteUserWallet(
+            input.userId,
+            input.walletId,
+        );
     }
 }

@@ -1,6 +1,7 @@
 import { BaseEntity } from '@/shared/domain/entities/base-entity.entity';
 
 type WalletProps = {
+    userId: string;
     name: string;
     balance: number;
 };
@@ -26,6 +27,10 @@ export class Wallet extends BaseEntity<WalletProps> {
 
     public get balance(): number {
         return this.props.balance;
+    }
+
+    public get userId(): string {
+        return this.props.userId;
     }
 
     public rename(name: string): void {

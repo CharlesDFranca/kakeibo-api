@@ -3,7 +3,9 @@ import { FINANCE_TOKENS } from '@/finance/finance.tokens';
 import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
 import { Inject, Injectable } from '@nestjs/common';
 
-type ListWalletsInput = void;
+type ListWalletsInput = {
+    userId: string;
+};
 
 type ListWalletsOutput = {
     id: string;
@@ -21,8 +23,10 @@ export class ListWalletsUseCase implements IBaseUseCase<
         private readonly walletRepository: IWalletRepository,
     ) {}
 
-    async execute(input: void): Promise<ListWalletsOutput> {
-        const wallets = await this.walletRepository.findAll();
+    async execute(input: ListWalletsInput): Promise<ListWalletsOutput> {
+        const wallets = await this.walletRepository.findAllForUser(
+            input.userId,
+        );
 
         return wallets.map((w) => ({
             id: w.id,

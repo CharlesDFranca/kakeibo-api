@@ -10,10 +10,15 @@ import { SharedModule } from '@/shared/shared.module';
 import { WalletController } from './presentation/controllers/wallet.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { WalletEntity } from '@/shared/infra/database/entities/typeorm-wallet.entity';
+import { AuthModule } from '@/identity/auth/auth.module';
 
 @Module({
     controllers: [WalletController],
-    imports: [SharedModule, TypeOrmModule.forFeature([WalletEntity])],
+    imports: [
+        SharedModule,
+        AuthModule,
+        TypeOrmModule.forFeature([WalletEntity]),
+    ],
     providers: [
         CreateWalletUseCase,
         ListWalletsUseCase,

@@ -4,7 +4,9 @@ import { FINANCE_TOKENS } from '@/finance/finance.tokens';
 import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
 import { Inject, Injectable } from '@nestjs/common';
 
-type GetFinanceSummaryInput = void;
+type GetFinanceSummaryInput = {
+    userId: string;
+};
 
 type GetFinanceSummaryOutput = {
     balance: number;
@@ -24,10 +26,12 @@ export class GetFinanceSummaryUseCase implements IBaseUseCase<
         private readonly transactionRepository: ITransactionRepository,
     ) {}
 
-    async execute(input: void): Promise<GetFinanceSummaryOutput> {
+    async execute(
+        input: GetFinanceSummaryInput,
+    ): Promise<GetFinanceSummaryOutput> {
         const [wallets, transactions] = await Promise.all([
-            this.walletRepository.findAll(),
-            this.transactionRepository.findAll(),
+            this.walletRepository.findAllForUser(input.userId),
+            this.transactionRepository.findAllForUser(input.userId),
         ]);
 
         if (!wallets.length)

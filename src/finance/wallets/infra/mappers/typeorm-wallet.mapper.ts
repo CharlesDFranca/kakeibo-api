@@ -7,7 +7,7 @@ export class TypeOrmWalletMapper {
     public toDomain(raw: WalletEntity): Wallet {
         return new Wallet(
             raw.id,
-            { name: raw.name, balance: raw.balance },
+            { name: raw.name, balance: raw.balance, userId: raw.userId },
             raw.createdAt,
             raw.updatedAt,
         );
@@ -19,6 +19,7 @@ export class TypeOrmWalletMapper {
         walletEntity.id = wallet.id;
         walletEntity.name = wallet.name;
         walletEntity.balance = wallet.balance;
+        walletEntity.userId = wallet.userId;
         walletEntity.createdAt = wallet.createdAt;
         walletEntity.updatedAt = wallet.updatedAt;
 

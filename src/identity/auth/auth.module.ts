@@ -8,11 +8,14 @@ import { UsersModule } from '../users/users.module';
 import { LogoutUseCase } from './app/use-cases/logout.usecase';
 import { AuthController } from './presentation/controllers/auth.controller';
 import { AuthContextService } from './app/services/auth-context.service';
+import { SessionGuard } from './presentation/guards/session.guards';
 
 @Module({
     controllers: [AuthController],
     imports: [SharedModule, UsersModule],
     providers: [
+        SessionGuard,
+
         AuthContextService,
 
         LoginUseCase,
@@ -23,5 +26,6 @@ import { AuthContextService } from './app/services/auth-context.service';
         },
         RedisSessionMapper,
     ],
+    exports: [AuthContextService, SessionGuard],
 })
 export class AuthModule {}

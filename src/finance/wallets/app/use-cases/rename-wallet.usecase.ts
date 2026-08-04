@@ -4,12 +4,13 @@ import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
 import { Inject, Injectable } from '@nestjs/common';
 
 type RenameWalletInput = {
-    id: string;
+    walletId: string;
     name: string;
+    userId: string;
 };
 
 type RenameWalletOutput = {
-    id: string;
+    walletId: string;
 };
 
 @Injectable()
@@ -23,14 +24,19 @@ export class RenameWalletUseCase implements IBaseUseCase<
     ) {}
 
     async execute(input: RenameWalletInput): Promise<RenameWalletOutput> {
-        const wallet = await this.walletRepository.findById(input.id);
+        const wallet = await this.walletRepository.findUserWalletById(
+            input.userId,
+            input.walletId,
+        );
 
         if (!wallet) throw new Error('Wallet not found');
 
         if (wallet.name !== input.name) {
-            const walletWithSameName = await this.walletRepository.findByName(
-                input.name,
-            );
+            const walletWithSameName =
+                await this.walletRepository.findUserWalletByName(
+                    input.userId,
+                    input.name,
+                );
 
             if (walletWithSameName) {
                 throw new Error('Wallet already exists with this name');
@@ -41,6 +47,6 @@ export class RenameWalletUseCase implements IBaseUseCase<
 
         await this.walletRepository.update(wallet);
 
-        return { id: wallet.id };
+        return { walletId: wallet.id };
     }
 }

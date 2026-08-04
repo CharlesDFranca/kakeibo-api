@@ -52,6 +52,16 @@ export class TypeOrmTransactionRepository implements ITransactionRepository {
         );
     }
 
+    async findAllForUser(userId: string): Promise<Transaction[]> {
+        const transactions = await this.transactionRepository.find({
+            where: { wallet: { userId } },
+        });
+
+        return transactions.map((transaction) =>
+            this.mapper.toDomain(transaction),
+        );
+    }
+
     async findAllWithCategoryAndWallet(): Promise<TransactionDetails[]> {
         const transactions = await this.transactionRepository.find({
             relations: { wallet: true, category: true },

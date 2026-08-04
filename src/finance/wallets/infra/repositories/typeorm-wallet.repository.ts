@@ -49,4 +49,40 @@ export class TypeOrmWalletRepository implements IWalletRepository {
 
         return this.mapper.toDomain(wallet);
     }
+
+    async findUserWalletByName(
+        userId: string,
+        name: string,
+    ): Promise<Wallet | null> {
+        const wallet = await this.walletRepository.findOne({
+            where: { userId, name },
+        });
+
+        if (!wallet) return null;
+
+        return this.mapper.toDomain(wallet);
+    }
+
+    async findAllForUser(userId: string): Promise<Wallet[]> {
+        const wallets = await this.walletRepository.find({ where: { userId } });
+
+        return wallets.map((wallet) => this.mapper.toDomain(wallet));
+    }
+
+    async findUserWalletById(
+        userId: string,
+        walletId: string,
+    ): Promise<Wallet | null> {
+        const wallet = await this.walletRepository.findOne({
+            where: { id: walletId, userId },
+        });
+
+        if (!wallet) return null;
+
+        return this.mapper.toDomain(wallet);
+    }
+
+    async deleteUserWallet(userId: string, id: string): Promise<void> {
+        await this.walletRepository.delete({ userId, id });
+    }
 }

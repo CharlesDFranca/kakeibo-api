@@ -1,10 +1,10 @@
 import { Category } from '@/finance/categories/domain/entities/category.entity';
-import type { ICategoryRepository } from '@/finance/wallets/domain/repositories/category-repository.interface';
 import { FINANCE_TOKENS } from '@/finance/finance.tokens';
 import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
 import type { IIDGenerator } from '@/shared/app/contracts/id-generator.contract';
 import { SHARED_TOKENS } from '@/shared/shared.token';
 import { Inject, Injectable } from '@nestjs/common';
+import type { ICategoryRepository } from '../../domain/repositories/category-repository.interface';
 
 type CreateCategoryInput = {
     name: string;
