@@ -7,10 +7,13 @@ import {
     Post,
     Req,
     Res,
+    UseGuards,
 } from '@nestjs/common';
 import { LoginUseCase } from '../../app/use-cases/login.usecase';
 import { LogoutUseCase } from '../../app/use-cases/logout.usecase';
-import type { Request, Response } from 'express';
+import type { Response } from 'express';
+import { SessionGuard } from '../guards/session.guards';
+import { CurrentSessionId } from '../decorators/current-session-id.decorator';
 
 type LoginDTO = {
     email: string;
@@ -42,16 +45,13 @@ export class AuthController {
     }
 
     @Post('logout')
+    @UseGuards(SessionGuard)
     @HttpCode(HttpStatus.NO_CONTENT)
     async logout(
-        @Req() request: Request,
+        @CurrentSessionId() sessionId: string,
         @Res({ passthrough: true }) response: Response,
     ) {
-        const sessionId = request.cookies.session;
-
-        if (sessionId) {
-            await this.logoutUseCase.execute({ sessionId });
-        }
+        await this.logoutUseCase.execute({ sessionId });
 
         response.clearCookie('session');
     }

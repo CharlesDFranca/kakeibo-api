@@ -7,11 +7,14 @@ import { LoginUseCase } from './app/use-cases/login.usecase';
 import { UsersModule } from '../users/users.module';
 import { LogoutUseCase } from './app/use-cases/logout.usecase';
 import { AuthController } from './presentation/controllers/auth.controller';
+import { AuthContextService } from './app/services/auth-context.service';
 
 @Module({
     controllers: [AuthController],
     imports: [SharedModule, UsersModule],
     providers: [
+        AuthContextService,
+
         LoginUseCase,
         LogoutUseCase,
         {
