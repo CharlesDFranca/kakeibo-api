@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import type { ISessionRepository } from '../../domain/repository/session-repository.interface';
 import { AUTH_TOKENS } from '../../auth.token';
+import { AuthContext } from '../types/auth-context.type';
 
 @Injectable()
 export class AuthContextService {
@@ -9,9 +10,7 @@ export class AuthContextService {
         private readonly sessionRepository: ISessionRepository,
     ) {}
 
-    async resolve(
-        sessionId: string,
-    ): Promise<{ sessionId: string; userId: string }> {
+    async resolve(sessionId: string): Promise<AuthContext> {
         const session = await this.sessionRepository.findById(sessionId);
 
         if (!session) throw new Error('Unauthorazed');
