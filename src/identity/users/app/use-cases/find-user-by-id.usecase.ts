@@ -10,6 +10,7 @@ type FindUserByIdInput = {
 type FindUserByIdOutput = {
     id: string;
     name: string;
+    username: string;
 };
 
 @Injectable()
@@ -27,6 +28,6 @@ export class FindUserByIdUseCase implements IBaseUseCase<
 
         if (!user) throw new Error('User not found');
 
-        return { id: user.id, name: user.name };
+        return { id: user.id, name: user.name, username: user.username.value };
     }
 }

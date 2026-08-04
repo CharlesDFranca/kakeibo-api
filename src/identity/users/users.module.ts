@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { UsersController } from './users.controller';
 import { CreateUserUseCase } from './app/use-cases/create-user.usecase';
 import { FindUserByIdUseCase } from './app/use-cases/find-user-by-id.usecase';
 import { USER_TOKENS } from './user.token';
@@ -8,6 +7,7 @@ import { TypeormUserMapper } from './infra/mappers/typeorm-user.mapper';
 import { SharedModule } from '@/shared/shared.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from '@/shared/infra/database/entities/typeorm-user.entity';
+import { UsersController } from './presentation/controllers/user.controller';
 
 @Module({
     imports: [SharedModule, TypeOrmModule.forFeature([UserEntity])],
