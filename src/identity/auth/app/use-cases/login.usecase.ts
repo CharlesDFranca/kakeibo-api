@@ -57,7 +57,7 @@ export class LoginUseCase implements IBaseUseCase<LoginInput, LoginOutput> {
         );
 
         await this.sessionRepository.save(session);
-
+        
         return { sessionId: session.id };
     }
 }

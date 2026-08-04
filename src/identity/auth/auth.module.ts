@@ -6,8 +6,10 @@ import { SharedModule } from '@/shared/shared.module';
 import { LoginUseCase } from './app/use-cases/login.usecase';
 import { UsersModule } from '../users/users.module';
 import { LogoutUseCase } from './app/use-cases/logout.usecase';
+import { AuthController } from './presentation/controllers/auth.controller';
 
 @Module({
+    controllers: [AuthController],
     imports: [SharedModule, UsersModule],
     providers: [
         LoginUseCase,
