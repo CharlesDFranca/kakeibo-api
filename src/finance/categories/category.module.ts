@@ -8,24 +8,26 @@ import { ListCategoriesUseCase } from './app/use-cases/list-categories.usecase';
 import { FINANCE_TOKENS } from '../finance.tokens';
 import { TypeOrmCategoryRepository } from './infra/repositories/typeorm-category.repositoy';
 import { TypeOrmCategoryMapper } from './infra/mappers/typeorm-category.mapper';
-import { AuthModule } from '@/identity/auth/auth.module';
 
 @Module({
-    controllers: [CategoryController],
     imports: [
         SharedModule,
-        AuthModule,
         TypeOrmModule.forFeature([CategoryEntity]),
     ],
+    controllers: [CategoryController],
     providers: [
         CreateCategoryUseCase,
         ListCategoriesUseCase,
+
         {
             provide: FINANCE_TOKENS.CATEGORY_REPOSITORY,
             useClass: TypeOrmCategoryRepository,
         },
+
         TypeOrmCategoryMapper,
     ],
-    exports: [FINANCE_TOKENS.CATEGORY_REPOSITORY],
+    exports: [
+        FINANCE_TOKENS.CATEGORY_REPOSITORY,
+    ],
 })
 export class CategoryModule {}

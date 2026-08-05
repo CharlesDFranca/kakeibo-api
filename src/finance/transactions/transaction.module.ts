@@ -10,31 +10,35 @@ import { TypeOrmTransactionRepository } from './infra/repositories/typeorm-trans
 import { TypeOrmTransactionMapper } from './infra/mappers/typeorm-transaction.mapper';
 import { WalletModule } from '../wallets/wallet.module';
 import { CategoryModule } from '../categories/category.module';
-import { AuthModule } from '@/identity/auth/auth.module';
 import { TypeOrmTransactionQuery } from './infra/queries/typeorm-transaction.query';
 
 @Module({
-    controllers: [TransactionController],
     imports: [
         SharedModule,
-        AuthModule,
         WalletModule,
         CategoryModule,
         TypeOrmModule.forFeature([TransactionEntity]),
     ],
+    controllers: [TransactionController],
     providers: [
         CreateTransactionUseCase,
         ListTransactionsUseCase,
+
         {
             provide: FINANCE_TOKENS.TRANSACTION_REPOSITORY,
             useClass: TypeOrmTransactionRepository,
         },
+
         {
             provide: FINANCE_TOKENS.TRANSACTION_QUERY,
             useClass: TypeOrmTransactionQuery,
         },
+
         TypeOrmTransactionMapper,
     ],
-    exports: [FINANCE_TOKENS.TRANSACTION_REPOSITORY],
+    exports: [
+        FINANCE_TOKENS.TRANSACTION_REPOSITORY,
+        FINANCE_TOKENS.TRANSACTION_QUERY,
+    ],
 })
 export class TransactionModule {}

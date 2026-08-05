@@ -4,5 +4,6 @@ import { AuthModule } from './auth/auth.module';
 
 @Module({
     imports: [UsersModule, AuthModule],
+    exports: [UsersModule, AuthModule],
 })
 export class IdentityModule {}

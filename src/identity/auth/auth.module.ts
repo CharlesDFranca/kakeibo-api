@@ -11,21 +11,28 @@ import { AuthContextService } from './app/services/auth-context.service';
 import { SessionGuard } from './presentation/guards/session.guards';
 
 @Module({
+    imports: [
+        SharedModule,
+        UsersModule,
+    ],
     controllers: [AuthController],
-    imports: [SharedModule, UsersModule],
     providers: [
         SessionGuard,
-
         AuthContextService,
 
         LoginUseCase,
         LogoutUseCase,
+
         {
             provide: AUTH_TOKENS.SESSION_REPOSITORY,
             useClass: RedisSessionRepository,
         },
+
         RedisSessionMapper,
     ],
-    exports: [AuthContextService, SessionGuard],
+    exports: [
+        SessionGuard,
+        AuthContextService,
+    ],
 })
 export class AuthModule {}

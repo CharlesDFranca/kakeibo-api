@@ -8,26 +8,19 @@ import { SharedModule } from '@/shared/shared.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from '@/shared/infra/database/entities/typeorm-user.entity';
 import { UsersController } from './presentation/controllers/user.controller';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
     imports: [SharedModule, TypeOrmModule.forFeature([UserEntity])],
     controllers: [UsersController],
     providers: [
-        //#region usecases
         CreateUserUseCase,
         FindUserByIdUseCase,
-        //#endregion
-
-        //#region repositories
         {
             provide: USER_TOKENS.USER_REPOSITORY,
             useClass: TypeormUserRepository,
         },
-        //#endregion
-
-        //#region mappers
         TypeormUserMapper,
-        //#endregion
     ],
     exports: [USER_TOKENS.USER_REPOSITORY],
 })
