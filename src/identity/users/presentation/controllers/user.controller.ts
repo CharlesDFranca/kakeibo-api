@@ -10,6 +10,7 @@ import {
 import { CreateUserUseCase } from '../../app/use-cases/create-user.usecase';
 import { FindUserByIdUseCase } from '../../app/use-cases/find-user-by-id.usecase';
 import { Public } from '@/identity/auth/presentation/decorators/public-route.decorator';
+import { CurrentUserId } from '@/identity/auth/presentation/decorators/current-user-id.decorator';
 
 type CreateUserDTO = {
     name: string;
@@ -37,9 +38,9 @@ export class UsersController {
         });
     }
 
-    @Get(':id')
+    @Get('me')
     @HttpCode(HttpStatus.OK)
-    async findById(@Param('id') id: string): Promise<{ id: string }> {
+    async findById(@CurrentUserId() id: string): Promise<{ id: string }> {
         return this.findUserByIdUseCase.execute({ id });
     }
 }
