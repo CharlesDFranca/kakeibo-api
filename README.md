@@ -6,6 +6,12 @@ O projeto permite o gerenciamento de carteiras, categorias e transações financ
 
 ---
 
+## Status
+
+Este projeto encontra-se em desenvolvimento contínuo. O objetivo é evoluir a API progressivamente, incorporando novas funcionalidades, testes automatizados, documentação, CI/CD e melhorias arquiteturais.
+
+---
+
 ## Tecnologias
 
 - Node.js
