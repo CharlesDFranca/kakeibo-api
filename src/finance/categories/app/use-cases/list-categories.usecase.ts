@@ -3,7 +3,7 @@ import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
 import { Inject, Injectable } from '@nestjs/common';
 import type { ICategoryRepository } from '../../domain/repositories/category-repository.interface';
 
-type ListCategoriesInput = void;
+type ListCategoriesInput = { userId: string };
 
 type ListCategoriesOutput = {
     id: string;
@@ -20,8 +20,10 @@ export class ListCategoriesUseCase implements IBaseUseCase<
         private readonly categoryRepository: ICategoryRepository,
     ) {}
 
-    async execute(input: void): Promise<ListCategoriesOutput> {
-        const categories = await this.categoryRepository.findAll();
+    async execute(input: ListCategoriesInput): Promise<ListCategoriesOutput> {
+        const categories = await this.categoryRepository.findAllForUser(
+            input.userId,
+        );
 
         return categories.map((c) => {
             return { id: c.id, name: c.name };

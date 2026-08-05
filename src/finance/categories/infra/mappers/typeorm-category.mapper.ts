@@ -7,19 +7,20 @@ export class TypeOrmCategoryMapper {
     public toDomain(raw: CategoryEntity): Category {
         return new Category(
             raw.id,
-            { name: raw.name },
+            { name: raw.name, userId: raw.userId },
             raw.createdAt,
             raw.updatedAt,
         );
     }
 
-    public toPersistence(wallet: Category): CategoryEntity {
+    public toPersistence(category: Category): CategoryEntity {
         const categoryEntity = new CategoryEntity();
 
-        categoryEntity.id = wallet.id;
-        categoryEntity.name = wallet.name;
-        categoryEntity.createdAt = wallet.createdAt;
-        categoryEntity.updatedAt = wallet.updatedAt;
+        categoryEntity.id = category.id;
+        categoryEntity.name = category.name;
+        categoryEntity.userId = category.userId;
+        categoryEntity.createdAt = category.createdAt;
+        categoryEntity.updatedAt = category.updatedAt;
 
         return categoryEntity;
     }

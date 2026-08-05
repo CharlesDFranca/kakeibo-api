@@ -11,6 +11,7 @@ import { TransactionType } from '../../domain/value-objects/transaction-type.vo'
 import type { ICategoryRepository } from '@/finance/categories/domain/repositories/category-repository.interface';
 
 type CreateTransactionInput = {
+    userId: string;
     description: string;
     amount: number;
     type: ETransactionType;
@@ -42,13 +43,17 @@ export class CreateTransactionUseCase implements IBaseUseCase<
     async execute(
         input: CreateTransactionInput,
     ): Promise<CreateTransactionOutput> {
-        const category = await this.categoryRepository.findById(
+        const category = await this.categoryRepository.findUserCategoryById(
+            input.userId,
             input.categoryId,
         );
 
         if (!category) throw new Error('Category not found');
 
-        const wallet = await this.walletRepository.findById(input.walletId);
+        const wallet = await this.walletRepository.findUserWalletById(
+            input.userId,
+            input.walletId,
+        );
 
         if (!wallet) throw new Error('Wallet not found');
 

@@ -10,11 +10,13 @@ import { TypeOrmTransactionRepository } from './infra/repositories/typeorm-trans
 import { TypeOrmTransactionMapper } from './infra/mappers/typeorm-transaction.mapper';
 import { WalletModule } from '../wallets/wallet.module';
 import { CategoryModule } from '../categories/category.module';
+import { AuthModule } from '@/identity/auth/auth.module';
 
 @Module({
     controllers: [TransactionController],
     imports: [
         SharedModule,
+        AuthModule,
         WalletModule,
         CategoryModule,
         TypeOrmModule.forFeature([TransactionEntity]),

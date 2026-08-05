@@ -8,6 +8,7 @@ import type { ICategoryRepository } from '../../domain/repositories/category-rep
 
 type CreateCategoryInput = {
     name: string;
+    userId: string;
 };
 
 type CreateCategoryOutput = {
@@ -27,9 +28,11 @@ export class CreateCategoryUseCase implements IBaseUseCase<
     ) {}
 
     async execute(input: CreateCategoryInput): Promise<CreateCategoryOutput> {
-        const existsByName = await this.categoryRepository.findByName(
-            input.name,
-        );
+        const existsByName =
+            await this.categoryRepository.findUserCategoryByName(
+                input.userId,
+                input.name,
+            );
 
         if (existsByName) throw new Error('Category already exists');
 
@@ -39,6 +42,7 @@ export class CreateCategoryUseCase implements IBaseUseCase<
             this.idGenerator.generate(),
             {
                 name: input.name,
+                userId: input.userId,
             },
             now,
             now,

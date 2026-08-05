@@ -24,13 +24,27 @@ export class TypeOrmCategoryRepository implements ICategoryRepository {
         await this.categoryRepository.save(entity);
     }
 
-    async delete(id: string): Promise<void> {
-        await this.categoryRepository.delete(id);
+    async findAllForUser(userId: string): Promise<Category[]> {
+        const categories = await this.categoryRepository.find({
+            where: { userId },
+        });
+
+        return categories.map((c) => this.mapper.toDomain(c));
     }
 
-    async findById(id: string): Promise<Category | null> {
+    async findUserCategoryByName(
+        userId: string,
+        name: string,
+    ): Promise<Category | null> {
+        throw new Error('Method not implemented.');
+    }
+
+    async findUserCategoryById(
+        userId: string,
+        categoryId: string,
+    ): Promise<Category | null> {
         const category = await this.categoryRepository.findOne({
-            where: { id },
+            where: { userId, id: categoryId },
         });
 
         if (!category) return null;
@@ -38,19 +52,10 @@ export class TypeOrmCategoryRepository implements ICategoryRepository {
         return this.mapper.toDomain(category);
     }
 
-    async findAll(): Promise<Category[]> {
-        const categories = await this.categoryRepository.find();
-
-        return categories.map((category) => this.mapper.toDomain(category));
-    }
-
-    async findByName(name: string): Promise<Category | null> {
-        const category = await this.categoryRepository.findOne({
-            where: { name },
-        });
-
-        if (!category) return null;
-
-        return this.mapper.toDomain(category);
+    async deleteUserCategory(
+        userId: string,
+        categoryId: string,
+    ): Promise<void> {
+        await this.categoryRepository.delete({ userId, id: categoryId });
     }
 }

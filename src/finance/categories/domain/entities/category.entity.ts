@@ -2,6 +2,7 @@ import { BaseEntity } from '@/shared/domain/entities/base-entity.entity';
 
 type CategoryProps = {
     name: string;
+    userId: string;
 };
 
 export class Category extends BaseEntity<CategoryProps> {
@@ -20,6 +21,10 @@ export class Category extends BaseEntity<CategoryProps> {
 
     public get name(): string {
         return this.props.name;
+    }
+
+    public get userId(): string {
+        return this.props.userId;
     }
 
     public rename(name: string) {

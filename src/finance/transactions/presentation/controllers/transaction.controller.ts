@@ -1,6 +1,8 @@
 import { CreateTransactionUseCase } from '@/finance/transactions/app/use-cases/create-transaction.usecase';
 import { ListTransactionsUseCase } from '@/finance/transactions/app/use-cases/list-transactions.usecase';
 import { ETransactionType } from '@/finance/transactions/domain/enums/transaction-type.enum';
+import { CurrentUserId } from '@/identity/auth/presentation/decorators/current-user-id.decorator';
+import { SessionGuard } from '@/identity/auth/presentation/guards/session.guards';
 import { parseEnum } from '@/shared/utils/parse-enum';
 import {
     Body,
@@ -9,6 +11,7 @@ import {
     HttpCode,
     HttpStatus,
     Post,
+    UseGuards,
 } from '@nestjs/common';
 
 type CreateTransactionDTO = {
@@ -29,8 +32,13 @@ export class TransactionController {
 
     @Post()
     @HttpCode(HttpStatus.CREATED)
-    async create(@Body() body: CreateTransactionDTO) {
+    @UseGuards(SessionGuard)
+    async create(
+        @CurrentUserId() userId: string,
+        @Body() body: CreateTransactionDTO,
+    ) {
         const transaction = await this.createTransactionUseCase.execute({
+            userId,
             amount: body.amount,
             description: body.description,
             date: new Date(body.date),
@@ -44,7 +52,8 @@ export class TransactionController {
 
     @Get()
     @HttpCode(HttpStatus.OK)
-    async list() {
-        return this.listTransactionsUseCase.execute();
+    @UseGuards(SessionGuard)
+    async list(@CurrentUserId() userId: string) {
+        return this.listTransactionsUseCase.execute({ userId });
     }
 }
