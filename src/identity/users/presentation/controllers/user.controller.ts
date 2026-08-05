@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { CreateUserUseCase } from '../../app/use-cases/create-user.usecase';
 import { FindUserByIdUseCase } from '../../app/use-cases/find-user-by-id.usecase';
+import { Public } from '@/identity/auth/presentation/decorators/public-route.decorator';
 
 type CreateUserDTO = {
     name: string;
@@ -24,6 +25,7 @@ export class UsersController {
         private readonly findUserByIdUseCase: FindUserByIdUseCase,
     ) {}
 
+    @Public()
     @Post()
     @HttpCode(HttpStatus.CREATED)
     async create(@Body() body: CreateUserDTO): Promise<{ id: string }> {

@@ -14,6 +14,7 @@ import { LogoutUseCase } from '../../app/use-cases/logout.usecase';
 import type { Response } from 'express';
 import { SessionGuard } from '../guards/session.guards';
 import { CurrentSessionId } from '../decorators/current-session-id.decorator';
+import { Public } from '../decorators/public-route.decorator';
 
 type LoginDTO = {
     email: string;
@@ -27,6 +28,7 @@ export class AuthController {
         private readonly logoutUseCase: LogoutUseCase,
     ) {}
 
+    @Public()
     @Post('login')
     @HttpCode(HttpStatus.OK)
     async login(
@@ -45,7 +47,6 @@ export class AuthController {
     }
 
     @Post('logout')
-    @UseGuards(SessionGuard)
     @HttpCode(HttpStatus.NO_CONTENT)
     async logout(
         @CurrentSessionId() sessionId: string,

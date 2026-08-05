@@ -4,9 +4,10 @@ import { AppService } from './app.service';
 import { FinanceModule } from './finance/finance.module';
 import { SharedModule } from './shared/shared.module';
 import { IdentityModule } from './identity/identity.module';
+import { SecurityModule } from './identity/auth/security.module';
 
 @Module({
-    imports: [SharedModule, FinanceModule, IdentityModule],
+    imports: [SharedModule, SecurityModule, FinanceModule, IdentityModule],
     controllers: [AppController],
     providers: [AppService],
 })
