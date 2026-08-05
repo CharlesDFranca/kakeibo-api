@@ -2,6 +2,7 @@ import { TransactionEntity } from '@/shared/infra/database/entities/typeorm-tran
 import { Injectable } from '@nestjs/common';
 import { TransactionType } from '../../domain/value-objects/transaction-type.vo';
 import { Transaction } from '../../domain/entities/transaction.entity';
+import { TransactionDetails } from '../../app/types/transaction-details.type';
 
 @Injectable()
 export class TypeOrmTransactionMapper {
@@ -35,5 +36,23 @@ export class TypeOrmTransactionMapper {
         transactionEntity.updatedAt = transaction.updatedAt;
 
         return transactionEntity;
+    }
+
+    public toDetails(transaction: TransactionEntity): TransactionDetails {
+        return {
+            id: transaction.id,
+            amount: transaction.amount,
+            description: transaction.description,
+            type: transaction.type,
+            date: transaction.date,
+            category: {
+                id: transaction.categoryId,
+                name: transaction.category.name,
+            },
+            wallet: {
+                id: transaction.walletId,
+                name: transaction.wallet.name,
+            },
+        };
     }
 }

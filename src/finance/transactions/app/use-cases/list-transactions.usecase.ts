@@ -1,27 +1,12 @@
-import type { ITransactionRepository } from '@/finance/transactions/domain/repositories/transaction-repository.interface';
 import { FINANCE_TOKENS } from '@/finance/finance.tokens';
 import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
 import { Inject, Injectable } from '@nestjs/common';
+import type { ITransactionQuery } from '../queries/transaction-query.interface';
+import { TransactionDetails } from '../types/transaction-details.type';
 
 type ListTransactionsInput = { userId: string };
 
-type ListTransactionsOutput = {
-    id: string;
-    description: string;
-    amount: number;
-    date: Date;
-    type: string;
-
-    category: {
-        id: string;
-        name: string;
-    };
-
-    wallet: {
-        id: string;
-        name: string;
-    };
-}[];
+type ListTransactionsOutput = TransactionDetails[];
 
 @Injectable()
 export class ListTransactionsUseCase implements IBaseUseCase<
@@ -29,32 +14,13 @@ export class ListTransactionsUseCase implements IBaseUseCase<
     ListTransactionsOutput
 > {
     constructor(
-        @Inject(FINANCE_TOKENS.TRANSACTION_REPOSITORY)
-        private readonly transactionRepository: ITransactionRepository,
+        @Inject(FINANCE_TOKENS.TRANSACTION_QUERY)
+        private readonly transactionQuery: ITransactionQuery,
     ) {}
 
     async execute(
         input: ListTransactionsInput,
     ): Promise<ListTransactionsOutput> {
-        const transactions =
-            await this.transactionRepository.findAllWithCategoryAndWallet();
-
-        return transactions.map((t) => ({
-            id: t.id,
-            description: t.description,
-            amount: t.amount,
-            date: t.date,
-            type: t.type.value(),
-
-            category: {
-                id: t.category.id,
-                name: t.category.name,
-            },
-
-            wallet: {
-                id: t.wallet.id,
-                name: t.wallet.name,
-            },
-        }));
+        return this.transactionQuery.findAllForUser(input.userId);
     }
 }

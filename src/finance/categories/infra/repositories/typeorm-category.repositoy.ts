@@ -36,7 +36,13 @@ export class TypeOrmCategoryRepository implements ICategoryRepository {
         userId: string,
         name: string,
     ): Promise<Category | null> {
-        throw new Error('Method not implemented.');
+        const category = await this.categoryRepository.findOne({
+            where: { userId, id: name },
+        });
+
+        if (!category) return null;
+
+        return this.mapper.toDomain(category);
     }
 
     async findUserCategoryById(

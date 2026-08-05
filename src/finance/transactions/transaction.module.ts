@@ -11,6 +11,7 @@ import { TypeOrmTransactionMapper } from './infra/mappers/typeorm-transaction.ma
 import { WalletModule } from '../wallets/wallet.module';
 import { CategoryModule } from '../categories/category.module';
 import { AuthModule } from '@/identity/auth/auth.module';
+import { TypeOrmTransactionQuery } from './infra/queries/typeorm-transaction.query';
 
 @Module({
     controllers: [TransactionController],
@@ -27,6 +28,10 @@ import { AuthModule } from '@/identity/auth/auth.module';
         {
             provide: FINANCE_TOKENS.TRANSACTION_REPOSITORY,
             useClass: TypeOrmTransactionRepository,
+        },
+        {
+            provide: FINANCE_TOKENS.TRANSACTION_QUERY,
+            useClass: TypeOrmTransactionQuery,
         },
         TypeOrmTransactionMapper,
     ],
