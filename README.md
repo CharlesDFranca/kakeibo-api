@@ -4,6 +4,8 @@ API para gerenciamento financeiro pessoal desenvolvida com **NestJS**, seguindo 
 
 O projeto permite o gerenciamento de carteiras, categorias e transações financeiras, utilizando autenticação baseada em sessões armazenadas no Redis.
 
+API em construção
+
 ---
 
 ## Status
