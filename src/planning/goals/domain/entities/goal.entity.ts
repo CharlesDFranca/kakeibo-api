@@ -2,12 +2,13 @@ import { BaseEntity } from '@/shared/domain/entities/base-entity.entity';
 
 import { GoalStatus } from '../value-objects/goal-status.vo';
 import { GoalDeadline } from '../value-objects/goal-deadline';
+import { Money } from '@/shared/domain/value-objects/Money';
 
 type GoalProps = {
     userId: string;
     name: string;
-    targetAmount: number;
-    currentAmount: number;
+    targetAmount: Money;
+    currentAmount: Money;
     deadline?: GoalDeadline | undefined;
     status: GoalStatus;
 };
@@ -21,10 +22,7 @@ export class Goal extends BaseEntity<GoalProps> {
     ) {
         super(id, props, createdAt, updatedAt);
 
-        this.ensureNonNegativeAmount(props.targetAmount);
-        this.ensureNonNegativeAmount(props.currentAmount);
-
-        if (props.currentAmount > props.targetAmount) {
+        if (props.currentAmount.isGreaterThan(props.targetAmount)) {
             throw new Error(
                 'Current amount cannot be greater than target amount',
             );
@@ -39,11 +37,11 @@ export class Goal extends BaseEntity<GoalProps> {
         return this.props.userId;
     }
 
-    public get targetAmount(): number {
+    public get targetAmount(): Money {
         return this.props.targetAmount;
     }
 
-    public get currentAmount(): number {
+    public get currentAmount(): Money {
         return this.props.currentAmount;
     }
 
@@ -75,17 +73,20 @@ export class Goal extends BaseEntity<GoalProps> {
         return this.status.isExpired();
     }
 
-    public necessaryToComplete(): number {
-        return Math.max(0, this.targetAmount - this.currentAmount);
+    public necessaryToComplete(): Money {
+        if (this.currentAmount.isGreaterThanOrEqual(this.targetAmount)) {
+            return Money.zero();
+        }
+
+        return this.targetAmount.subtract(this.currentAmount);
     }
 
-    public deposit(amount: number): void {
+    public deposit(amount: Money): void {
         this.ensureInProgress();
-        this.ensurePositiveAmount(amount);
 
-        this.props.currentAmount += amount;
+        this.props.currentAmount = this.currentAmount.add(amount);
 
-        if (this.currentAmount >= this.targetAmount) {
+        if (this.currentAmount.isGreaterThanOrEqual(this.targetAmount)) {
             this.complete();
             return;
         }
@@ -93,17 +94,11 @@ export class Goal extends BaseEntity<GoalProps> {
         this.touch();
     }
 
-    public withdraw(amount: number): void {
+    public withdraw(amount: Money): void {
         this.ensureInProgress();
-        this.ensurePositiveAmount(amount);
 
-        if (amount > this.currentAmount) {
-            throw new Error(
-                'Cannot withdraw an amount greater than the current amount',
-            );
-        }
+        this.props.currentAmount = this.currentAmount.subtract(amount);
 
-        this.props.currentAmount -= amount;
         this.touch();
     }
 
@@ -114,7 +109,7 @@ export class Goal extends BaseEntity<GoalProps> {
 
         this.ensureCanTransitionToCompleted();
 
-        if (this.currentAmount < this.targetAmount) {
+        if (this.currentAmount.isLessThan(this.targetAmount)) {
             throw new Error('Target amount not reached');
         }
 
@@ -193,13 +188,12 @@ export class Goal extends BaseEntity<GoalProps> {
         this.touch();
     }
 
-    public updateTarget(amount: number): void {
+    public updateTarget(amount: Money): void {
         this.ensureInProgress();
-        this.ensureNonNegativeAmount(amount);
 
         this.props.targetAmount = amount;
 
-        if (this.currentAmount >= this.targetAmount) {
+        if (this.currentAmount.isGreaterThanOrEqual(this.targetAmount)) {
             this.complete();
             return;
         }
@@ -235,18 +229,6 @@ export class Goal extends BaseEntity<GoalProps> {
 
         if (this.isPaused()) {
             throw new Error('Cannot complete a paused goal');
-        }
-    }
-
-    private ensurePositiveAmount(amount: number): void {
-        if (amount <= 0) {
-            throw new Error('Amount must be greater than zero');
-        }
-    }
-
-    private ensureNonNegativeAmount(amount: number): void {
-        if (amount < 0) {
-            throw new Error('Amount cannot be negative');
         }
     }
 
