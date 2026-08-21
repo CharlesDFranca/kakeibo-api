@@ -1,10 +1,11 @@
 import { BaseEntity } from '@/shared/domain/entities/base-entity.entity';
 import { TransactionType } from '../value-objects/transaction-type.vo';
 import { ETransactionStatus } from '../enums/transaction-status.enum';
+import { Money } from '@/shared/domain/value-objects/Money';
 
 type TransactionProps = {
     description: string;
-    amount: number;
+    amount: Money;
     type: TransactionType;
     date: Date;
     walletId: string;
@@ -20,10 +21,6 @@ export class Transaction extends BaseEntity<TransactionProps> {
     ) {
         super(id, props, createdAt, updatedAt);
 
-        if (props.amount <= 0) {
-            throw new Error('Invalid amount');
-        }
-
         if (!this.isValidDate(props.date)) {
             throw new Error('Invalid transation date');
         }
@@ -34,7 +31,7 @@ export class Transaction extends BaseEntity<TransactionProps> {
         return this.props.description;
     }
 
-    public get amount(): number {
+    public get amount(): Money {
         return this.props.amount;
     }
 

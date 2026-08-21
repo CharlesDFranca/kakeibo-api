@@ -3,7 +3,7 @@ import { ETransactionType } from '../../domain/enums/transaction-type.enum';
 export type TransactionDetails = {
     id: string;
     description: string;
-    amount: number;
+    amount: string;
     date: Date;
     type: ETransactionType;
 

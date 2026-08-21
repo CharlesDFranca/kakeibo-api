@@ -19,7 +19,7 @@ export class Money {
         return new Money(new Decimal(amount));
     }
 
-    public static fromCents(cents: bigint): Money {
+    public static fromCents(cents: number): Money {
         return new Money(new Decimal(cents.toString()).dividedBy(100));
     }
 

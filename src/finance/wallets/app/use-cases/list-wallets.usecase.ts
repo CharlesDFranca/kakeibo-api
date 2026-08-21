@@ -10,7 +10,7 @@ type ListWalletsInput = {
 type ListWalletsOutput = {
     id: string;
     name: string;
-    balance: number;
+    balance: string;
 }[];
 
 @Injectable()
@@ -31,7 +31,7 @@ export class ListWalletsUseCase implements IBaseUseCase<
         return wallets.map((w) => ({
             id: w.id,
             name: w.name,
-            balance: w.balance,
+            balance: w.balance.amount,
         }));
     }
 }

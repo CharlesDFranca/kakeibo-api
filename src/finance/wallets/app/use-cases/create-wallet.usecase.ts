@@ -5,6 +5,7 @@ import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
 import type { IIDGenerator } from '@/shared/app/contracts/id-generator.contract';
 import { SHARED_TOKENS } from '@/shared/shared.token';
 import { Inject, Injectable } from '@nestjs/common';
+import { Money } from '@/shared/domain/value-objects/Money';
 
 type CreateWalletInput = {
     name: string;
@@ -43,7 +44,7 @@ export class CreateWalletUseCase implements IBaseUseCase<
             this.idGenerator.generate(),
             {
                 name: input.name,
-                balance: 0,
+                balance: Money.zero(),
                 userId: input.userId,
             },
             now,
