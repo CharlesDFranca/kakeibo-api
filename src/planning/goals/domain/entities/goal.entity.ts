@@ -1,8 +1,8 @@
 import { BaseEntity } from '@/shared/domain/entities/base-entity.entity';
-
-import { GoalStatus } from '../value-objects/goal-status.vo';
-import { GoalDeadline } from '../value-objects/goal-deadline';
 import { Money } from '@/shared/domain/value-objects/Money';
+
+import { GoalDeadline } from '../value-objects/goal-deadline';
+import { GoalStatus } from '../value-objects/goal-status.vo';
 
 type GoalProps = {
     userId: string;
@@ -22,11 +22,7 @@ export class Goal extends BaseEntity<GoalProps> {
     ) {
         super(id, props, createdAt, updatedAt);
 
-        if (props.currentAmount.isGreaterThan(props.targetAmount)) {
-            throw new Error(
-                'Current amount cannot be greater than target amount',
-            );
-        }
+        this.ensureValidAmounts();
     }
 
     public get name(): string {
@@ -74,14 +70,12 @@ export class Goal extends BaseEntity<GoalProps> {
     }
 
     public necessaryToComplete(): Money {
-        if (this.currentAmount.isGreaterThanOrEqual(this.targetAmount)) {
-            return Money.zero();
-        }
-
-        return this.targetAmount.subtract(this.currentAmount);
+        return this.currentAmount.isGreaterThanOrEqual(this.targetAmount)
+            ? Money.zero()
+            : this.targetAmount.subtract(this.currentAmount);
     }
 
-    public deposit(amount: Money): void {
+    public contribute(amount: Money): void {
         this.ensureInProgress();
 
         this.props.currentAmount = this.currentAmount.add(amount);
@@ -107,7 +101,7 @@ export class Goal extends BaseEntity<GoalProps> {
             return;
         }
 
-        this.ensureCanTransitionToCompleted();
+        this.ensureCanComplete();
 
         if (this.currentAmount.isLessThan(this.targetAmount)) {
             throw new Error('Target amount not reached');
@@ -201,7 +195,7 @@ export class Goal extends BaseEntity<GoalProps> {
         this.touch();
     }
 
-    public updateDeadline(deadline: GoalDeadline | undefined): void {
+    public updateDeadline(deadline?: GoalDeadline): void {
         this.ensureInProgress();
 
         if (deadline?.isExpired()) {
@@ -212,13 +206,21 @@ export class Goal extends BaseEntity<GoalProps> {
         this.touch();
     }
 
+    private ensureValidAmounts(): void {
+        if (this.currentAmount.isGreaterThan(this.targetAmount)) {
+            throw new Error(
+                'Current amount cannot be greater than target amount',
+            );
+        }
+    }
+
     private ensureInProgress(): void {
         if (!this.isInProgress()) {
             throw new Error('Goal must be in progress');
         }
     }
 
-    private ensureCanTransitionToCompleted(): void {
+    private ensureCanComplete(): void {
         if (this.isExpired()) {
             throw new Error('Cannot complete an expired goal');
         }
