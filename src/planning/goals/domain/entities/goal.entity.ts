@@ -3,6 +3,7 @@ import { Money } from '@/shared/domain/value-objects/Money';
 
 import { GoalDeadline } from '../value-objects/goal-deadline';
 import { GoalStatus } from '../value-objects/goal-status.vo';
+import { EGoalStatus } from '../enums/goal-status.enum';
 
 type GoalProps = {
     userId: string;
@@ -107,7 +108,7 @@ export class Goal extends BaseEntity<GoalProps> {
             throw new Error('Target amount not reached');
         }
 
-        this.props.status = new GoalStatus('COMPLETED');
+        this.props.status = new GoalStatus(EGoalStatus.COMPLETED);
         this.removeDeadline();
         this.touch();
     }
@@ -121,7 +122,7 @@ export class Goal extends BaseEntity<GoalProps> {
             throw new Error('Cannot cancel a completed goal');
         }
 
-        this.props.status = new GoalStatus('CANCELLED');
+        this.props.status = new GoalStatus(EGoalStatus.CANCELLED);
         this.removeDeadline();
         this.touch();
     }
@@ -133,7 +134,7 @@ export class Goal extends BaseEntity<GoalProps> {
 
         this.ensureInProgress();
 
-        this.props.status = new GoalStatus('PAUSED');
+        this.props.status = new GoalStatus(EGoalStatus.PAUSED);
         this.touch();
     }
 
@@ -142,7 +143,7 @@ export class Goal extends BaseEntity<GoalProps> {
             return;
         }
 
-        this.props.status = new GoalStatus('IN PROGRESS');
+        this.props.status = new GoalStatus(EGoalStatus.IN_PROGRESS);
         this.touch();
     }
 
@@ -152,7 +153,7 @@ export class Goal extends BaseEntity<GoalProps> {
         }
 
         this.props.deadline = deadline;
-        this.props.status = new GoalStatus('IN PROGRESS');
+        this.props.status = new GoalStatus(EGoalStatus.IN_PROGRESS);
 
         this.touch();
     }
@@ -178,7 +179,7 @@ export class Goal extends BaseEntity<GoalProps> {
             throw new Error('Expiration date not reached');
         }
 
-        this.props.status = new GoalStatus('EXPIRED');
+        this.props.status = new GoalStatus(EGoalStatus.EXPIRED);
         this.touch();
     }
 

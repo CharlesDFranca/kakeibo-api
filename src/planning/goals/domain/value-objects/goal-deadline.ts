@@ -1,7 +1,8 @@
 export class GoalDeadline {
-    private constructor(private readonly value: Date) {}
-
-    static create(deadline: Date, createdAt: Date): GoalDeadline {
+    constructor(
+        private readonly deadline: Date,
+        private readonly createdAt: Date,
+    ) {
         const minimumDeadline = createdAt.getTime() + 24 * 60 * 60 * 1000;
 
         if (deadline.getTime() < minimumDeadline) {
@@ -9,15 +10,13 @@ export class GoalDeadline {
                 'A deadline must have at least one day until it is due',
             );
         }
-
-        return new GoalDeadline(deadline);
     }
 
-    get date(): Date {
-        return this.value;
+    public get date(): Date {
+        return this.deadline;
     }
 
-    isExpired(now = new Date()): boolean {
-        return this.value.getTime() <= now.getTime();
+    public isExpired(now = new Date()): boolean {
+        return this.deadline.getTime() <= now.getTime();
     }
 }

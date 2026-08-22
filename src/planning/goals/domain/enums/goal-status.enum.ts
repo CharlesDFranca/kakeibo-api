@@ -1,0 +1,7 @@
+export enum EGoalStatus {
+    COMPLETED = 'COMPLETED',
+    CANCELLED = 'CANCELLED',
+    PAUSED = 'PAUSED',
+    IN_PROGRESS = 'IN PROGRESS',
+    EXPIRED = 'EXPIRED',
+}

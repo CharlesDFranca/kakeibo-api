@@ -1,9 +1,9 @@
-type Status = 'COMPLETED' | 'CANCELLED' | 'PAUSED' | 'IN PROGRESS' | 'EXPIRED';
+import { EGoalStatus } from '../enums/goal-status.enum';
 
 export class GoalStatus {
-    constructor(private readonly _value: Status) {}
+    constructor(private readonly _value: EGoalStatus) {}
 
-    get value(): Status {
+    get value(): EGoalStatus {
         return this._value;
     }
 
