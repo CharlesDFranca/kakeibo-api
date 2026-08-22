@@ -21,6 +21,10 @@ export class Goal extends BaseEntity<GoalProps> {
         createdAt: Date,
         updatedAt: Date,
     ) {
+        if (props.name.trim() === '') {
+            throw new Error('Name cannot be empty');
+        }
+
         super(id, props, createdAt, updatedAt);
 
         this.ensureValidAmounts();
@@ -74,6 +78,17 @@ export class Goal extends BaseEntity<GoalProps> {
         return this.currentAmount.isGreaterThanOrEqual(this.targetAmount)
             ? Money.zero()
             : this.targetAmount.subtract(this.currentAmount);
+    }
+
+    public rename(name: string): void {
+        if (name.trim() === '') {
+            throw new Error('Name cannot be empty');
+        }
+
+        if (this.name === name) return;
+
+        this.props.name = name;
+        this.touch();
     }
 
     public contribute(amount: Money): void {
