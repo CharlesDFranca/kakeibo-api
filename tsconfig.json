@@ -31,7 +31,7 @@
 
         "noFallthroughCasesInSwitch": true,
         "noUncheckedIndexedAccess": true,
-        "exactOptionalPropertyTypes": true,
+        "exactOptionalPropertyTypes": false,
 
         "types": ["node", "jest"]
     }

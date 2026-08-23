@@ -11,7 +11,6 @@ export class TypeOrmWalletRepository implements IWalletRepository {
     constructor(
         @InjectRepository(WalletEntity)
         private readonly walletRepository: Repository<WalletEntity>,
-        private readonly mapper: TypeOrmWalletMapper,
     ) {}
 
     async create(wallet: Wallet): Promise<void> {

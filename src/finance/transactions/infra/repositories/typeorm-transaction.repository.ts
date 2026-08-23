@@ -16,7 +16,6 @@ export class TypeOrmTransactionRepository implements ITransactionRepository {
     constructor(
         @InjectRepository(TransactionEntity)
         private readonly transactionRepository: Repository<TransactionEntity>,
-        private readonly mapper: TypeOrmTransactionMapper,
     ) {}
 
     async create(transaction: Transaction): Promise<void> {
