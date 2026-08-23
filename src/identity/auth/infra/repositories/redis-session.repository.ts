@@ -6,15 +6,12 @@ import { RedisSessionMapper } from '../mappers/redis-session.mapper';
 
 @Injectable()
 export class RedisSessionRepository implements ISessionRepository {
-    constructor(
-        private readonly redis: RedisService,
-        private readonly mapper: RedisSessionMapper,
-    ) {}
+    constructor(private readonly redis: RedisService) {}
 
     async save(session: Session): Promise<void> {
         await this.redis.set(
             `session:${session.id}`,
-            this.mapper.toPersistence(session),
+            RedisSessionMapper.toPersistence(session),
             session.expiresAt.getTime() - Date.now(),
         );
     }
@@ -28,7 +25,7 @@ export class RedisSessionRepository implements ISessionRepository {
 
         if (!session) return null;
 
-        return this.mapper.toDomain(session)
+        return RedisSessionMapper.toDomain(session);
     }
 
     async delete(id: string): Promise<void> {

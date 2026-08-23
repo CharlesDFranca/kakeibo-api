@@ -5,7 +5,9 @@ import { Money } from '@/shared/domain/value-objects/Money';
 
 @Injectable()
 export class TypeOrmContributionMapper {
-    public toDomain(raw: ContributionEntity): Contribution {
+    private constructor() {}
+
+    public static toDomain(raw: ContributionEntity): Contribution {
         return new Contribution(
             raw.id,
             {
@@ -18,7 +20,9 @@ export class TypeOrmContributionMapper {
         );
     }
 
-    public toPersistence(contribution: Contribution): ContributionEntity {
+    public static toPersistence(
+        contribution: Contribution,
+    ): ContributionEntity {
         const entity = new ContributionEntity();
 
         entity.id = contribution.id;

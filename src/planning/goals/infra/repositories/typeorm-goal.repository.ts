@@ -11,23 +11,22 @@ export class TypeOrmGoalRepository implements IGoalRepository {
     constructor(
         @InjectRepository(GoalEntity)
         private readonly goalRepository: Repository<GoalEntity>,
-        private readonly mapper: TypeOrmGoalMapper,
     ) {}
 
     async create(goal: Goal): Promise<void> {
-        const entity = this.mapper.toPersistence(goal);
+        const entity = TypeOrmGoalMapper.toPersistence(goal);
         await this.goalRepository.save(entity);
     }
 
     async update(goal: Goal): Promise<void> {
-        const entity = this.mapper.toPersistence(goal);
+        const entity = TypeOrmGoalMapper.toPersistence(goal);
         await this.goalRepository.save(entity);
     }
 
     async findAllForUser(userId: string): Promise<Goal[]> {
         const goals = await this.goalRepository.find({ where: { userId } });
 
-        return goals.map((goal) => this.mapper.toDomain(goal));
+        return goals.map((goal) => TypeOrmGoalMapper.toDomain(goal));
     }
 
     async findUserGoalByName(
@@ -40,7 +39,7 @@ export class TypeOrmGoalRepository implements IGoalRepository {
 
         if (!goal) return null;
 
-        return this.mapper.toDomain(goal);
+        return TypeOrmGoalMapper.toDomain(goal);
     }
 
     async findUserGoalById(
@@ -53,7 +52,7 @@ export class TypeOrmGoalRepository implements IGoalRepository {
 
         if (!goal) return null;
 
-        return this.mapper.toDomain(goal);
+        return TypeOrmGoalMapper.toDomain(goal);
     }
 
     async deleteUserGoal(userId: string, goalId: string): Promise<void> {

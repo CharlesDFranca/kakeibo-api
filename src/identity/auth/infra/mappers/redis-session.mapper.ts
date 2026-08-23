@@ -3,7 +3,9 @@ import { Session } from '../../domain/entities/session.entity';
 
 @Injectable()
 export class RedisSessionMapper {
-    public toPersistence(session: Session) {
+    private constructor() {}
+
+    public static toPersistence(session: Session) {
         return {
             id: session.id,
             userId: session.userId,
@@ -11,7 +13,7 @@ export class RedisSessionMapper {
         };
     }
 
-    public toDomain(data: {
+    public static toDomain(data: {
         id: string;
         userId: string;
         expiresAt: string;

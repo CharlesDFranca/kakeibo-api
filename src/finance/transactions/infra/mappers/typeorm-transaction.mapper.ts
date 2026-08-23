@@ -7,7 +7,9 @@ import { Money } from '@/shared/domain/value-objects/Money';
 
 @Injectable()
 export class TypeOrmTransactionMapper {
-    public toDomain(raw: TransactionEntity): Transaction {
+    private constructor() {}
+
+    public static toDomain(raw: TransactionEntity): Transaction {
         return new Transaction(
             raw.id,
             {
@@ -23,7 +25,7 @@ export class TypeOrmTransactionMapper {
         );
     }
 
-    public toPersistence(transaction: Transaction): TransactionEntity {
+    public static toPersistence(transaction: Transaction): TransactionEntity {
         const transactionEntity = new TransactionEntity();
 
         transactionEntity.id = transaction.id;
@@ -39,7 +41,7 @@ export class TypeOrmTransactionMapper {
         return transactionEntity;
     }
 
-    public toDetails(transaction: TransactionEntity): TransactionDetails {
+    public static toDetails(transaction: TransactionEntity): TransactionDetails {
         return {
             id: transaction.id,
             amount: Money.fromCents(transaction.amount).amount,

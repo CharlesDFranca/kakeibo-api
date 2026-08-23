@@ -7,7 +7,9 @@ import { GoalDeadline } from '../../domain/value-objects/goal-deadline';
 
 @Injectable()
 export class TypeOrmGoalMapper {
-    public toDomain(raw: GoalEntity): Goal {
+    private constructor() {}
+
+    public static toDomain(raw: GoalEntity): Goal {
         return new Goal(
             raw.id,
             {
@@ -25,7 +27,7 @@ export class TypeOrmGoalMapper {
         );
     }
 
-    public toPersistence(goal: Goal): GoalEntity {
+    public static toPersistence(goal: Goal): GoalEntity {
         const entity = new GoalEntity();
 
         entity.id = goal.id;

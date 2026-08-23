@@ -11,7 +11,6 @@ export class TypeOrmTransactionQuery implements ITransactionQuery {
     constructor(
         @InjectRepository(TransactionEntity)
         private readonly transactionRepository: Repository<TransactionEntity>,
-        private readonly mapper: TypeOrmTransactionMapper,
     ) {}
 
     async findAllForUser(userId: string): Promise<TransactionDetails[]> {
@@ -23,6 +22,6 @@ export class TypeOrmTransactionQuery implements ITransactionQuery {
             relations: { category: true, wallet: true },
         });
 
-        return transactions.map((t) => this.mapper.toDetails(t));
+        return transactions.map((t) => TypeOrmTransactionMapper.toDetails(t));
     }
 }

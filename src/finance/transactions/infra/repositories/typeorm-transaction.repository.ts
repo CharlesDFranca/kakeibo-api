@@ -20,13 +20,13 @@ export class TypeOrmTransactionRepository implements ITransactionRepository {
     ) {}
 
     async create(transaction: Transaction): Promise<void> {
-        const entity = this.mapper.toPersistence(transaction);
+        const entity = TypeOrmTransactionMapper.toPersistence(transaction);
 
         await this.transactionRepository.save(entity);
     }
 
     async update(transaction: Transaction): Promise<void> {
-        const entity = this.mapper.toPersistence(transaction);
+        const entity = TypeOrmTransactionMapper.toPersistence(transaction);
 
         await this.transactionRepository.save(entity);
     }
@@ -42,14 +42,14 @@ export class TypeOrmTransactionRepository implements ITransactionRepository {
 
         if (!transaction) return null;
 
-        return this.mapper.toDomain(transaction);
+        return TypeOrmTransactionMapper.toDomain(transaction);
     }
 
     async findAll(): Promise<Transaction[]> {
         const transactions = await this.transactionRepository.find();
 
         return transactions.map((transaction) =>
-            this.mapper.toDomain(transaction),
+            TypeOrmTransactionMapper.toDomain(transaction),
         );
     }
 
@@ -59,7 +59,7 @@ export class TypeOrmTransactionRepository implements ITransactionRepository {
         });
 
         return transactions.map((transaction) =>
-            this.mapper.toDomain(transaction),
+            TypeOrmTransactionMapper.toDomain(transaction),
         );
     }
 

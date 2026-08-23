@@ -5,7 +5,9 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class TypeOrmWalletMapper {
-    public toDomain(raw: WalletEntity): Wallet {
+    private constructor() {}
+
+    public static toDomain(raw: WalletEntity): Wallet {
         return new Wallet(
             raw.id,
             {
@@ -18,7 +20,7 @@ export class TypeOrmWalletMapper {
         );
     }
 
-    public toPersistence(wallet: Wallet): WalletEntity {
+    public static toPersistence(wallet: Wallet): WalletEntity {
         const walletEntity = new WalletEntity();
 
         walletEntity.id = wallet.id;

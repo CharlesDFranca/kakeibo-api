@@ -11,11 +11,10 @@ export class TypeOrmContributionRepository implements IContributionRepository {
     constructor(
         @InjectRepository(ContributionEntity)
         private readonly contributionRepository: Repository<ContributionEntity>,
-        private readonly mapper: TypeOrmContributionMapper,
     ) {}
 
     async create(contribution: Contribution): Promise<void> {
-        const entity = this.mapper.toPersistence(contribution);
+        const entity = TypeOrmContributionMapper.toPersistence(contribution);
 
         await this.contributionRepository.save(entity);
     }
@@ -29,7 +28,7 @@ export class TypeOrmContributionRepository implements IContributionRepository {
             return null;
         }
 
-        return this.mapper.toDomain(contribution);
+        return TypeOrmContributionMapper.toDomain(contribution);
     }
 
     async findByGoalId(goalId: string): Promise<Contribution[]> {
@@ -38,7 +37,7 @@ export class TypeOrmContributionRepository implements IContributionRepository {
         });
 
         return contributions.map((contribution) =>
-            this.mapper.toDomain(contribution),
+            TypeOrmContributionMapper.toDomain(contribution),
         );
     }
 
