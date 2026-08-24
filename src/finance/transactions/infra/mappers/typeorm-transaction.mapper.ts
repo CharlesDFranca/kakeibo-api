@@ -1,11 +1,9 @@
 import { TransactionEntity } from '@/shared/infra/database/entities/typeorm-transaction.entity';
-import { Injectable } from '@nestjs/common';
 import { TransactionType } from '../../domain/value-objects/transaction-type.vo';
 import { Transaction } from '../../domain/entities/transaction.entity';
 import { TransactionDetails } from '../../app/types/transaction-details.type';
 import { Money } from '@/shared/domain/value-objects/Money';
 
-@Injectable()
 export class TypeOrmTransactionMapper {
     private constructor() {}
 
@@ -41,7 +39,9 @@ export class TypeOrmTransactionMapper {
         return transactionEntity;
     }
 
-    public static toDetails(transaction: TransactionEntity): TransactionDetails {
+    public static toDetails(
+        transaction: TransactionEntity,
+    ): TransactionDetails {
         return {
             id: transaction.id,
             amount: Money.fromCents(transaction.amount).amount,

@@ -1,11 +1,9 @@
-import { Injectable } from '@nestjs/common';
 import { GoalEntity } from '@/shared/infra/database/entities/typeorm-goal.entity';
 import { Goal } from '../../domain/entities/goal.entity';
 import { Money } from '@/shared/domain/value-objects/Money';
 import { GoalStatus } from '../../domain/value-objects/goal-status.vo';
 import { GoalDeadline } from '../../domain/value-objects/goal-deadline';
 
-@Injectable()
 export class TypeOrmGoalMapper {
     private constructor() {}
 

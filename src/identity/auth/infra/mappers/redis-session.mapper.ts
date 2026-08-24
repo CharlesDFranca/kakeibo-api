@@ -1,7 +1,5 @@
-import { Injectable } from '@nestjs/common';
 import { Session } from '../../domain/entities/session.entity';
 
-@Injectable()
 export class RedisSessionMapper {
     private constructor() {}
 

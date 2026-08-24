@@ -1,9 +1,7 @@
-import { Injectable } from '@nestjs/common';
 import { ContributionEntity } from '@/shared/infra/database/entities/typeorm-contribution.entity';
 import { Contribution } from '../../domain/entities/contribution.entity';
 import { Money } from '@/shared/domain/value-objects/Money';
 
-@Injectable()
 export class TypeOrmContributionMapper {
     private constructor() {}
 

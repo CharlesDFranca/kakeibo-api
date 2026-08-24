@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmWalletMapper } from './infra/mappers/typeorm-wallet.mapper';
 import { CreateWalletUseCase } from './app/use-cases/create-wallet.usecase';
 import { TypeOrmWalletRepository } from './infra/repositories/typeorm-wallet.repository';
 import { FINANCE_TOKENS } from '../finance.tokens';
@@ -24,8 +23,6 @@ import { WalletEntity } from '@/shared/infra/database/entities/typeorm-wallet.en
             provide: FINANCE_TOKENS.WALLET_REPOSITORY,
             useClass: TypeOrmWalletRepository,
         },
-
-        TypeOrmWalletMapper,
     ],
     exports: [FINANCE_TOKENS.WALLET_REPOSITORY],
 })

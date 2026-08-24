@@ -7,13 +7,9 @@ import { CreateCategoryUseCase } from './app/use-cases/create-category.usecase';
 import { ListCategoriesUseCase } from './app/use-cases/list-categories.usecase';
 import { FINANCE_TOKENS } from '../finance.tokens';
 import { TypeOrmCategoryRepository } from './infra/repositories/typeorm-category.repositoy';
-import { TypeOrmCategoryMapper } from './infra/mappers/typeorm-category.mapper';
 
 @Module({
-    imports: [
-        SharedModule,
-        TypeOrmModule.forFeature([CategoryEntity]),
-    ],
+    imports: [SharedModule, TypeOrmModule.forFeature([CategoryEntity])],
     controllers: [CategoryController],
     providers: [
         CreateCategoryUseCase,
@@ -23,11 +19,7 @@ import { TypeOrmCategoryMapper } from './infra/mappers/typeorm-category.mapper';
             provide: FINANCE_TOKENS.CATEGORY_REPOSITORY,
             useClass: TypeOrmCategoryRepository,
         },
-
-        TypeOrmCategoryMapper,
     ],
-    exports: [
-        FINANCE_TOKENS.CATEGORY_REPOSITORY,
-    ],
+    exports: [FINANCE_TOKENS.CATEGORY_REPOSITORY],
 })
 export class CategoryModule {}

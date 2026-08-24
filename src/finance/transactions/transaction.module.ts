@@ -7,7 +7,6 @@ import { CreateTransactionUseCase } from './app/use-cases/create-transaction.use
 import { ListTransactionsUseCase } from './app/use-cases/list-transactions.usecase';
 import { FINANCE_TOKENS } from '../finance.tokens';
 import { TypeOrmTransactionRepository } from './infra/repositories/typeorm-transaction.repository';
-import { TypeOrmTransactionMapper } from './infra/mappers/typeorm-transaction.mapper';
 import { WalletModule } from '../wallets/wallet.module';
 import { CategoryModule } from '../categories/category.module';
 import { TypeOrmTransactionQuery } from './infra/queries/typeorm-transaction.query';
@@ -33,8 +32,6 @@ import { TypeOrmTransactionQuery } from './infra/queries/typeorm-transaction.que
             provide: FINANCE_TOKENS.TRANSACTION_QUERY,
             useClass: TypeOrmTransactionQuery,
         },
-
-        TypeOrmTransactionMapper,
     ],
     exports: [
         FINANCE_TOKENS.TRANSACTION_REPOSITORY,

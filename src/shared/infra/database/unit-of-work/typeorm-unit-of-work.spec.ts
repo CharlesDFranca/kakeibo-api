@@ -8,7 +8,6 @@ import { TransactionEntity } from '../entities/typeorm-transaction.entity';
 import { WalletEntity } from '../entities/typeorm-wallet.entity';
 import { TypeOrmUnitOfWork } from './typeorm-unit-of-work';
 
-
 describe('TypeOrmUnitOfWork', () => {
     let sut: TypeOrmUnitOfWork;
 
@@ -29,22 +28,21 @@ describe('TypeOrmUnitOfWork', () => {
             getRepository: jest.fn(),
         } as unknown as jest.Mocked<EntityManager>;
 
-        entityManager.getRepository
-            .mockImplementation((entity) => {
-                if (entity === WalletEntity) {
-                    return walletRepository as never;
-                }
+        entityManager.getRepository.mockImplementation((entity) => {
+            if (entity === WalletEntity) {
+                return walletRepository as never;
+            }
 
-                if (entity === GoalEntity) {
-                    return goalRepository as never;
-                }
+            if (entity === GoalEntity) {
+                return goalRepository as never;
+            }
 
-                if (entity === TransactionEntity) {
-                    return transactionRepository as never;
-                }
+            if (entity === TransactionEntity) {
+                return transactionRepository as never;
+            }
 
-                throw new Error('Unexpected entity');
-            });
+            throw new Error('Unexpected entity');
+        });
 
         queryRunner = {
             connect: jest.fn().mockResolvedValue(undefined),
@@ -157,9 +155,7 @@ describe('TypeOrmUnitOfWork', () => {
         });
 
         it('should not execute commit when the work throws', async () => {
-            const work = jest
-                .fn()
-                .mockRejectedValue(new Error('Failure'));
+            const work = jest.fn().mockRejectedValue(new Error('Failure'));
 
             await expect(sut.transaction(work)).rejects.toThrow();
 
@@ -211,9 +207,7 @@ describe('TypeOrmUnitOfWork', () => {
                 repository = sut.getTransactionRepository();
             });
 
-            expect(repository).toBeInstanceOf(
-                TypeOrmTransactionRepository,
-            );
+            expect(repository).toBeInstanceOf(TypeOrmTransactionRepository);
 
             expect(entityManager.getRepository).toHaveBeenCalledWith(
                 TransactionEntity,
@@ -332,9 +326,9 @@ describe('TypeOrmUnitOfWork', () => {
 
             queryRunner.commitTransaction.mockRejectedValue(error);
 
-            await expect(
-                sut.transaction(async () => {}),
-            ).rejects.toThrow(error);
+            await expect(sut.transaction(async () => {})).rejects.toThrow(
+                error,
+            );
 
             expect(queryRunner.rollbackTransaction).toHaveBeenCalledTimes(1);
 
@@ -345,9 +339,7 @@ describe('TypeOrmUnitOfWork', () => {
             const workError = new Error('Work failed');
             const rollbackError = new Error('Rollback failed');
 
-            queryRunner.rollbackTransaction.mockRejectedValue(
-                rollbackError,
-            );
+            queryRunner.rollbackTransaction.mockRejectedValue(rollbackError);
 
             await expect(
                 sut.transaction(async () => {
@@ -391,10 +383,7 @@ describe('TypeOrmUnitOfWork', () => {
 
             await sut.transaction(async () => {});
 
-            expect(calls).toEqual([
-                'connect',
-                'startTransaction',
-            ]);
+            expect(calls).toEqual(['connect', 'startTransaction']);
         });
     });
 
@@ -424,9 +413,9 @@ describe('TypeOrmUnitOfWork', () => {
 
             queryRunner.connect.mockRejectedValue(error);
 
-            await expect(
-                sut.transaction(async () => {}),
-            ).rejects.toThrow(error);
+            await expect(sut.transaction(async () => {})).rejects.toThrow(
+                error,
+            );
 
             expect(queryRunner.startTransaction).not.toHaveBeenCalled();
 
@@ -442,9 +431,9 @@ describe('TypeOrmUnitOfWork', () => {
 
             queryRunner.startTransaction.mockRejectedValue(error);
 
-            await expect(
-                sut.transaction(async () => {}),
-            ).rejects.toThrow(error);
+            await expect(sut.transaction(async () => {})).rejects.toThrow(
+                error,
+            );
 
             expect(queryRunner.connect).toHaveBeenCalledTimes(1);
 

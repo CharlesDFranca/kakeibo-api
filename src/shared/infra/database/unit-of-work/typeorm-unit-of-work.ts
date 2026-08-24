@@ -14,6 +14,9 @@ import { DataSource, EntityManager, QueryRunner } from 'typeorm';
 import { GoalEntity } from '../entities/typeorm-goal.entity';
 import { TransactionEntity } from '../entities/typeorm-transaction.entity';
 import { WalletEntity } from '../entities/typeorm-wallet.entity';
+import { IContributionRepository } from '@/planning/goals/domain/repositories/contribution-repository.interface';
+import { ContributionEntity } from '../entities/typeorm-contribution.entity';
+import { TypeOrmContributionRepository } from '@/planning/goals/infra/repositories/typeorm-contribution.repository';
 
 @Injectable({ scope: Scope.REQUEST })
 export class TypeOrmUnitOfWork implements IUnitOfWork {
@@ -23,6 +26,7 @@ export class TypeOrmUnitOfWork implements IUnitOfWork {
     private walletRepository?: IWalletRepository;
     private goalRepository?: IGoalRepository;
     private transactionRepository?: ITransactionRepository;
+    private contributionRepository?: IContributionRepository;
 
     constructor(private readonly dataSource: DataSource) {}
 
@@ -75,6 +79,19 @@ export class TypeOrmUnitOfWork implements IUnitOfWork {
         }
 
         return this.transactionRepository;
+    }
+
+    public getContributionRepository(): IContributionRepository {
+        if (!this.contributionRepository) {
+            const repository =
+                this.getManager().getRepository(ContributionEntity);
+
+            this.contributionRepository = new TypeOrmContributionRepository(
+                repository,
+            );
+        }
+
+        return this.contributionRepository;
     }
 
     private async begin(): Promise<void> {

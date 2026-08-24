@@ -1,8 +1,6 @@
 import { Category } from '@/finance/categories/domain/entities/category.entity';
 import { CategoryEntity } from '@/shared/infra/database/entities/typeorm-category.entity';
-import { Injectable } from '@nestjs/common';
 
-@Injectable()
 export class TypeOrmCategoryMapper {
     private constructor() {}
 
