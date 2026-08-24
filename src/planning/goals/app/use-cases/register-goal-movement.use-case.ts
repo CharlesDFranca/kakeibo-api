@@ -57,15 +57,16 @@ export class RegisterGoalMovementUseCase implements IBaseUseCase<
 
             if (!goal) throw new NotFoundException('Goal not found');
 
+            const movementType = new GoalMovementType(input.movementType);
             const amount = Money.fromAmount(input.amount);
 
-            goal.contribute(amount);
-
-            await goalRepository.update(goal);
-
-            wallet.withdraw(amount);
-
-            await walletRepository.update(wallet);
+            if (movementType.isDeposit()) {
+                wallet.withdraw(amount);
+                goal.contribute(amount);
+            } else {
+                goal.withdraw(amount);
+                wallet.deposit(amount);
+            }
 
             const now = new Date();
 
@@ -75,7 +76,7 @@ export class RegisterGoalMovementUseCase implements IBaseUseCase<
                     amount: amount,
                     goalId: goal.id,
                     walletId: wallet.id,
-                    type: new GoalMovementType(input.movementType),
+                    type: movementType,
                 },
                 now,
                 now,
@@ -89,12 +90,14 @@ export class RegisterGoalMovementUseCase implements IBaseUseCase<
                     walletId: wallet.id,
                     date: now,
                     description: 'Goal movement',
-                    type: new TransactionType(ETransactionType.EXPENSE),
+                    type: new TransactionType(ETransactionType.TRANSFER),
                 },
                 now,
                 now,
             );
 
+            await goalRepository.update(goal);
+            await walletRepository.update(wallet);
             await transactionRepository.create(transaction);
             await goalMovementRepository.create(goalMovement);
 

@@ -38,4 +38,12 @@ export class GoalMovement extends BaseEntity<GoalMovementProps> {
     public get type(): GoalMovementType {
         return this.props.type;
     }
+
+    public isDeposit(): boolean {
+        return this.type.isDeposit();
+    }
+
+    public isWithdraw(): boolean {
+        return this.type.isWithdraw();
+    }
 }
