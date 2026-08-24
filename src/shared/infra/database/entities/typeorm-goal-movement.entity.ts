@@ -10,11 +10,18 @@ import {
 
 import { GoalEntity } from './typeorm-goal.entity';
 import { WalletEntity } from './typeorm-wallet.entity';
+import { EGoalMovementType } from '@/planning/goals/domain/enums/goal-movement-type.enum';
 
-@Entity('contributions')
-export class ContributionEntity {
+@Entity('goal_movements')
+export class GoalMovementEntity {
     @PrimaryColumn()
     id!: string;
+
+    @Column({ type: 'int' })
+    amount!: number;
+
+    @Column({ type: 'enum', enum: EGoalMovementType })
+    type!: EGoalMovementType;
 
     @Column()
     walletId!: string;
@@ -29,9 +36,6 @@ export class ContributionEntity {
     @ManyToOne(() => GoalEntity, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'goalId' })
     goal!: GoalEntity;
-
-    @Column({ type: 'int' })
-    amount!: number;
 
     @CreateDateColumn({ type: 'timestamptz' })
     createdAt!: Date;

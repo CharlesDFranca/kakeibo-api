@@ -14,9 +14,9 @@ import { DataSource, EntityManager, QueryRunner } from 'typeorm';
 import { GoalEntity } from '../entities/typeorm-goal.entity';
 import { TransactionEntity } from '../entities/typeorm-transaction.entity';
 import { WalletEntity } from '../entities/typeorm-wallet.entity';
-import { IContributionRepository } from '@/planning/goals/domain/repositories/contribution-repository.interface';
-import { ContributionEntity } from '../entities/typeorm-contribution.entity';
-import { TypeOrmContributionRepository } from '@/planning/goals/infra/repositories/typeorm-contribution.repository';
+import { IGoalMovementRepository } from '@/planning/goals/domain/repositories/goal-movement-repository.interface';
+import { GoalMovementEntity } from '../entities/typeorm-goal-movement.entity';
+import { TypeOrmGoalMovementRepository } from '@/planning/goals/infra/repositories/typeorm-goal-movement.repository';
 
 @Injectable({ scope: Scope.REQUEST })
 export class TypeOrmUnitOfWork implements IUnitOfWork {
@@ -26,7 +26,7 @@ export class TypeOrmUnitOfWork implements IUnitOfWork {
     private walletRepository?: IWalletRepository;
     private goalRepository?: IGoalRepository;
     private transactionRepository?: ITransactionRepository;
-    private contributionRepository?: IContributionRepository;
+    private goalMovementRepository?: IGoalMovementRepository;
 
     constructor(private readonly dataSource: DataSource) {}
 
@@ -81,17 +81,17 @@ export class TypeOrmUnitOfWork implements IUnitOfWork {
         return this.transactionRepository;
     }
 
-    public getContributionRepository(): IContributionRepository {
-        if (!this.contributionRepository) {
+    public getGoalMovementRepository(): IGoalMovementRepository {
+        if (!this.goalMovementRepository) {
             const repository =
-                this.getManager().getRepository(ContributionEntity);
+                this.getManager().getRepository(GoalMovementEntity);
 
-            this.contributionRepository = new TypeOrmContributionRepository(
+            this.goalMovementRepository = new TypeOrmGoalMovementRepository(
                 repository,
             );
         }
 
-        return this.contributionRepository;
+        return this.goalMovementRepository;
     }
 
     private async begin(): Promise<void> {

@@ -1,23 +1,25 @@
 import { BaseEntity } from '@/shared/domain/entities/base-entity.entity';
 import { Money } from '@/shared/domain/value-objects/Money';
+import { GoalMovementType } from '../value-objects/goal-movement-type.vo';
 
-type ContributionProps = {
+type GoalMovementProps = {
     walletId: string;
     goalId: string;
+    type: GoalMovementType;
     amount: Money;
 };
 
-export class Contribution extends BaseEntity<ContributionProps> {
+export class GoalMovement extends BaseEntity<GoalMovementProps> {
     constructor(
         id: string,
-        props: ContributionProps,
+        props: GoalMovementProps,
         createdAt: Date,
         updatedAt: Date,
     ) {
         super(id, props, createdAt, updatedAt);
 
         if (props.amount.isZero()) {
-            throw new Error('Contribution amount must be greater than zero');
+            throw new Error('GoalMovement amount must be greater than zero');
         }
     }
 
@@ -31,5 +33,9 @@ export class Contribution extends BaseEntity<ContributionProps> {
 
     public get amount(): Money {
         return this.props.amount;
+    }
+
+    public get type(): GoalMovementType {
+        return this.props.type;
     }
 }

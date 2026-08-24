@@ -6,7 +6,7 @@ import { CategoryEntity } from './entities/typeorm-category.entity';
 import { TransactionEntity } from './entities/typeorm-transaction.entity';
 import { UserEntity } from './entities/typeorm-user.entity';
 import { GoalEntity } from './entities/typeorm-goal.entity';
-import { ContributionEntity } from './entities/typeorm-contribution.entity';
+import { GoalMovementEntity } from './entities/typeorm-goal-movement.entity';
 
 export const dataSourceOptions: DataSourceOptions = {
     type: 'postgres',
@@ -17,7 +17,7 @@ export const dataSourceOptions: DataSourceOptions = {
         TransactionEntity,
         UserEntity,
         GoalEntity,
-        ContributionEntity,
+        GoalMovementEntity,
     ],
     migrations: [],
     synchronize: true,
