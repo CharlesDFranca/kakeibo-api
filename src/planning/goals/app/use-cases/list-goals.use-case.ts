@@ -1,6 +1,7 @@
 import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
 import type { IGoalRepository } from '../../domain/repositories/goal-repository.interface';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
+import { PLANNING_TOKENS } from '@/planning/planning.tokens';
 
 type ListGoalsInput = {
     userId: string;
@@ -21,7 +22,10 @@ export class ListGoalsUseCase implements IBaseUseCase<
     ListGoalsInput,
     ListGoalsOutput
 > {
-    constructor(private readonly goalRepository: IGoalRepository) {}
+    constructor(
+        @Inject(PLANNING_TOKENS.GOAL_REPOSITORY)
+        private readonly goalRepository: IGoalRepository,
+    ) {}
 
     async execute(input: ListGoalsInput): Promise<ListGoalsOutput> {
         const goals = await this.goalRepository.findAllForUser(input.userId);
