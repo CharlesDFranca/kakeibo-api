@@ -14,6 +14,7 @@ import { CancelGoalUseCase } from '../app/use-cases/cancel-goal.use-case';
 import { ListGoalsUseCase } from '../app/use-cases/list-goals.use-case';
 import { RenameGoalUseCase } from '../app/use-cases/rename-goal.use-case';
 import { CurrentUserId } from '@/identity/auth/presentation/decorators/current-user-id.decorator';
+import { FindGoalByIdUseCase } from '../app/use-cases/find-goal-by-id.use-case';
 
 type CreateGoalInput = {
     userId: string;
@@ -29,6 +30,7 @@ export class GoalsController {
         private readonly cancelGoalUseCase: CancelGoalUseCase,
         private readonly listGoalsUsecase: ListGoalsUseCase,
         private readonly renameGoalUseCase: RenameGoalUseCase,
+        private readonly findGoalByIdUseCase: FindGoalByIdUseCase,
     ) {}
 
     @Post()
@@ -48,6 +50,12 @@ export class GoalsController {
     @HttpCode(HttpStatus.NO_CONTENT)
     async delete(@CurrentUserId() userId: string, @Param('id') id: string) {
         return this.cancelGoalUseCase.execute({ userId, goalId: id });
+    }
+
+    @Get(':id')
+    @HttpCode(HttpStatus.OK)
+    async findById(@CurrentUserId() userId: string, @Param('id') id: string) {
+        return this.findGoalByIdUseCase.execute({ userId, goalId: id });
     }
 
     @Get()
