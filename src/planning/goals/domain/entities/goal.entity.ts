@@ -62,10 +62,6 @@ export class Goal extends BaseEntity<GoalProps> {
         return this.status.isInProgress();
     }
 
-    public isPaused(): boolean {
-        return this.status.isPaused();
-    }
-
     public isExpired(): boolean {
         return this.status.isExpired();
     }
@@ -128,22 +124,7 @@ export class Goal extends BaseEntity<GoalProps> {
         this.touch();
     }
 
-    public pause(): void {
-        if (this.isPaused()) {
-            return;
-        }
-
-        this.ensureInProgress();
-
-        this.props.status = new GoalStatus(EGoalStatus.PAUSED);
-        this.touch();
-    }
-
     public activate(): void {
-        if (!this.isPaused()) {
-            return;
-        }
-
         this.props.status = new GoalStatus(EGoalStatus.IN_PROGRESS);
         this.touch();
     }
@@ -221,10 +202,6 @@ export class Goal extends BaseEntity<GoalProps> {
     private ensureCanComplete(): void {
         if (this.isExpired()) {
             throw new Error('Cannot complete an expired goal');
-        }
-
-        if (this.isPaused()) {
-            throw new Error('Cannot complete a paused goal');
         }
     }
 

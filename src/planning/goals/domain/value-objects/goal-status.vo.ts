@@ -15,10 +15,6 @@ export class GoalStatus {
         return this.value === 'IN PROGRESS';
     }
 
-    public isPaused(): boolean {
-        return this.value === 'PAUSED';
-    }
-
     public isExpired(): boolean {
         return this.value === 'EXPIRED';
     }
