@@ -11,10 +11,6 @@ export class GoalStatus {
         return this.value === 'COMPLETED';
     }
 
-    public isCancelled(): boolean {
-        return this.value === 'CANCELLED';
-    }
-
     public isInProgress(): boolean {
         return this.value === 'IN PROGRESS';
     }

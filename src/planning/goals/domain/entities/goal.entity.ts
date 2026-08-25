@@ -58,10 +58,6 @@ export class Goal extends BaseEntity<GoalProps> {
         return this.status.isCompleted();
     }
 
-    public isCancelled(): boolean {
-        return this.status.isCancelled();
-    }
-
     public isInProgress(): boolean {
         return this.status.isInProgress();
     }
@@ -132,20 +128,6 @@ export class Goal extends BaseEntity<GoalProps> {
         this.touch();
     }
 
-    public cancel(): void {
-        if (this.isCancelled()) {
-            return;
-        }
-
-        if (this.isCompleted()) {
-            throw new Error('Cannot cancel a completed goal');
-        }
-
-        this.props.status = new GoalStatus(EGoalStatus.CANCELLED);
-        this.removeDeadline();
-        this.touch();
-    }
-
     public pause(): void {
         if (this.isPaused()) {
             return;
@@ -184,10 +166,6 @@ export class Goal extends BaseEntity<GoalProps> {
 
         if (this.isCompleted()) {
             throw new Error('Cannot expire a completed goal');
-        }
-
-        if (this.isCancelled()) {
-            throw new Error('Cannot expire a cancelled goal');
         }
 
         if (!this.deadline) {
@@ -243,10 +221,6 @@ export class Goal extends BaseEntity<GoalProps> {
     private ensureCanComplete(): void {
         if (this.isExpired()) {
             throw new Error('Cannot complete an expired goal');
-        }
-
-        if (this.isCancelled()) {
-            throw new Error('Cannot complete a cancelled goal');
         }
 
         if (this.isPaused()) {
