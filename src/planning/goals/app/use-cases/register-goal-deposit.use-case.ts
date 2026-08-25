@@ -11,21 +11,20 @@ import { SHARED_TOKENS } from '@/shared/shared.token';
 import { GoalMovementType } from '../../domain/value-objects/goal-movement-type.vo';
 import { EGoalMovementType } from '../../domain/enums/goal-movement-type.enum';
 
-type RegisterGoalMovementInput = {
+type RegisterGoalDepositInput = {
     userId: string;
     walletId: string;
     goalId: string;
     categoryId: string;
-    movementType: EGoalMovementType;
     amount: string;
 };
 
-type RegisterGoalMovementOutput = { id: string };
+type RegisterGoalDepositOutput = { id: string };
 
 @Injectable()
-export class RegisterGoalMovementUseCase implements IBaseUseCase<
-    RegisterGoalMovementInput,
-    RegisterGoalMovementOutput
+export class RegisterGoalDepositUseCase implements IBaseUseCase<
+    RegisterGoalDepositInput,
+    RegisterGoalDepositOutput
 > {
     constructor(
         @Inject(SHARED_TOKENS.UNIT_OF_WORK)
@@ -35,8 +34,8 @@ export class RegisterGoalMovementUseCase implements IBaseUseCase<
     ) {}
 
     async execute(
-        input: RegisterGoalMovementInput,
-    ): Promise<RegisterGoalMovementOutput> {
+        input: RegisterGoalDepositInput,
+    ): Promise<RegisterGoalDepositOutput> {
         return this.uow.transaction(async () => {
             const goalRepository = this.uow.getGoalRepository();
             const walletRepository = this.uow.getWalletRepository();
@@ -57,16 +56,10 @@ export class RegisterGoalMovementUseCase implements IBaseUseCase<
 
             if (!goal) throw new NotFoundException('Goal not found');
 
-            const movementType = new GoalMovementType(input.movementType);
             const amount = Money.fromAmount(input.amount);
 
-            if (movementType.isDeposit()) {
-                wallet.withdraw(amount);
-                goal.contribute(amount);
-            } else {
-                goal.withdraw(amount);
-                wallet.deposit(amount);
-            }
+            wallet.withdraw(amount);
+            goal.contribute(amount);
 
             const now = new Date();
 
@@ -76,7 +69,7 @@ export class RegisterGoalMovementUseCase implements IBaseUseCase<
                     amount: amount,
                     goalId: goal.id,
                     walletId: wallet.id,
-                    type: movementType,
+                    type: new GoalMovementType(EGoalMovementType.DEPOSIT),
                 },
                 now,
                 now,
@@ -89,7 +82,7 @@ export class RegisterGoalMovementUseCase implements IBaseUseCase<
                     categoryId: input.categoryId,
                     walletId: wallet.id,
                     date: now,
-                    description: 'Goal movement',
+                    description: 'Goal deposit',
                     type: new TransactionType(ETransactionType.TRANSFER),
                 },
                 now,

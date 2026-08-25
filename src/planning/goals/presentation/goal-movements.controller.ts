@@ -1,5 +1,4 @@
 import { CurrentUserId } from '@/identity/auth/presentation/decorators/current-user-id.decorator';
-import { parseEnum } from '@/shared/utils/parse-enum';
 import {
     Controller,
     Post,
@@ -8,10 +7,9 @@ import {
     Body,
     Param,
 } from '@nestjs/common';
-import { RegisterGoalMovementUseCase } from '../app/use-cases/register-goal-movement.use-case';
-import { EGoalMovementType } from '../domain/enums/goal-movement-type.enum';
+import { RegisterGoalDepositUseCase } from '../app/use-cases/register-goal-deposit.use-case';
 
-type RegisterGoalMovementDTO = {
+type RegisterGoalDepositDTO = {
     walletId: string;
     categoryId: string;
     movementType: string;
@@ -21,23 +19,22 @@ type RegisterGoalMovementDTO = {
 @Controller('goals')
 export class GoalMovementsController {
     constructor(
-        private readonly registerGoalMovement: RegisterGoalMovementUseCase,
+        private readonly registerGoalDeposit: RegisterGoalDepositUseCase,
     ) {}
 
     @Post(':id/movements')
     @HttpCode(HttpStatus.CREATED)
     async create(
         @CurrentUserId() userId: string,
-        @Body() body: RegisterGoalMovementDTO,
+        @Body() body: RegisterGoalDepositDTO,
         @Param('id') goalId: string,
     ) {
-        return this.registerGoalMovement.execute({
+        return this.registerGoalDeposit.execute({
             userId,
             goalId,
             walletId: body.walletId,
             categoryId: body.categoryId,
             amount: body.amount,
-            movementType: parseEnum(body.movementType, EGoalMovementType),
         });
     }
 }

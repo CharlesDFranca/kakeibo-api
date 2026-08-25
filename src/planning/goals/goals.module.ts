@@ -4,7 +4,7 @@ import { SharedModule } from '@/shared/shared.module';
 import { CreateGoalUseCase } from './app/use-cases/create-goal.use-case';
 import { RenameGoalUseCase } from './app/use-cases/rename-goal.use-case';
 import { ListGoalsUseCase } from './app/use-cases/list-goals.use-case';
-import { RegisterGoalMovementUseCase } from './app/use-cases/register-goal-movement.use-case';
+import { RegisterGoalDepositUseCase } from './app/use-cases/register-goal-deposit.use-case';
 import { CancelGoalUseCase } from './app/use-cases/cancel-goal.use-case';
 import { TypeOrmGoalRepository } from './infra/repositories/typeorm-goal.repository';
 import { PLANNING_TOKENS } from '../planning.tokens';
@@ -27,7 +27,7 @@ import { FindGoalByIdUseCase } from './app/use-cases/find-goal-by-id.use-case';
         CreateGoalUseCase,
         RenameGoalUseCase,
         ListGoalsUseCase,
-        RegisterGoalMovementUseCase,
+        RegisterGoalDepositUseCase,
         CancelGoalUseCase,
         FindGoalByIdUseCase,
 
