@@ -7,6 +7,7 @@ type GoalMovementProps = {
     goalId: string;
     type: GoalMovementType;
     amount: Money;
+    revertedDepositId?: string | undefined;
 };
 
 export class GoalMovement extends BaseEntity<GoalMovementProps> {
@@ -37,6 +38,14 @@ export class GoalMovement extends BaseEntity<GoalMovementProps> {
 
     public get type(): GoalMovementType {
         return this.props.type;
+    }
+
+    public get revertedDepositId(): string | undefined {
+        return this.props.revertedDepositId;
+    }
+
+    public canRevert(): boolean {
+        return this.isDeposit() && !this.revertedDepositId;
     }
 
     public isDeposit(): boolean {

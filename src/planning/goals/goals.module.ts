@@ -15,6 +15,7 @@ import { GoalEntity } from '@/shared/infra/database/entities/typeorm-goal.entity
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { GoalMovementsController } from './presentation/goal-movements.controller';
 import { FindGoalByIdUseCase } from './app/use-cases/find-goal-by-id.use-case';
+import { RevertGoalDepositUseCase } from './app/use-cases/revert-goal-deposit.use-case';
 
 @Module({
     imports: [
@@ -28,6 +29,7 @@ import { FindGoalByIdUseCase } from './app/use-cases/find-goal-by-id.use-case';
         RenameGoalUseCase,
         ListGoalsUseCase,
         RegisterGoalDepositUseCase,
+        RevertGoalDepositUseCase,
         CancelGoalUseCase,
         FindGoalByIdUseCase,
 

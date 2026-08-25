@@ -14,6 +14,9 @@ export class TypeOrmGoalMovementMapper {
                 goalId: raw.goalId,
                 amount: Money.fromCents(raw.amount),
                 type: new GoalMovementType(raw.type),
+                revertedDepositId: raw.revertedDepositId
+                    ? raw.revertedDepositId
+                    : undefined,
             },
             raw.createdAt,
             raw.updatedAt,
@@ -30,6 +33,9 @@ export class TypeOrmGoalMovementMapper {
         entity.goalId = goalMovement.goalId;
         entity.amount = goalMovement.amount.toCents();
         entity.type = goalMovement.type.value;
+        entity.revertedDepositId = goalMovement.revertedDepositId
+            ? goalMovement.revertedDepositId
+            : null;
 
         return entity;
     }

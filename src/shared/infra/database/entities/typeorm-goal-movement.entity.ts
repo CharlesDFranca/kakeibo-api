@@ -23,6 +23,9 @@ export class GoalMovementEntity {
     @Column({ type: 'enum', enum: EGoalMovementType })
     type!: EGoalMovementType;
 
+    @Column({ type: 'varchar', nullable: true })
+    revertedDepositId!: string | null;
+
     @Column()
     walletId!: string;
 
