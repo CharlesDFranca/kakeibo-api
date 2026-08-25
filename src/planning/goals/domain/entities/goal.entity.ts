@@ -107,6 +107,10 @@ export class Goal extends BaseEntity<GoalProps> {
     public withdraw(amount: Money): void {
         this.ensureInProgress();
 
+        if (amount.isGreaterThan(this.currentAmount)) {
+            throw new Error('Insufficient goal balance');
+        }
+
         this.props.currentAmount = this.currentAmount.subtract(amount);
 
         this.touch();
