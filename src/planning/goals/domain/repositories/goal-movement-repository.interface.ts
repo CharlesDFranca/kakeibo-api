@@ -5,4 +5,8 @@ export interface IGoalMovementRepository {
     findById(id: string): Promise<GoalMovement | null>;
     findByGoalId(goalId: string): Promise<GoalMovement[]>;
     deleteByGoalId(goalId: string): Promise<void>;
+    hasAllocatedAmountFromWallet(
+        userId: string,
+        walletId: string,
+    ): Promise<boolean>;
 }
