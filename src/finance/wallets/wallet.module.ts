@@ -10,9 +10,14 @@ import { WalletController } from './presentation/controllers/wallet.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { WalletEntity } from '@/shared/infra/database/entities/typeorm-wallet.entity';
 import { WalletDeletionPolicy } from './app/policies/wallet-deletion.policy';
+import { GoalsModule } from '@/planning/goals/goals.module';
 
 @Module({
-    imports: [SharedModule, TypeOrmModule.forFeature([WalletEntity])],
+    imports: [
+        SharedModule,
+        GoalsModule,
+        TypeOrmModule.forFeature([WalletEntity]),
+    ],
     controllers: [WalletController],
     providers: [
         CreateWalletUseCase,

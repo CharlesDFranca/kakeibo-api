@@ -42,5 +42,6 @@ import { RevertGoalDepositUseCase } from './app/use-cases/revert-goal-deposit.us
             useClass: TypeOrmGoalMovementRepository,
         },
     ],
+    exports: [PLANNING_TOKENS.GOAL_MOVEMENT_REPOSITORY],
 })
 export class GoalsModule {}

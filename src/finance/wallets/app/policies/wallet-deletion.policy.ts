@@ -1,10 +1,12 @@
 import type { IGoalMovementRepository } from '@/planning/goals/domain/repositories/goal-movement-repository.interface';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { IWalletDeletionPolicy } from '../../domain/services/wallet-deletion-policy.interface';
+import { PLANNING_TOKENS } from '@/planning/planning.tokens';
 
 @Injectable()
 export class WalletDeletionPolicy implements IWalletDeletionPolicy {
     constructor(
+        @Inject(PLANNING_TOKENS.GOAL_MOVEMENT_REPOSITORY)
         private readonly goalMovementRepository: IGoalMovementRepository,
     ) {}
 
