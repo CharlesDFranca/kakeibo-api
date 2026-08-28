@@ -28,7 +28,7 @@ import { ListCategoriesUseCase } from './app/use-cases/categories/list-categorie
 
 import { TypeOrmWalletRepository } from './infra/repositories/typeorm-wallet.repository';
 import { TypeOrmTransactionRepository } from './infra/repositories/typeorm-transaction.repository';
-import { TypeOrmCategoryRepository } from './infra/repositories/typeorm-category.repositoy';
+import { TypeOrmCategoryRepository } from './infra/repositories/typeorm-category.repository';
 import { TypeOrmTransactionQuery } from './infra/queries/typeorm-transaction.query';
 
 import { WalletDeletionPolicy } from './app/policies/wallet-deletion.policy';
