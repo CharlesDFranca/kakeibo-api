@@ -1,11 +1,11 @@
-import { ITransactionRepository } from '@/finance/transactions/domain/repositories/transaction-repository.interface';
-import { TypeOrmTransactionRepository } from '@/finance/transactions/infra/repositories/typeorm-transaction.repository';
+import { ITransactionRepository } from '@/finance/domain/repositories/transaction-repository.interface';
+import { TypeOrmTransactionRepository } from '@/finance/infra/repositories/typeorm-transaction.repository';
 
-import { IWalletRepository } from '@/finance/wallets/domain/repositories/wallet-repository.interface';
-import { TypeOrmWalletRepository } from '@/finance/wallets/infra/repositories/typeorm-wallet.repository';
+import { IWalletRepository } from '@/finance/domain/repositories/wallet-repository.interface';
+import { TypeOrmWalletRepository } from '@/finance/infra/repositories/typeorm-wallet.repository';
 
-import { IGoalRepository } from '@/planning/goals/domain/repositories/goal-repository.interface';
-import { TypeOrmGoalRepository } from '@/planning/goals/infra/repositories/typeorm-goal.repository';
+import { IGoalRepository } from '@/planning/domain/repositories/goal-repository.interface';
+import { TypeOrmGoalRepository } from '@/planning/infra/repositories/typeorm-goal.repository';
 
 import { IUnitOfWork } from '@/shared/app/contracts/unit-of-work.contract';
 
@@ -14,9 +14,9 @@ import { DataSource, EntityManager, QueryRunner } from 'typeorm';
 import { GoalEntity } from '../entities/typeorm-goal.entity';
 import { TransactionEntity } from '../entities/typeorm-transaction.entity';
 import { WalletEntity } from '../entities/typeorm-wallet.entity';
-import { IGoalMovementRepository } from '@/planning/goals/domain/repositories/goal-movement-repository.interface';
+import { IGoalMovementRepository } from '@/planning/domain/repositories/goal-movement-repository.interface';
 import { GoalMovementEntity } from '../entities/typeorm-goal-movement.entity';
-import { TypeOrmGoalMovementRepository } from '@/planning/goals/infra/repositories/typeorm-goal-movement.repository';
+import { TypeOrmGoalMovementRepository } from '@/planning/infra/repositories/typeorm-goal-movement.repository';
 
 @Injectable({ scope: Scope.REQUEST })
 export class TypeOrmUnitOfWork implements IUnitOfWork {

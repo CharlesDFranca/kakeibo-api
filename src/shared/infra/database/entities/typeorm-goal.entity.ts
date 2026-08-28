@@ -8,7 +8,7 @@ import {
     UpdateDateColumn,
 } from 'typeorm';
 import { UserEntity } from './typeorm-user.entity';
-import { EGoalStatus } from '@/planning/goals/domain/enums/goal-status.enum';
+import { EGoalStatus } from '@/planning/domain/enums/goal-status.enum';
 
 @Entity('goals')
 export class GoalEntity {

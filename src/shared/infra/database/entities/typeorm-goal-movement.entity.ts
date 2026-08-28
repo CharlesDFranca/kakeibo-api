@@ -10,7 +10,7 @@ import {
 
 import { GoalEntity } from './typeorm-goal.entity';
 import { WalletEntity } from './typeorm-wallet.entity';
-import { EGoalMovementType } from '@/planning/goals/domain/enums/goal-movement-type.enum';
+import { EGoalMovementType } from '@/planning/domain/enums/goal-movement-type.enum';
 
 @Entity('goal_movements')
 export class GoalMovementEntity {
