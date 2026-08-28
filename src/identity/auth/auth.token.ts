@@ -1,3 +1,0 @@
-export const AUTH_TOKENS = {
-    SESSION_REPOSITORY: Symbol('SESSION_REPOSITORY'),
-};

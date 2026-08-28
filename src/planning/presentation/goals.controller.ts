@@ -13,7 +13,7 @@ import { CreateGoalUseCase } from '../app/use-cases/goals/create-goal.usecase';
 import { CancelGoalUseCase } from '../app/use-cases/goals/cancel-goal.usecase';
 import { ListGoalsUseCase } from '../app/use-cases/goals/list-goals.usecase';
 import { RenameGoalUseCase } from '../app/use-cases/goals/rename-goal.usecase';
-import { CurrentUserId } from '@/identity/auth/presentation/decorators/current-user-id.decorator';
+import { CurrentUserId } from '@/shared/decorators/current-user-id.decorator';
 import { FindGoalByIdUseCase } from '../app/use-cases/goals/find-goal-by-id.usecase';
 
 type CreateGoalInput = {

@@ -1,4 +1,4 @@
-import type { IUserRepository } from '@/identity/users/domain/repositories/user-repository.interface';
+import type { IUserRepository } from '@/identity/domain/repositories/user-repository.interface';
 import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import type { IGoalRepository } from '../../../domain/repositories/goal-repository.interface';
@@ -7,10 +7,10 @@ import type { IIDGenerator } from '@/shared/app/contracts/id-generator.contract'
 import { Money } from '@/shared/domain/value-objects/Money';
 import { GoalStatus } from '../../../domain/value-objects/goal-status.vo';
 import { GoalDeadline } from '../../../domain/value-objects/goal-deadline';
-import { USER_TOKENS } from '@/identity/users/user.token';
 import { PLANNING_TOKENS } from '@/planning/planning.tokens';
 import { SHARED_TOKENS } from '@/shared/shared.token';
 import { EGoalStatus } from '../../../domain/enums/goal-status.enum';
+import { IDENTITY_TOKENS } from '@/identity/identity.token';
 
 type CreateGoalInput = {
     userId: string;
@@ -27,7 +27,7 @@ export class CreateGoalUseCase implements IBaseUseCase<
     CreateGoalOutput
 > {
     constructor(
-        @Inject(USER_TOKENS.USER_REPOSITORY)
+        @Inject(IDENTITY_TOKENS.USER_REPOSITORY)
         private readonly userRepository: IUserRepository,
         @Inject(PLANNING_TOKENS.GOAL_REPOSITORY)
         private readonly goalRepository: IGoalRepository,

@@ -10,18 +10,18 @@ import {
     CancelGoalUseCase,
     FindGoalByIdUseCase,
 } from './app/';
-import { UsersModule } from '@/identity/users/users.module';
 import { GoalMovementEntity } from '@/shared/infra/database/entities/typeorm-goal-movement.entity';
 import { GoalEntity } from '@/shared/infra/database/entities/typeorm-goal.entity';
 import { SharedModule } from '@/shared/shared.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmGoalRepository, TypeOrmGoalMovementRepository } from './infra';
 import { GoalMovementsController } from './presentation/goal-movements.controller';
+import { IdentityModule } from '@/identity/identity.module';
 
 @Module({
     imports: [
         SharedModule,
-        UsersModule,
+        IdentityModule,
         TypeOrmModule.forFeature([GoalEntity, GoalMovementEntity]),
     ],
     controllers: [GoalsController, GoalMovementsController],
@@ -43,6 +43,9 @@ import { GoalMovementsController } from './presentation/goal-movements.controlle
             useClass: TypeOrmGoalMovementRepository,
         },
     ],
-    exports: [PLANNING_TOKENS.GOAL_MOVEMENT_REPOSITORY],
+    exports: [
+        PLANNING_TOKENS.GOAL_REPOSITORY,
+        PLANNING_TOKENS.GOAL_MOVEMENT_REPOSITORY,
+    ],
 })
 export class PlanningModule {}

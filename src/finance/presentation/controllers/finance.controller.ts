@@ -1,5 +1,5 @@
 import { Controller, Get, HttpCode, HttpStatus } from '@nestjs/common';
-import { CurrentUserId } from '@/identity/auth/presentation/decorators/current-user-id.decorator';
+import { CurrentUserId } from '@/shared/decorators/current-user-id.decorator';
 import { GetFinanceSummaryUseCase } from '@/finance/app/use-cases/summary';
 
 @Controller('finances')
