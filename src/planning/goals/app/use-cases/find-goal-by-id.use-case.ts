@@ -2,7 +2,7 @@ import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import type { IGoalRepository } from '../../domain/repositories/goal-repository.interface';
 import type { IGoalMovementRepository } from '../../domain/repositories/goal-movement-repository.interface';
-import type { IWalletRepository } from '@/finance/wallets/domain/repositories/wallet-repository.interface';
+import type { IWalletRepository } from '@/finance/domain/repositories/wallet-repository.interface';
 import { PLANNING_TOKENS } from '@/planning/planning.tokens';
 
 type FindGoalByIdInput = {

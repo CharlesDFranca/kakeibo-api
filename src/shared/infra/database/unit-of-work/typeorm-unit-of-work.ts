@@ -1,8 +1,8 @@
-import { ITransactionRepository } from '@/finance/transactions/domain/repositories/transaction-repository.interface';
-import { TypeOrmTransactionRepository } from '@/finance/transactions/infra/repositories/typeorm-transaction.repository';
+import { ITransactionRepository } from '@/finance/domain/repositories/transaction-repository.interface';
+import { TypeOrmTransactionRepository } from '@/finance/infra/repositories/typeorm-transaction.repository';
 
-import { IWalletRepository } from '@/finance/wallets/domain/repositories/wallet-repository.interface';
-import { TypeOrmWalletRepository } from '@/finance/wallets/infra/repositories/typeorm-wallet.repository';
+import { IWalletRepository } from '@/finance/domain/repositories/wallet-repository.interface';
+import { TypeOrmWalletRepository } from '@/finance/infra/repositories/typeorm-wallet.repository';
 
 import { IGoalRepository } from '@/planning/goals/domain/repositories/goal-repository.interface';
 import { TypeOrmGoalRepository } from '@/planning/goals/infra/repositories/typeorm-goal.repository';

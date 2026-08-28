@@ -7,9 +7,9 @@ import {
 } from '@nestjs/common';
 import type { IUnitOfWork } from '@/shared/app/contracts/unit-of-work.contract';
 import type { IIDGenerator } from '@/shared/app/contracts/id-generator.contract';
-import { Transaction } from '@/finance/transactions/domain/entities/transaction.entity';
-import { TransactionType } from '@/finance/transactions/domain/value-objects/transaction-type.vo';
-import { ETransactionType } from '@/finance/transactions/domain/enums/transaction-type.enum';
+import { Transaction } from '@/finance/domain/entities/transaction.entity';
+import { TransactionType } from '@/finance/domain/value-objects/transaction-type.vo';
+import { ETransactionType } from '@/finance/domain/enums/transaction-type.enum';
 import { SHARED_TOKENS } from '@/shared/shared.token';
 import { GoalMovement } from '../../domain/entities/goal-movement.entity';
 import { GoalMovementType } from '../../domain/value-objects/goal-movement-type.vo';

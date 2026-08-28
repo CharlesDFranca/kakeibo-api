@@ -1,5 +1,5 @@
-import { ITransactionRepository } from '@/finance/transactions/domain/repositories/transaction-repository.interface';
-import { IWalletRepository } from '@/finance/wallets/domain/repositories/wallet-repository.interface';
+import { ITransactionRepository } from '@/finance/domain/repositories/transaction-repository.interface';
+import { IWalletRepository } from '@/finance/domain/repositories/wallet-repository.interface';
 import { IGoalMovementRepository } from '@/planning/goals/domain/repositories/goal-movement-repository.interface';
 import { IGoalRepository } from '@/planning/goals/domain/repositories/goal-repository.interface';
 
