@@ -11,16 +11,15 @@ export class TypeOrmWalletRepository implements IWalletRepository {
     constructor(
         @InjectRepository(WalletEntity)
         private readonly walletRepository: Repository<WalletEntity>,
-        private readonly mapper: TypeOrmWalletMapper,
     ) {}
 
     async create(wallet: Wallet): Promise<void> {
-        const entity = this.mapper.toPersistence(wallet);
+        const entity = TypeOrmWalletMapper.toPersistence(wallet);
         await this.walletRepository.save(entity);
     }
 
     async update(wallet: Wallet): Promise<void> {
-        const entity = this.mapper.toPersistence(wallet);
+        const entity = TypeOrmWalletMapper.toPersistence(wallet);
         await this.walletRepository.save(entity);
     }
 
@@ -33,13 +32,13 @@ export class TypeOrmWalletRepository implements IWalletRepository {
 
         if (!wallet) return null;
 
-        return this.mapper.toDomain(wallet);
+        return TypeOrmWalletMapper.toDomain(wallet);
     }
 
     async findAll(): Promise<Wallet[]> {
         const wallets = await this.walletRepository.find();
 
-        return wallets.map((wallet) => this.mapper.toDomain(wallet));
+        return wallets.map((wallet) => TypeOrmWalletMapper.toDomain(wallet));
     }
 
     async findByName(name: string): Promise<Wallet | null> {
@@ -47,7 +46,7 @@ export class TypeOrmWalletRepository implements IWalletRepository {
 
         if (!wallet) return null;
 
-        return this.mapper.toDomain(wallet);
+        return TypeOrmWalletMapper.toDomain(wallet);
     }
 
     async findUserWalletByName(
@@ -60,13 +59,13 @@ export class TypeOrmWalletRepository implements IWalletRepository {
 
         if (!wallet) return null;
 
-        return this.mapper.toDomain(wallet);
+        return TypeOrmWalletMapper.toDomain(wallet);
     }
 
     async findAllForUser(userId: string): Promise<Wallet[]> {
         const wallets = await this.walletRepository.find({ where: { userId } });
 
-        return wallets.map((wallet) => this.mapper.toDomain(wallet));
+        return wallets.map((wallet) => TypeOrmWalletMapper.toDomain(wallet));
     }
 
     async findUserWalletById(
@@ -79,7 +78,7 @@ export class TypeOrmWalletRepository implements IWalletRepository {
 
         if (!wallet) return null;
 
-        return this.mapper.toDomain(wallet);
+        return TypeOrmWalletMapper.toDomain(wallet);
     }
 
     async deleteUserWallet(userId: string, id: string): Promise<void> {

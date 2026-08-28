@@ -1,9 +1,10 @@
 import { BaseEntity } from '@/shared/domain/entities/base-entity.entity';
+import { Money } from '@/shared/domain/value-objects/Money';
 
 type WalletProps = {
     userId: string;
     name: string;
-    balance: number;
+    balance: Money;
 };
 
 export class Wallet extends BaseEntity<WalletProps> {
@@ -15,7 +16,6 @@ export class Wallet extends BaseEntity<WalletProps> {
     ) {
         super(id, props, createdAt, updatedAt);
 
-        if (props.balance < 0) throw new Error('Invalid wallet amount');
         if (!props.name || props.name.trim() === '') {
             throw new Error('Wallet name cannot be empty');
         }
@@ -25,7 +25,7 @@ export class Wallet extends BaseEntity<WalletProps> {
         return this.props.name;
     }
 
-    public get balance(): number {
+    public get balance(): Money {
         return this.props.balance;
     }
 
@@ -42,37 +42,21 @@ export class Wallet extends BaseEntity<WalletProps> {
         this.touch();
     }
 
-    public deposit(amount: number): void {
-        if (amount <= 0) {
-            throw new Error(
-                'Cannot deposit an amount less than or equal to zero',
-            );
-        }
-
-        this.props.balance += amount;
+    public deposit(amount: Money): void {
+        this.props.balance = this.balance.add(amount);
         this.touch();
     }
 
-    public withdraw(amount: number) {
-        if (amount <= 0) {
-            throw new Error(
-                'Cannot withdraw an amount less than or equal to zero',
-            );
-        }
-
+    public withdraw(amount: Money) {
         if (!this.canWithdraw(amount)) {
             throw new Error('Insufficient balance');
         }
 
-        this.props.balance -= amount;
+        this.props.balance = this.balance.subtract(amount);
         this.touch();
     }
 
-    public canWithdraw(amount: number): boolean {
-        if (amount <= 0) {
-            throw new Error('Invalid amount');
-        }
-
-        return this.props.balance >= amount;
+    public canWithdraw(amount: Money): boolean {
+        return this.props.balance.isGreaterThanOrEqual(amount);
     }
 }

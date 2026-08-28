@@ -1,24 +1,29 @@
 import { Wallet } from '@/finance/wallets/domain/entities/wallet.entity';
+import { Money } from '@/shared/domain/value-objects/Money';
 import { WalletEntity } from '@/shared/infra/database/entities/typeorm-wallet.entity';
-import { Injectable } from '@nestjs/common';
 
-@Injectable()
 export class TypeOrmWalletMapper {
-    public toDomain(raw: WalletEntity): Wallet {
+    private constructor() {}
+
+    public static toDomain(raw: WalletEntity): Wallet {
         return new Wallet(
             raw.id,
-            { name: raw.name, balance: raw.balance, userId: raw.userId },
+            {
+                name: raw.name,
+                balance: Money.fromCents(raw.balance),
+                userId: raw.userId,
+            },
             raw.createdAt,
             raw.updatedAt,
         );
     }
 
-    public toPersistence(wallet: Wallet): WalletEntity {
+    public static toPersistence(wallet: Wallet): WalletEntity {
         const walletEntity = new WalletEntity();
 
         walletEntity.id = wallet.id;
         walletEntity.name = wallet.name;
-        walletEntity.balance = wallet.balance;
+        walletEntity.balance = wallet.balance.toCents();
         walletEntity.userId = wallet.userId;
         walletEntity.createdAt = wallet.createdAt;
         walletEntity.updatedAt = wallet.updatedAt;

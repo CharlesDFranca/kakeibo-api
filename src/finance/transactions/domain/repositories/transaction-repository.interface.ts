@@ -4,7 +4,7 @@ import { TransactionType } from '../value-objects/transaction-type.vo';
 export type TransactionDetails = {
     id: string;
     description: string;
-    amount: number;
+    amount: string;
     date: Date;
     type: TransactionType;
 

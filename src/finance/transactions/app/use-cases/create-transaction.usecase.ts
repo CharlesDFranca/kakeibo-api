@@ -9,11 +9,12 @@ import { Inject, Injectable } from '@nestjs/common';
 import { Transaction } from '../../domain/entities/transaction.entity';
 import { TransactionType } from '../../domain/value-objects/transaction-type.vo';
 import type { ICategoryRepository } from '@/finance/categories/domain/repositories/category-repository.interface';
+import { Money } from '@/shared/domain/value-objects/Money';
 
 type CreateTransactionInput = {
     userId: string;
     description: string;
-    amount: number;
+    amount: string;
     type: ETransactionType;
     date: Date;
     walletId: string;
@@ -63,7 +64,7 @@ export class CreateTransactionUseCase implements IBaseUseCase<
             this.idGenerator.generate(),
             {
                 description: input.description,
-                amount: input.amount,
+                amount: Money.fromAmount(input.amount),
                 date: input.date,
                 type: new TransactionType(input.type),
                 categoryId: category.id,

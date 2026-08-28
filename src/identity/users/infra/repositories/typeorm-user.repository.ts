@@ -13,11 +13,10 @@ export class TypeormUserRepository implements IUserRepository {
     constructor(
         @InjectRepository(UserEntity)
         private readonly userRepository: Repository<UserEntity>,
-        private readonly mapper: TypeormUserMapper,
     ) {}
 
     async create(user: User): Promise<void> {
-        const entity = this.mapper.toPersistence(user);
+        const entity = TypeormUserMapper.toPersistence(user);
         await this.userRepository.save(entity);
     }
 
@@ -26,7 +25,7 @@ export class TypeormUserRepository implements IUserRepository {
 
         if (!user) return null;
 
-        return this.mapper.toDomain(user);
+        return TypeormUserMapper.toDomain(user);
     }
 
     async findByEmail(email: Email): Promise<User | null> {
@@ -36,7 +35,7 @@ export class TypeormUserRepository implements IUserRepository {
 
         if (!user) return null;
 
-        return this.mapper.toDomain(user);
+        return TypeormUserMapper.toDomain(user);
     }
 
     async findByUsername(username: Username): Promise<User | null> {
@@ -46,7 +45,7 @@ export class TypeormUserRepository implements IUserRepository {
 
         if (!user) return null;
 
-        return this.mapper.toDomain(user);
+        return TypeormUserMapper.toDomain(user);
     }
 
     async delete(id: string): Promise<void> {

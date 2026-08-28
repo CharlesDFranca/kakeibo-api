@@ -11,16 +11,15 @@ export class TypeOrmCategoryRepository implements ICategoryRepository {
     constructor(
         @InjectRepository(CategoryEntity)
         private readonly categoryRepository: Repository<CategoryEntity>,
-        private readonly mapper: TypeOrmCategoryMapper,
     ) {}
 
     async create(category: Category): Promise<void> {
-        const entity = this.mapper.toPersistence(category);
+        const entity = TypeOrmCategoryMapper.toPersistence(category);
         await this.categoryRepository.save(entity);
     }
 
     async update(category: Category): Promise<void> {
-        const entity = this.mapper.toPersistence(category);
+        const entity = TypeOrmCategoryMapper.toPersistence(category);
         await this.categoryRepository.save(entity);
     }
 
@@ -29,7 +28,7 @@ export class TypeOrmCategoryRepository implements ICategoryRepository {
             where: { userId },
         });
 
-        return categories.map((c) => this.mapper.toDomain(c));
+        return categories.map((c) => TypeOrmCategoryMapper.toDomain(c));
     }
 
     async findUserCategoryByName(
@@ -42,7 +41,7 @@ export class TypeOrmCategoryRepository implements ICategoryRepository {
 
         if (!category) return null;
 
-        return this.mapper.toDomain(category);
+        return TypeOrmCategoryMapper.toDomain(category);
     }
 
     async findUserCategoryById(
@@ -55,7 +54,7 @@ export class TypeOrmCategoryRepository implements ICategoryRepository {
 
         if (!category) return null;
 
-        return this.mapper.toDomain(category);
+        return TypeOrmCategoryMapper.toDomain(category);
     }
 
     async deleteUserCategory(

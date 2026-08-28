@@ -13,7 +13,7 @@ import {
 } from '@nestjs/common';
 
 type CreateTransactionDTO = {
-    amount: number;
+    amount: string;
     categoryId: string;
     date: Date;
     description: string;

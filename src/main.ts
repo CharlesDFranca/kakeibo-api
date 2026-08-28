@@ -2,6 +2,8 @@ import 'dotenv/config';
 import cookieParser from 'cookie-parser';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { GlobalExceptionFilter } from './shared/filters/global-exception.filter';
+import { ResponseInterceptor } from './shared/interceptors/response.interceptor';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
@@ -11,6 +13,9 @@ async function bootstrap() {
         origin: 'http://localhost:5173',
         credentials: true,
     });
+
+    app.useGlobalInterceptors(new ResponseInterceptor());
+    app.useGlobalFilters(new GlobalExceptionFilter());
 
     await app.listen(process.env.PORT ?? 3000);
 }

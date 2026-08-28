@@ -1,10 +1,10 @@
 import { Category } from '@/finance/categories/domain/entities/category.entity';
 import { CategoryEntity } from '@/shared/infra/database/entities/typeorm-category.entity';
-import { Injectable } from '@nestjs/common';
 
-@Injectable()
 export class TypeOrmCategoryMapper {
-    public toDomain(raw: CategoryEntity): Category {
+    private constructor() {}
+
+    public static toDomain(raw: CategoryEntity): Category {
         return new Category(
             raw.id,
             { name: raw.name, userId: raw.userId },
@@ -13,7 +13,7 @@ export class TypeOrmCategoryMapper {
         );
     }
 
-    public toPersistence(category: Category): CategoryEntity {
+    public static toPersistence(category: Category): CategoryEntity {
         const categoryEntity = new CategoryEntity();
 
         categoryEntity.id = category.id;

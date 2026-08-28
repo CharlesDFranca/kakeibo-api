@@ -1,12 +1,12 @@
-import { Injectable } from '@nestjs/common';
 import { User } from '../../domain/entities/user.entity';
 import { Email } from '../../domain/value-objects/email.vo';
 import { Username } from '../../domain/value-objects/username.vo';
 import { UserEntity } from '@/shared/infra/database/entities/typeorm-user.entity';
 
-@Injectable()
 export class TypeormUserMapper {
-    public toDomain(raw: UserEntity): User {
+    private constructor() {}
+
+    public static toDomain(raw: UserEntity): User {
         return new User(
             raw.id,
             {
@@ -20,7 +20,7 @@ export class TypeormUserMapper {
         );
     }
 
-    public toPersistence(user: User): UserEntity {
+    public static toPersistence(user: User): UserEntity {
         const entity = new UserEntity();
 
         entity.id = user.id;
