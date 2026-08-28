@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { SharedModule } from '@/shared/shared.module';
-import { GoalsModule } from '@/planning/goals/goals.module'; // Mantido para o WalletDeletionPolicy
 
 import { WalletEntity } from '@/shared/infra/database/entities/typeorm-wallet.entity';
 import { TransactionEntity } from '@/shared/infra/database/entities/typeorm-transaction.entity';
@@ -33,11 +32,12 @@ import { TypeOrmTransactionQuery } from './infra/queries/typeorm-transaction.que
 
 import { WalletDeletionPolicy } from './app/policies/wallet-deletion.policy';
 import { FINANCE_TOKENS } from './finance.tokens';
+import { PlanningModule } from '@/planning/planning.module';
 
 @Module({
     imports: [
         SharedModule,
-        GoalsModule,
+        PlanningModule,
         TypeOrmModule.forFeature([
             WalletEntity,
             TransactionEntity,

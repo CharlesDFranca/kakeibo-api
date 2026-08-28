@@ -9,12 +9,12 @@ import {
     Patch,
     Post,
 } from '@nestjs/common';
-import { CreateGoalUseCase } from '../app/use-cases/create-goal.use-case';
-import { CancelGoalUseCase } from '../app/use-cases/cancel-goal.use-case';
-import { ListGoalsUseCase } from '../app/use-cases/list-goals.use-case';
-import { RenameGoalUseCase } from '../app/use-cases/rename-goal.use-case';
+import { CreateGoalUseCase } from '../app/use-cases/goals/create-goal.usecase';
+import { CancelGoalUseCase } from '../app/use-cases/goals/cancel-goal.usecase';
+import { ListGoalsUseCase } from '../app/use-cases/goals/list-goals.usecase';
+import { RenameGoalUseCase } from '../app/use-cases/goals/rename-goal.usecase';
 import { CurrentUserId } from '@/identity/auth/presentation/decorators/current-user-id.decorator';
-import { FindGoalByIdUseCase } from '../app/use-cases/find-goal-by-id.use-case';
+import { FindGoalByIdUseCase } from '../app/use-cases/goals/find-goal-by-id.usecase';
 
 type CreateGoalInput = {
     userId: string;

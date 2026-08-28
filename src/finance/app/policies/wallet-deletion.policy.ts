@@ -1,4 +1,4 @@
-import type { IGoalMovementRepository } from '@/planning/goals/domain/repositories/goal-movement-repository.interface';
+import type { IGoalMovementRepository } from '@/planning/domain/repositories/goal-movement-repository.interface';
 import { Inject, Injectable } from '@nestjs/common';
 import { IWalletDeletionPolicy } from '../../domain/services/wallet-deletion-policy.interface';
 import { PLANNING_TOKENS } from '@/planning/planning.tokens';

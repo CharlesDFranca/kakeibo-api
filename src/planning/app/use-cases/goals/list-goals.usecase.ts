@@ -1,5 +1,5 @@
 import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
-import type { IGoalRepository } from '../../domain/repositories/goal-repository.interface';
+import type { IGoalRepository } from '../../../domain/repositories/goal-repository.interface';
 import { Inject, Injectable } from '@nestjs/common';
 import { PLANNING_TOKENS } from '@/planning/planning.tokens';
 

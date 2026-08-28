@@ -1,16 +1,16 @@
 import type { IUserRepository } from '@/identity/users/domain/repositories/user-repository.interface';
 import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import type { IGoalRepository } from '../../domain/repositories/goal-repository.interface';
-import { Goal } from '../../domain/entities/goal.entity';
+import type { IGoalRepository } from '../../../domain/repositories/goal-repository.interface';
+import { Goal } from '../../../domain/entities/goal.entity';
 import type { IIDGenerator } from '@/shared/app/contracts/id-generator.contract';
 import { Money } from '@/shared/domain/value-objects/Money';
-import { GoalStatus } from '../../domain/value-objects/goal-status.vo';
-import { GoalDeadline } from '../../domain/value-objects/goal-deadline';
+import { GoalStatus } from '../../../domain/value-objects/goal-status.vo';
+import { GoalDeadline } from '../../../domain/value-objects/goal-deadline';
 import { USER_TOKENS } from '@/identity/users/user.token';
 import { PLANNING_TOKENS } from '@/planning/planning.tokens';
 import { SHARED_TOKENS } from '@/shared/shared.token';
-import { EGoalStatus } from '../../domain/enums/goal-status.enum';
+import { EGoalStatus } from '../../../domain/enums/goal-status.enum';
 
 type CreateGoalInput = {
     userId: string;

@@ -1,34 +1,30 @@
 import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
-import {
-    ConflictException,
-    Inject,
-    Injectable,
-    NotFoundException,
-} from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import type { IUnitOfWork } from '@/shared/app/contracts/unit-of-work.contract';
+import { Money } from '@/shared/domain/value-objects/Money';
+import { GoalMovement } from '../../../domain/entities/goal-movement.entity';
 import type { IIDGenerator } from '@/shared/app/contracts/id-generator.contract';
 import { Transaction } from '@/finance/domain/entities/transaction.entity';
 import { TransactionType } from '@/finance/domain/value-objects/transaction-type.vo';
 import { ETransactionType } from '@/finance/domain/enums/transaction-type.enum';
 import { SHARED_TOKENS } from '@/shared/shared.token';
-import { GoalMovement } from '../../domain/entities/goal-movement.entity';
-import { GoalMovementType } from '../../domain/value-objects/goal-movement-type.vo';
-import { EGoalMovementType } from '../../domain/enums/goal-movement-type.enum';
+import { GoalMovementType } from '../../../domain/value-objects/goal-movement-type.vo';
+import { EGoalMovementType } from '../../../domain/enums/goal-movement-type.enum';
 
-type RevertGoalDepositInput = {
+type RegisterGoalDepositInput = {
     userId: string;
-    depositId: string;
+    walletId: string;
+    goalId: string;
     categoryId: string;
+    amount: string;
 };
 
-type RevertGoalDepositOutput = {
-    id: string;
-};
+type RegisterGoalDepositOutput = { id: string };
 
 @Injectable()
-export class RevertGoalDepositUseCase implements IBaseUseCase<
-    RevertGoalDepositInput,
-    RevertGoalDepositOutput
+export class RegisterGoalDepositUseCase implements IBaseUseCase<
+    RegisterGoalDepositInput,
+    RegisterGoalDepositOutput
 > {
     constructor(
         @Inject(SHARED_TOKENS.UNIT_OF_WORK)
@@ -38,57 +34,42 @@ export class RevertGoalDepositUseCase implements IBaseUseCase<
     ) {}
 
     async execute(
-        input: RevertGoalDepositInput,
-    ): Promise<RevertGoalDepositOutput> {
+        input: RegisterGoalDepositInput,
+    ): Promise<RegisterGoalDepositOutput> {
         return this.uow.transaction(async () => {
             const goalRepository = this.uow.getGoalRepository();
             const walletRepository = this.uow.getWalletRepository();
             const goalMovementRepository = this.uow.getGoalMovementRepository();
             const transactionRepository = this.uow.getTransactionRepository();
 
-            const deposit = await goalMovementRepository.findById(
-                input.depositId,
-            );
-
-            if (!deposit) throw new NotFoundException('Goal deposit not found');
-
-            if (!deposit.canRevert()) {
-                throw new ConflictException('Only deposits can be reverted');
-            }
-
             const wallet = await walletRepository.findUserWalletById(
                 input.userId,
-                deposit.walletId,
+                input.walletId,
             );
 
-            if (!wallet) {
-                throw new NotFoundException('Wallet not found');
-            }
+            if (!wallet) throw new NotFoundException('Wallet not found');
 
             const goal = await goalRepository.findUserGoalById(
                 input.userId,
-                deposit.goalId,
+                input.goalId,
             );
 
-            if (!goal) {
-                throw new NotFoundException('Goal not found');
-            }
+            if (!goal) throw new NotFoundException('Goal not found');
 
-            const amount = deposit.amount;
+            const amount = Money.fromAmount(input.amount);
 
-            goal.withdraw(amount);
-            wallet.deposit(amount);
+            wallet.withdraw(amount);
+            goal.contribute(amount);
 
             const now = new Date();
 
-            const withdraw = new GoalMovement(
+            const goalMovement = new GoalMovement(
                 this.idGenerator.generate(),
                 {
-                    amount: deposit.amount,
+                    amount: amount,
                     goalId: goal.id,
-                    type: new GoalMovementType(EGoalMovementType.WITHDRAW),
                     walletId: wallet.id,
-                    revertedDepositId: deposit.id,
+                    type: new GoalMovementType(EGoalMovementType.DEPOSIT),
                 },
                 now,
                 now,
@@ -97,11 +78,11 @@ export class RevertGoalDepositUseCase implements IBaseUseCase<
             const transaction = new Transaction(
                 this.idGenerator.generate(),
                 {
-                    amount,
+                    amount: amount,
                     categoryId: input.categoryId,
                     walletId: wallet.id,
                     date: now,
-                    description: 'Goal deposit reversion',
+                    description: 'Goal deposit',
                     type: new TransactionType(ETransactionType.TRANSFER),
                 },
                 now,
@@ -110,12 +91,10 @@ export class RevertGoalDepositUseCase implements IBaseUseCase<
 
             await goalRepository.update(goal);
             await walletRepository.update(wallet);
-            await goalMovementRepository.create(withdraw);
             await transactionRepository.create(transaction);
+            await goalMovementRepository.create(goalMovement);
 
-            return {
-                id: withdraw.id,
-            };
+            return { id: goalMovement.id };
         });
     }
 }

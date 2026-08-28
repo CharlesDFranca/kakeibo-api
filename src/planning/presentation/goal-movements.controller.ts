@@ -9,8 +9,8 @@ import {
     Post,
 } from '@nestjs/common';
 
-import { RegisterGoalDepositUseCase } from '../app/use-cases/register-goal-deposit.use-case';
-import { RevertGoalDepositUseCase } from '../app/use-cases/revert-goal-deposit.use-case';
+import { RegisterGoalDepositUseCase } from '../app/use-cases/goals/register-goal-deposit.usecase';
+import { RevertGoalDepositUseCase } from '../app/use-cases/goals/revert-goal-deposit.usecase';
 
 type RegisterGoalDepositDTO = {
     walletId: string;

@@ -1,6 +1,6 @@
 import { TypeOrmTransactionRepository } from '@/finance/infra/repositories/typeorm-transaction.repository';
 import { TypeOrmWalletRepository } from '@/finance/infra/repositories/typeorm-wallet.repository';
-import { TypeOrmGoalRepository } from '@/planning/goals/infra/repositories/typeorm-goal.repository';
+import { TypeOrmGoalRepository } from '@/planning/infra/repositories/typeorm-goal.repository';
 
 import { DataSource, EntityManager, QueryRunner } from 'typeorm';
 import { GoalEntity } from '../entities/typeorm-goal.entity';
