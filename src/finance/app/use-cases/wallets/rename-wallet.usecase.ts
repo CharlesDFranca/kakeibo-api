@@ -3,6 +3,8 @@ import { FINANCE_TOKENS } from '@/finance/finance.tokens';
 import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
 import { Name } from '@/shared/domain/value-objects/name.vo';
 import { Inject, Injectable } from '@nestjs/common';
+import { WalletAlreadyExistsError } from '../../errors/wallet-already-exists.error';
+import { WalletNotFoundError } from '../../errors/wallet-not-found.error';
 
 type RenameWalletInput = {
     walletId: string;
@@ -30,7 +32,7 @@ export class RenameWalletUseCase implements IBaseUseCase<
             input.walletId,
         );
 
-        if (!wallet) throw new Error('Wallet not found');
+        if (!wallet) throw new WalletNotFoundError();
 
         const name = new Name(input.name);
 
@@ -42,7 +44,7 @@ export class RenameWalletUseCase implements IBaseUseCase<
                 );
 
             if (walletWithSameName) {
-                throw new Error('Wallet already exists with this name');
+                throw new WalletAlreadyExistsError();
             }
         }
 

@@ -24,10 +24,6 @@ export class DeleteWalletUseCase implements IBaseUseCase<
     ) {}
 
     async execute(input: DeleteWalletInput): Promise<DeleteWalletOutput> {
-        if (!input.walletId || input.walletId.trim() === '') {
-            throw new Error('Error on delete.');
-        }
-
         await this.walletDeletionPolicy.ensureCanDelete(
             input.userId,
             input.walletId,

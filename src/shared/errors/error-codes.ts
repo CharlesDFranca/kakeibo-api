@@ -5,6 +5,7 @@ export const ErrorCodes = {
     CATEGORY_NOT_FOUND: 'CATEGORY_NOT_FOUND',
     WALLET_NOT_FOUND: 'WALLET_NOT_FOUND',
     WALLET_ALREADY_EXISTS: 'WALLET_ALREADY_EXISTS',
+    WALLET_HAS_ALLOCATED_MONEY: 'WALLET_HAS_ALLOCATED_MONEY',
 } as const;
 
 export type ErrorCode = (typeof ErrorCodes)[keyof typeof ErrorCodes];
