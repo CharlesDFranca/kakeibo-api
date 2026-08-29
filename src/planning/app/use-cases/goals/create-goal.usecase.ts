@@ -11,7 +11,7 @@ import type { IGoalRepository } from '@/planning/domain/repositories/goal-reposi
 import { GoalDeadline } from '@/planning/domain/value-objects/goal-deadline.vo';
 import { GoalStatus } from '@/planning/domain/value-objects/goal-status.vo';
 import { PLANNING_TOKENS } from '@/planning/planning.tokens';
-import type { IIDGenerator } from '@/shared/app/contracts/id-generator.contract';
+import type { IIDGenerator } from '@/core/app/contracts/id-generator.contract';
 import { Money } from '@/shared/domain/value-objects/money.vo';
 
 type CreateGoalInput = {

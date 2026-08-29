@@ -8,7 +8,7 @@ import { EGoalMovementType } from '@/planning/domain/enums/goal-movement-type.en
 import { GoalMovementCannotBeRevertedError } from '@/planning/domain/errors/goal-movement-cannot-be-reverted.error';
 import { GoalMovementType } from '@/planning/domain/value-objects/goal-movement-type.vo';
 import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
-import type { IIDGenerator } from '@/shared/app/contracts/id-generator.contract';
+import type { IIDGenerator } from '@/core/app/contracts/id-generator.contract';
 import type { IUnitOfWork } from '@/shared/app/contracts/unit-of-work.contract';
 import { Injectable, Inject } from '@nestjs/common';
 import { GoalDepositNotFoundError } from '../../errors/goal-deposit-not-found.error';

@@ -2,7 +2,7 @@ import { Wallet } from '@/finance/domain/entities/wallet.entity';
 import type { IWalletRepository } from '@/finance/domain/repositories/wallet-repository.interface';
 import { FINANCE_TOKENS } from '@/finance/finance.tokens';
 import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
-import type { IIDGenerator } from '@/shared/app/contracts/id-generator.contract';
+import type { IIDGenerator } from '@/core/app/contracts/id-generator.contract';
 import { Inject, Injectable } from '@nestjs/common';
 import { Money } from '@/shared/domain/value-objects/money.vo';
 import { Name } from '@/shared/domain/value-objects/name.vo';

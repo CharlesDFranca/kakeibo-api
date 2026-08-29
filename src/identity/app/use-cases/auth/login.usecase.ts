@@ -4,7 +4,7 @@ import type { IUserRepository } from '@/identity/domain/repositories/user-reposi
 import { Email } from '@/identity/domain/value-objects/email.vo';
 import { IDENTITY_TOKENS } from '@/identity/identity.token';
 import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
-import type { IIDGenerator } from '@/shared/app/contracts/id-generator.contract';
+import type { IIDGenerator } from '@/core/app/contracts/id-generator.contract';
 import type { IPasswordHasher } from '@/identity/app/contracts/password-hasher.contract';
 import { Injectable, Inject } from '@nestjs/common';
 import { InvalidCredentialsError } from '../../errors/invalid-credentials.error';

@@ -4,7 +4,7 @@ import { Email } from '@/identity/domain/value-objects/email.vo';
 import { Username } from '@/identity/domain/value-objects/username.vo';
 import { IDENTITY_TOKENS } from '@/identity/identity.token';
 import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
-import type { IIDGenerator } from '@/shared/app/contracts/id-generator.contract';
+import type { IIDGenerator } from '@/core/app/contracts/id-generator.contract';
 import type { IPasswordHasher } from '@/identity/app/contracts/password-hasher.contract';
 import { Name } from '@/shared/domain/value-objects/name.vo';
 import { Injectable, Inject } from '@nestjs/common';

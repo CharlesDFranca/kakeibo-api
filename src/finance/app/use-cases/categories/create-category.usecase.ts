@@ -1,7 +1,7 @@
 import { Category } from '@/finance/domain/entities/category.entity';
 import { FINANCE_TOKENS } from '@/finance/finance.tokens';
 import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
-import type { IIDGenerator } from '@/shared/app/contracts/id-generator.contract';
+import type { IIDGenerator } from '@/core/app/contracts/id-generator.contract';
 import { Inject, Injectable } from '@nestjs/common';
 import type { ICategoryRepository } from '../../../domain/repositories/category-repository.interface';
 import { Name } from '@/shared/domain/value-objects/name.vo';

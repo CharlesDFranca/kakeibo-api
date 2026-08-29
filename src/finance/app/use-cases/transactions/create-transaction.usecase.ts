@@ -3,7 +3,7 @@ import type { ITransactionRepository } from '@/finance/domain/repositories/trans
 import type { IWalletRepository } from '@/finance/domain/repositories/wallet-repository.interface';
 import { FINANCE_TOKENS } from '@/finance/finance.tokens';
 import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
-import type { IIDGenerator } from '@/shared/app/contracts/id-generator.contract';
+import type { IIDGenerator } from '@/core/app/contracts/id-generator.contract';
 import { Inject, Injectable } from '@nestjs/common';
 import { Transaction } from '../../../domain/entities/transaction.entity';
 import { TransactionType } from '../../../domain/value-objects/transaction-type.vo';
