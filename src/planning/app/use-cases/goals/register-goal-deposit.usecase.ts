@@ -1,16 +1,16 @@
 import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import type { IUnitOfWork } from '@/shared/app/contracts/unit-of-work.contract';
 import { Money } from '@/shared/domain/value-objects/money.vo';
-import { GoalMovement } from '../../../domain/entities/goal-movement.entity';
 import type { IIDGenerator } from '@/shared/app/contracts/id-generator.contract';
 import { Transaction } from '@/finance/domain/entities/transaction.entity';
 import { TransactionType } from '@/finance/domain/value-objects/transaction-type.vo';
 import { ETransactionType } from '@/finance/domain/enums/transaction-type.enum';
-import { SHARED_TOKENS } from '@/shared/shared.token';
-import { GoalMovementType } from '../../../domain/value-objects/goal-movement-type.vo';
-import { EGoalMovementType } from '../../../domain/enums/goal-movement-type.enum';
+import { CORE_TOKENS } from '@/core/core.tokens';
 import { WalletNotFoundError } from '@/finance/app/errors/wallet-not-found.error';
+import { GoalMovement } from '@/planning/domain/entities/goal-movement.entity';
+import { EGoalMovementType } from '@/planning/domain/enums/goal-movement-type.enum';
+import { GoalMovementType } from '@/planning/domain/value-objects/goal-movement-type.vo';
 import { GoalNotFoundError } from '../../errors/goal-not-found.error';
 
 type RegisterGoalDepositInput = {
@@ -29,9 +29,9 @@ export class RegisterGoalDepositUseCase implements IBaseUseCase<
     RegisterGoalDepositOutput
 > {
     constructor(
-        @Inject(SHARED_TOKENS.UNIT_OF_WORK)
+        @Inject(CORE_TOKENS.UNIT_OF_WORK)
         private readonly uow: IUnitOfWork,
-        @Inject(SHARED_TOKENS.ID_GENERATOR)
+        @Inject(CORE_TOKENS.ID_GENERATOR)
         private readonly idGenerator: IIDGenerator,
     ) {}
 

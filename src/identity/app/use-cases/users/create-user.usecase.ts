@@ -7,11 +7,11 @@ import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
 import type { IIDGenerator } from '@/shared/app/contracts/id-generator.contract';
 import type { IPasswordHasher } from '@/identity/app/contracts/password-hasher.contract';
 import { Name } from '@/shared/domain/value-objects/name.vo';
-import { SHARED_TOKENS } from '@/shared/shared.token';
 import { Injectable, Inject } from '@nestjs/common';
 import { EmailAlreadyExistsError } from '../../errors/email-already-exists.error';
 import { UsernameAlreadyExistsError } from '../../errors/username-already-exists.error';
 import { PasswordCannotBeEmptyError } from '../../errors/password-cannot-be-empty.error';
+import { CORE_TOKENS } from '@/core/core.tokens';
 
 type CreateUserInput = {
     name: string;
@@ -31,7 +31,7 @@ export class CreateUserUseCase implements IBaseUseCase<
         private readonly userRepository: IUserRepository,
         @Inject(IDENTITY_TOKENS.PASSWORD_HASHER)
         private readonly passworder: IPasswordHasher,
-        @Inject(SHARED_TOKENS.ID_GENERATOR)
+        @Inject(CORE_TOKENS.ID_GENERATOR)
         private readonly idGenerator: IIDGenerator,
     ) {}
 

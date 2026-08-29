@@ -4,7 +4,6 @@ import type { IWalletRepository } from '@/finance/domain/repositories/wallet-rep
 import { FINANCE_TOKENS } from '@/finance/finance.tokens';
 import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
 import type { IIDGenerator } from '@/shared/app/contracts/id-generator.contract';
-import { SHARED_TOKENS } from '@/shared/shared.token';
 import { Inject, Injectable } from '@nestjs/common';
 import { Transaction } from '../../../domain/entities/transaction.entity';
 import { TransactionType } from '../../../domain/value-objects/transaction-type.vo';
@@ -12,6 +11,7 @@ import type { ICategoryRepository } from '@/finance/domain/repositories/category
 import { Money } from '@/shared/domain/value-objects/money.vo';
 import { CategoryNotFoundError } from '../../errors/category-not-found.error';
 import { WalletNotFoundError } from '../../errors/wallet-not-found.error';
+import { CORE_TOKENS } from '@/core/core.tokens';
 
 type CreateTransactionInput = {
     userId: string;
@@ -39,7 +39,7 @@ export class CreateTransactionUseCase implements IBaseUseCase<
         private readonly walletRepository: IWalletRepository,
         @Inject(FINANCE_TOKENS.CATEGORY_REPOSITORY)
         private readonly categoryRepository: ICategoryRepository,
-        @Inject(SHARED_TOKENS.ID_GENERATOR)
+        @Inject(CORE_TOKENS.ID_GENERATOR)
         private readonly idGenerator: IIDGenerator,
     ) {}
 

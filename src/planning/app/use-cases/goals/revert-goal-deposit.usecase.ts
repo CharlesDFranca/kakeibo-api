@@ -1,3 +1,4 @@
+import { CORE_TOKENS } from '@/core/core.tokens';
 import { WalletNotFoundError } from '@/finance/app/errors/wallet-not-found.error';
 import { Transaction } from '@/finance/domain/entities/transaction.entity';
 import { ETransactionType } from '@/finance/domain/enums/transaction-type.enum';
@@ -9,7 +10,6 @@ import { GoalMovementType } from '@/planning/domain/value-objects/goal-movement-
 import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
 import type { IIDGenerator } from '@/shared/app/contracts/id-generator.contract';
 import type { IUnitOfWork } from '@/shared/app/contracts/unit-of-work.contract';
-import { SHARED_TOKENS } from '@/shared/shared.token';
 import { Injectable, Inject } from '@nestjs/common';
 import { GoalDepositNotFoundError } from '../../errors/goal-deposit-not-found.error';
 import { GoalNotFoundError } from '../../errors/goal-not-found.error';
@@ -30,9 +30,9 @@ export class RevertGoalDepositUseCase implements IBaseUseCase<
     RevertGoalDepositOutput
 > {
     constructor(
-        @Inject(SHARED_TOKENS.UNIT_OF_WORK)
+        @Inject(CORE_TOKENS.UNIT_OF_WORK)
         private readonly uow: IUnitOfWork,
-        @Inject(SHARED_TOKENS.ID_GENERATOR)
+        @Inject(CORE_TOKENS.ID_GENERATOR)
         private readonly idGenerator: IIDGenerator,
     ) {}
 

@@ -10,7 +10,6 @@ import {
     CancelGoalUseCase,
     FindGoalByIdUseCase,
 } from './app/use-cases/goals';
-import { SharedModule } from '@/shared/shared.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { GoalMovementsController } from './presentation/goal-movements.controller';
 import { IdentityModule } from '@/identity/identity.module';
@@ -18,10 +17,11 @@ import { TypeOrmGoalMovementRepository } from './infra/repositories/typeorm-goal
 import { TypeOrmGoalRepository } from './infra/repositories/typeorm-goal.repository';
 import { GoalMovementEntity } from './infra/entities/typeorm-goal-movement.entity';
 import { GoalEntity } from './infra/entities/typeorm-goal.entity';
+import { CoreModule } from '@/core/core.module';
 
 @Module({
     imports: [
-        SharedModule,
+        CoreModule,
         IdentityModule,
         TypeOrmModule.forFeature([GoalEntity, GoalMovementEntity]),
     ],

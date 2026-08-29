@@ -1,18 +1,18 @@
 import type { IUserRepository } from '@/identity/domain/repositories/user-repository.interface';
 import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import type { IGoalRepository } from '../../../domain/repositories/goal-repository.interface';
-import { Goal } from '../../../domain/entities/goal.entity';
-import type { IIDGenerator } from '@/shared/app/contracts/id-generator.contract';
-import { Money } from '@/shared/domain/value-objects/money.vo';
-import { GoalStatus } from '../../../domain/value-objects/goal-status.vo';
-import { GoalDeadline } from '../../../domain/value-objects/goal-deadline.vo';
-import { PLANNING_TOKENS } from '@/planning/planning.tokens';
-import { SHARED_TOKENS } from '@/shared/shared.token';
-import { EGoalStatus } from '../../../domain/enums/goal-status.enum';
 import { IDENTITY_TOKENS } from '@/identity/identity.token';
 import { Name } from '@/shared/domain/value-objects/name.vo';
 import { UserNotFoundError } from '@/identity/app/errors/user-not-found.error';
+import { CORE_TOKENS } from '@/core/core.tokens';
+import { Inject, Injectable } from '@nestjs/common';
+import { Goal } from '@/planning/domain/entities/goal.entity';
+import { EGoalStatus } from '@/planning/domain/enums/goal-status.enum';
+import type { IGoalRepository } from '@/planning/domain/repositories/goal-repository.interface';
+import { GoalDeadline } from '@/planning/domain/value-objects/goal-deadline.vo';
+import { GoalStatus } from '@/planning/domain/value-objects/goal-status.vo';
+import { PLANNING_TOKENS } from '@/planning/planning.tokens';
+import type { IIDGenerator } from '@/shared/app/contracts/id-generator.contract';
+import { Money } from '@/shared/domain/value-objects/money.vo';
 
 type CreateGoalInput = {
     userId: string;
@@ -33,7 +33,7 @@ export class CreateGoalUseCase implements IBaseUseCase<
         private readonly userRepository: IUserRepository,
         @Inject(PLANNING_TOKENS.GOAL_REPOSITORY)
         private readonly goalRepository: IGoalRepository,
-        @Inject(SHARED_TOKENS.ID_GENERATOR)
+        @Inject(CORE_TOKENS.ID_GENERATOR)
         private readonly idGenerator: IIDGenerator,
     ) {}
 

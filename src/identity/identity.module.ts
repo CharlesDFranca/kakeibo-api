@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { SharedModule } from '@/shared/shared.module';
 import { UserEntity } from '@/identity/infra/entities/typeorm-user.entity';
 
 import { AuthController } from './presentation/controllers/auth.controller';
@@ -19,9 +18,10 @@ import { IDENTITY_TOKENS } from './identity.token';
 import { APP_GUARD } from '@nestjs/core';
 import { SessionGuard } from './presentation/guards/session.guard';
 import { BcryptPasswordHasher } from './infra/services/bcrypt-password-hasher.service';
+import { CoreModule } from '@/core/core.module';
 
 @Module({
-    imports: [SharedModule, TypeOrmModule.forFeature([UserEntity])],
+    imports: [CoreModule, TypeOrmModule.forFeature([UserEntity])],
     controllers: [AuthController, UsersController],
     providers: [
         LoginUseCase,
