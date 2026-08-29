@@ -1,3 +1,4 @@
+import { ApiResponse } from '@/shared/errors/formatters/response-formatters';
 import {
     CallHandler,
     ExecutionContext,
@@ -6,7 +7,6 @@ import {
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ApiResponse } from '../errors/formatters/response-formatters';
 
 @Injectable()
 export class ResponseInterceptor<T> implements NestInterceptor<
