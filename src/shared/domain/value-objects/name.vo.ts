@@ -1,13 +1,14 @@
+import { NameCannotBeEmptyError } from '../errors/name-cannot-be-empty.error';
+import { NameCannotExceedMaximumLengthError } from '../errors/name-cannot-exceed-maximum-length.error';
+
 export class Name {
     constructor(private readonly _value: string) {
         const normalized = _value.trim();
 
-        if (!normalized) {
-            throw new Error('Name cannot be empty');
-        }
+        if (!normalized) throw new NameCannotBeEmptyError();
 
         if (normalized.length > 100) {
-            throw new Error('Name cannot exceed 100 characters');
+            throw new NameCannotExceedMaximumLengthError();
         }
 
         this._value = normalized;
