@@ -1,4 +1,7 @@
-import { CreateUserUseCase, FindUserByIdUseCase } from '@/identity/app';
+import {
+    CreateUserUseCase,
+    FindUserByIdUseCase,
+} from '@/identity/app/use-cases/users';
 import { CurrentUserId } from '@/shared/decorators/current-user-id.decorator';
 import { Public } from '@/shared/decorators/public-route.decorator';
 import {

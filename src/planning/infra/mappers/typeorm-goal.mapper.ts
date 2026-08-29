@@ -1,4 +1,6 @@
-import { Goal, GoalStatus, GoalDeadline } from '@/planning/domain';
+import { Goal } from '@/planning/domain/entities/goal.entity';
+import { GoalDeadline } from '@/planning/domain/value-objects/goal-deadline';
+import { GoalStatus } from '@/planning/domain/value-objects/goal-status.vo';
 import { Money } from '@/shared/domain/value-objects/Money';
 import { GoalEntity } from '@/shared/infra/database/entities/typeorm-goal.entity';
 

@@ -1,4 +1,4 @@
-import type { IUserRepository } from '@/identity/domain';
+import type { IUserRepository } from '@/identity/domain/repositories/user-repository.interface';
 import { IDENTITY_TOKENS } from '@/identity/identity.token';
 import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
 import { Injectable, Inject } from '@nestjs/common';

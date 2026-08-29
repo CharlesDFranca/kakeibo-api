@@ -1,5 +1,7 @@
-import { Email, Session } from '@/identity/domain';
-import type { ISessionRepository, IUserRepository } from '@/identity/domain';
+import { Session } from '@/identity/domain/entities/session.entity';
+import type { ISessionRepository } from '@/identity/domain/repositories/session-repository.interface';
+import type { IUserRepository } from '@/identity/domain/repositories/user-repository.interface';
+import { Email } from '@/identity/domain/value-objects/email.vo';
 import { IDENTITY_TOKENS } from '@/identity/identity.token';
 import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
 import type { IIDGenerator } from '@/shared/app/contracts/id-generator.contract';
