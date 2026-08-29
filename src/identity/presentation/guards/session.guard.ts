@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { Request } from 'express';
 import { Reflector } from '@nestjs/core';
-import { IS_PUBLIC_KEY } from '../../../shared/decorators/public-route.decorator';
+import { IS_PUBLIC_KEY } from '../../../core/decorators/public-route.decorator';
 import { AuthContextService } from '@/identity/app/services/auth-context.service';
 
 @Injectable()

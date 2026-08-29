@@ -1,4 +1,4 @@
-import { CurrentUserId } from '@/shared/decorators/current-user-id.decorator';
+import { CurrentUserId } from '@/core/decorators/current-user-id.decorator';
 
 import {
     Body,

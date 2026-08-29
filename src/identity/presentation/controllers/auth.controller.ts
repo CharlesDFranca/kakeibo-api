@@ -1,6 +1,6 @@
 import { LoginUseCase, LogoutUseCase } from '@/identity/app/use-cases/auth';
-import { CurrentSessionId } from '@/shared/decorators/current-session-id.decorator';
-import { Public } from '@/shared/decorators/public-route.decorator';
+import { CurrentSessionId } from '@/core/decorators/current-session-id.decorator';
+import { Public } from '@/core/decorators/public-route.decorator';
 import {
     Controller,
     Post,
