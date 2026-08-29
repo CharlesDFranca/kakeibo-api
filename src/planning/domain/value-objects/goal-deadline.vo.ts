@@ -1,3 +1,5 @@
+import { GoalDeadlineMustBeAtLeastOneDayAfterCreationError } from '../errors/goal-deadline-must-be-at-least-one-day-after-creation.error';
+
 export class GoalDeadline {
     constructor(
         private readonly deadline: Date,
@@ -6,9 +8,7 @@ export class GoalDeadline {
         const minimumDeadline = createdAt.getTime() + 24 * 60 * 60 * 1000;
 
         if (deadline.getTime() < minimumDeadline) {
-            throw new Error(
-                'A deadline must have at least one day until it is due',
-            );
+            throw new GoalDeadlineMustBeAtLeastOneDayAfterCreationError();
         }
     }
 

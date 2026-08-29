@@ -2,6 +2,7 @@ import { BaseEntity } from '@/shared/domain/entities/base-entity.entity';
 import { TransactionType } from '../value-objects/transaction-type.vo';
 import { ETransactionStatus } from '../enums/transaction-status.enum';
 import { Money } from '@/shared/domain/value-objects/money.vo';
+import { InvalidTransactionDateError } from '../errors/invalid-transaction-date.error';
 
 type TransactionProps = {
     description: string;
@@ -22,7 +23,7 @@ export class Transaction extends BaseEntity<TransactionProps> {
         super(id, props, createdAt, updatedAt);
 
         if (!this.isValidDate(props.date)) {
-            throw new Error('Invalid transation date');
+            throw new InvalidTransactionDateError(props.date);
         }
     }
 
