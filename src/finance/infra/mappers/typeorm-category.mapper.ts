@@ -1,5 +1,5 @@
 import { Category } from '@/finance/domain/entities/category.entity';
-import { CategoryEntity } from '@/shared/infra/database/entities/typeorm-category.entity';
+import { CategoryEntity } from '@/finance/infra/entities/typeorm-category.entity';
 
 export class TypeOrmCategoryMapper {
     private constructor() {}

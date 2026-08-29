@@ -1,11 +1,11 @@
+import { GoalMovement } from '@/planning/domain/entities/goal-movement.entity';
+import { EGoalMovementType } from '@/planning/domain/enums/goal-movement-type.enum';
+import { IGoalMovementRepository } from '@/planning/domain/repositories/goal-movement-repository.interface';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { GoalMovement } from '../../domain/entities/goal-movement.entity';
-import { IGoalMovementRepository } from '../../domain/repositories/goal-movement-repository.interface';
-import { GoalMovementEntity } from '@/shared/infra/database/entities/typeorm-goal-movement.entity';
+import { GoalMovementEntity } from '../entities/typeorm-goal-movement.entity';
 import { TypeOrmGoalMovementMapper } from '../mappers/typeorm-goal-movement.mapper';
-import { EGoalMovementType } from '../../domain/enums/goal-movement-type.enum';
 
 @Injectable()
 export class TypeOrmGoalMovementRepository implements IGoalMovementRepository {

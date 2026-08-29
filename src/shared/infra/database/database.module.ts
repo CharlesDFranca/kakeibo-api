@@ -1,12 +1,12 @@
+import { CategoryEntity } from '@/finance/infra/entities/typeorm-category.entity';
+import { TransactionEntity } from '@/finance/infra/entities/typeorm-transaction.entity';
+import { WalletEntity } from '@/finance/infra/entities/typeorm-wallet.entity';
+import { UserEntity } from '@/identity/infra/entities/typeorm-user.entity';
+import { GoalMovementEntity } from '@/planning/infra/entities/typeorm-goal-movement.entity';
+import { GoalEntity } from '@/planning/infra/entities/typeorm-goal.entity';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSourceOptions } from 'typeorm';
-import { WalletEntity } from './entities/typeorm-wallet.entity';
-import { CategoryEntity } from './entities/typeorm-category.entity';
-import { TransactionEntity } from './entities/typeorm-transaction.entity';
-import { UserEntity } from './entities/typeorm-user.entity';
-import { GoalEntity } from './entities/typeorm-goal.entity';
-import { GoalMovementEntity } from './entities/typeorm-goal-movement.entity';
 
 export const dataSourceOptions: DataSourceOptions = {
     type: 'postgres',

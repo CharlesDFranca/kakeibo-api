@@ -8,19 +8,16 @@ import {
     Unique,
     UpdateDateColumn,
 } from 'typeorm';
-import { UserEntity } from './typeorm-user.entity';
+import { UserEntity } from '../../../identity/infra/entities/typeorm-user.entity';
 
-@Entity('wallets')
+@Entity('categories')
 @Unique(['userId', 'name'])
-export class WalletEntity {
+export class CategoryEntity {
     @PrimaryColumn()
     id!: string;
 
-    @Column({ type: 'varchar', length: 100 })
+    @Column({ type: 'varchar', length: 100, unique: true })
     name!: string;
-
-    @Column({ type: 'int' })
-    balance!: number;
 
     @Column()
     userId!: string;

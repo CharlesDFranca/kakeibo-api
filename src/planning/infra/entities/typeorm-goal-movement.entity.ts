@@ -9,8 +9,8 @@ import {
 } from 'typeorm';
 
 import { GoalEntity } from './typeorm-goal.entity';
-import { WalletEntity } from './typeorm-wallet.entity';
 import { EGoalMovementType } from '@/planning/domain/enums/goal-movement-type.enum';
+import { WalletEntity } from '@/finance/infra/entities/typeorm-wallet.entity';
 
 @Entity('goal_movements')
 export class GoalMovementEntity {

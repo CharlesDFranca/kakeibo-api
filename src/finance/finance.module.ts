@@ -3,9 +3,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { SharedModule } from '@/shared/shared.module';
 
-import { WalletEntity } from '@/shared/infra/database/entities/typeorm-wallet.entity';
-import { TransactionEntity } from '@/shared/infra/database/entities/typeorm-transaction.entity';
-import { CategoryEntity } from '@/shared/infra/database/entities/typeorm-category.entity';
+import { WalletEntity } from '@/finance/infra/entities/typeorm-wallet.entity';
+import { TransactionEntity } from '@/finance/infra/entities/typeorm-transaction.entity';
+import { CategoryEntity } from '@/finance/infra/entities/typeorm-category.entity';
 
 import { FinanceController } from './presentation/controllers/finance.controller';
 import { WalletController } from './presentation/controllers/wallet.controller';

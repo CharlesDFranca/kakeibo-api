@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ITransactionQuery } from '../../app/queries/transaction-query.interface';
 import { TransactionDetails } from '../../app/types/transaction-details.type';
 import { InjectRepository } from '@nestjs/typeorm';
-import { TransactionEntity } from '@/shared/infra/database/entities/typeorm-transaction.entity';
+import { TransactionEntity } from '@/finance/infra/entities/typeorm-transaction.entity';
 import { Repository } from 'typeorm';
 import { TypeOrmTransactionMapper } from '../mappers/typeorm-transaction.mapper';
 

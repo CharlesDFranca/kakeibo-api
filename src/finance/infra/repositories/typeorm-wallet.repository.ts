@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { TypeOrmWalletMapper } from '../mappers/typeorm-wallet.mapper';
-import { WalletEntity } from '@/shared/infra/database/entities/typeorm-wallet.entity';
+import { WalletEntity } from '@/finance/infra/entities/typeorm-wallet.entity';
 
 @Injectable()
 export class TypeOrmWalletRepository implements IWalletRepository {

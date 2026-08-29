@@ -1,9 +1,9 @@
+import { Goal } from '@/planning/domain/entities/goal.entity';
+import { IGoalRepository } from '@/planning/domain/repositories/goal-repository.interface';
 import { Injectable } from '@nestjs/common';
-import { Goal } from '../../domain/entities/goal.entity';
-import { IGoalRepository } from '../../domain/repositories/goal-repository.interface';
 import { InjectRepository } from '@nestjs/typeorm';
-import { GoalEntity } from '@/shared/infra/database/entities/typeorm-goal.entity';
 import { Repository } from 'typeorm';
+import { GoalEntity } from '../entities/typeorm-goal.entity';
 import { TypeOrmGoalMapper } from '../mappers/typeorm-goal.mapper';
 
 @Injectable()

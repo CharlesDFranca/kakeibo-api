@@ -1,6 +1,6 @@
 import { Wallet } from '@/finance/domain/entities/wallet.entity';
 import { Money } from '@/shared/domain/value-objects/money.vo';
-import { WalletEntity } from '@/shared/infra/database/entities/typeorm-wallet.entity';
+import { WalletEntity } from '@/finance/infra/entities/typeorm-wallet.entity';
 
 export class TypeOrmWalletMapper {
     private constructor() {}

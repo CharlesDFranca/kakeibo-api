@@ -2,7 +2,7 @@ import { Category } from '@/finance/domain/entities/category.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CategoryEntity } from '@/shared/infra/database/entities/typeorm-category.entity';
+import { CategoryEntity } from '@/finance/infra/entities/typeorm-category.entity';
 import { TypeOrmCategoryMapper } from '../mappers/typeorm-category.mapper';
 import { ICategoryRepository } from '../../domain/repositories/category-repository.interface';
 

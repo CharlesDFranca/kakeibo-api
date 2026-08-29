@@ -1,22 +1,18 @@
 import { ITransactionRepository } from '@/finance/domain/repositories/transaction-repository.interface';
-import { TypeOrmTransactionRepository } from '@/finance/infra/repositories/typeorm-transaction.repository';
-
 import { IWalletRepository } from '@/finance/domain/repositories/wallet-repository.interface';
+import { TransactionEntity } from '@/finance/infra/entities/typeorm-transaction.entity';
+import { WalletEntity } from '@/finance/infra/entities/typeorm-wallet.entity';
+import { TypeOrmTransactionRepository } from '@/finance/infra/repositories/typeorm-transaction.repository';
 import { TypeOrmWalletRepository } from '@/finance/infra/repositories/typeorm-wallet.repository';
-
-import { IGoalRepository } from '@/planning/domain/repositories/goal-repository.interface';
-import { TypeOrmGoalRepository } from '@/planning/infra/repositories/typeorm-goal.repository';
-
-import { IUnitOfWork } from '@/shared/app/contracts/unit-of-work.contract';
-
-import { Injectable, Scope } from '@nestjs/common';
-import { DataSource, EntityManager, QueryRunner } from 'typeorm';
-import { GoalEntity } from '../entities/typeorm-goal.entity';
-import { TransactionEntity } from '../entities/typeorm-transaction.entity';
-import { WalletEntity } from '../entities/typeorm-wallet.entity';
 import { IGoalMovementRepository } from '@/planning/domain/repositories/goal-movement-repository.interface';
-import { GoalMovementEntity } from '../entities/typeorm-goal-movement.entity';
+import { IGoalRepository } from '@/planning/domain/repositories/goal-repository.interface';
+import { GoalMovementEntity } from '@/planning/infra/entities/typeorm-goal-movement.entity';
+import { GoalEntity } from '@/planning/infra/entities/typeorm-goal.entity';
 import { TypeOrmGoalMovementRepository } from '@/planning/infra/repositories/typeorm-goal-movement.repository';
+import { TypeOrmGoalRepository } from '@/planning/infra/repositories/typeorm-goal.repository';
+import { IUnitOfWork } from '@/shared/app/contracts/unit-of-work.contract';
+import { Injectable, Scope } from '@nestjs/common';
+import { QueryRunner, EntityManager, DataSource } from 'typeorm';
 
 @Injectable({ scope: Scope.REQUEST })
 export class TypeOrmUnitOfWork implements IUnitOfWork {
