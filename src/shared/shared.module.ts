@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { NodeCryptoIDGeneratorService } from '../core/infra/services/id-generator.service';
 import { SHARED_TOKENS } from './shared.token';
-import { BcryptPasswordHasher } from '../core/infra/services/bcrypt-password-hasher.service';
 import { DatabaseModule } from '../core/infra/database/database.module';
 import { RedisModule } from '../core/infra/redis/redis.module';
 import { TypeOrmUnitOfWork } from '../core/infra/database/unit-of-work/typeorm-unit-of-work';
@@ -14,10 +13,6 @@ import { TypeOrmUnitOfWork } from '../core/infra/database/unit-of-work/typeorm-u
             useClass: NodeCryptoIDGeneratorService,
         },
         {
-            provide: SHARED_TOKENS.PASSWORD_HASHER,
-            useClass: BcryptPasswordHasher,
-        },
-        {
             provide: SHARED_TOKENS.UNIT_OF_WORK,
             useClass: TypeOrmUnitOfWork,
         },
@@ -26,7 +21,6 @@ import { TypeOrmUnitOfWork } from '../core/infra/database/unit-of-work/typeorm-u
         DatabaseModule,
         RedisModule,
         SHARED_TOKENS.ID_GENERATOR,
-        SHARED_TOKENS.PASSWORD_HASHER,
         SHARED_TOKENS.UNIT_OF_WORK,
     ],
 })

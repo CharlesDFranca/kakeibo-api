@@ -1,4 +1,4 @@
-import { IPasswordHasher } from '@/shared/app/contracts/password-hasher.contract';
+import { IPasswordHasher } from '@/identity/app/contracts/password-hasher.contract';
 import { Injectable } from '@nestjs/common';
 import bcrypt from 'bcrypt';
 

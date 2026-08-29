@@ -5,7 +5,7 @@ import { Email } from '@/identity/domain/value-objects/email.vo';
 import { IDENTITY_TOKENS } from '@/identity/identity.token';
 import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
 import type { IIDGenerator } from '@/shared/app/contracts/id-generator.contract';
-import type { IPasswordHasher } from '@/shared/app/contracts/password-hasher.contract';
+import type { IPasswordHasher } from '@/identity/app/contracts/password-hasher.contract';
 import { SHARED_TOKENS } from '@/shared/shared.token';
 import { Injectable, Inject } from '@nestjs/common';
 import { InvalidCredentialsError } from '../../errors/invalid-credentials.error';
@@ -28,7 +28,7 @@ export class LoginUseCase implements IBaseUseCase<LoginInput, LoginOutput> {
         private readonly userRepository: IUserRepository,
         @Inject(SHARED_TOKENS.ID_GENERATOR)
         private readonly idGenerator: IIDGenerator,
-        @Inject(SHARED_TOKENS.PASSWORD_HASHER)
+        @Inject(IDENTITY_TOKENS.PASSWORD_HASHER)
         private readonly passworder: IPasswordHasher,
     ) {}
 

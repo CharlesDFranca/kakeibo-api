@@ -18,6 +18,7 @@ import { AuthContextService } from './app/services/auth-context.service';
 import { IDENTITY_TOKENS } from './identity.token';
 import { APP_GUARD } from '@nestjs/core';
 import { SessionGuard } from './presentation/guards/session.guard';
+import { BcryptPasswordHasher } from './infra/services/bcrypt-password-hasher.service';
 
 @Module({
     imports: [SharedModule, TypeOrmModule.forFeature([UserEntity])],
@@ -38,11 +39,16 @@ import { SessionGuard } from './presentation/guards/session.guard';
             provide: IDENTITY_TOKENS.SESSION_REPOSITORY,
             useClass: RedisSessionRepository,
         },
+        {
+            provide: IDENTITY_TOKENS.PASSWORD_HASHER,
+            useClass: BcryptPasswordHasher,
+        },
         { provide: APP_GUARD, useClass: SessionGuard },
     ],
     exports: [
         IDENTITY_TOKENS.USER_REPOSITORY,
         IDENTITY_TOKENS.SESSION_REPOSITORY,
+        IDENTITY_TOKENS.PASSWORD_HASHER,
         AuthContextService,
     ],
 })

@@ -5,7 +5,7 @@ import { Username } from '@/identity/domain/value-objects/username.vo';
 import { IDENTITY_TOKENS } from '@/identity/identity.token';
 import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
 import type { IIDGenerator } from '@/shared/app/contracts/id-generator.contract';
-import type { IPasswordHasher } from '@/shared/app/contracts/password-hasher.contract';
+import type { IPasswordHasher } from '@/identity/app/contracts/password-hasher.contract';
 import { Name } from '@/shared/domain/value-objects/name.vo';
 import { SHARED_TOKENS } from '@/shared/shared.token';
 import { Injectable, Inject } from '@nestjs/common';
@@ -29,7 +29,7 @@ export class CreateUserUseCase implements IBaseUseCase<
     constructor(
         @Inject(IDENTITY_TOKENS.USER_REPOSITORY)
         private readonly userRepository: IUserRepository,
-        @Inject(SHARED_TOKENS.PASSWORD_HASHER)
+        @Inject(IDENTITY_TOKENS.PASSWORD_HASHER)
         private readonly passworder: IPasswordHasher,
         @Inject(SHARED_TOKENS.ID_GENERATOR)
         private readonly idGenerator: IIDGenerator,
