@@ -10,6 +10,8 @@ import { Transaction } from '../../../domain/entities/transaction.entity';
 import { TransactionType } from '../../../domain/value-objects/transaction-type.vo';
 import type { ICategoryRepository } from '@/finance/domain/repositories/category-repository.interface';
 import { Money } from '@/shared/domain/value-objects/money.vo';
+import { CategoryNotFoundError } from '../../errors/category-not-found.error';
+import { WalletNotFoundError } from '../../errors/wallet-not-found.error';
 
 type CreateTransactionInput = {
     userId: string;
@@ -49,14 +51,14 @@ export class CreateTransactionUseCase implements IBaseUseCase<
             input.categoryId,
         );
 
-        if (!category) throw new Error('Category not found');
+        if (!category) throw new CategoryNotFoundError();
 
         const wallet = await this.walletRepository.findUserWalletById(
             input.userId,
             input.walletId,
         );
 
-        if (!wallet) throw new Error('Wallet not found');
+        if (!wallet) throw new WalletNotFoundError();
 
         const now = new Date();
 
