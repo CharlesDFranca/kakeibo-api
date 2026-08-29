@@ -3,6 +3,8 @@ import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import type { IUnitOfWork } from '@/shared/app/contracts/unit-of-work.contract';
 import { Money } from '@/shared/domain/value-objects/money.vo';
 import { SHARED_TOKENS } from '@/shared/shared.token';
+import { GoalNotFoundError } from '../../errors/goal-not-found.error';
+import { GoalMovementReferencesNonExistentWalletError } from '../../errors/goal-movement-references-non-existent-wallet.error';
 
 type CancelGoalInput = {
     userId: string;
@@ -32,13 +34,7 @@ export class CancelGoalUseCase implements IBaseUseCase<
                 input.goalId,
             );
 
-            if (!goal) {
-                throw new NotFoundException('Goal not found');
-            }
-
-            if (goal.isCompleted()) {
-                throw new Error('Cannot cancel a completed goal');
-            }
+            if (!goal) throw new GoalNotFoundError();
 
             const movements = await goalMovementRepository.findByGoalId(
                 goal.id,
@@ -66,9 +62,7 @@ export class CancelGoalUseCase implements IBaseUseCase<
                 );
 
                 if (!wallet) {
-                    throw new Error(
-                        'Goal movement references a non-existent wallet',
-                    );
+                    throw new GoalMovementReferencesNonExistentWalletError();
                 }
 
                 wallet.deposit(amount);
