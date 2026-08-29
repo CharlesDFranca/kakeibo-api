@@ -1,6 +1,6 @@
+import { HttpErrorMapper } from '@/shared/errors/mappers/http-error.mapper';
+import { HttpStatusCodeMapper } from '@/shared/errors/mappers/http-status-code.mapper';
 import { ArgumentsHost, Catch, ExceptionFilter } from '@nestjs/common';
-import { HttpErrorMapper } from '../errors/mappers/http-error.mapper';
-import { HttpStatusCodeMapper } from '../errors/mappers/http-status-code.mapper';
 
 @Catch()
 export class GlobalExceptionFilter implements ExceptionFilter {
