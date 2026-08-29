@@ -6,6 +6,7 @@ import { SHARED_TOKENS } from '@/shared/shared.token';
 import { Inject, Injectable } from '@nestjs/common';
 import type { ICategoryRepository } from '../../../domain/repositories/category-repository.interface';
 import { Name } from '@/shared/domain/value-objects/name.vo';
+import { CategoryAlreadyExistsError } from '../../errors/category-already-exists.error';
 
 type CreateCategoryInput = {
     name: string;
@@ -35,7 +36,7 @@ export class CreateCategoryUseCase implements IBaseUseCase<
                 input.name,
             );
 
-        if (existsByName) throw new Error('Category already exists');
+        if (existsByName) throw new CategoryAlreadyExistsError();
 
         const now = new Date();
 
