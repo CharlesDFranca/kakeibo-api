@@ -13,7 +13,7 @@ import { TypeOrmGoalRepository } from '@/planning/infra/repositories/typeorm-goa
 import { IUnitOfWork } from '@/shared/app/contracts/unit-of-work.contract';
 import { Injectable, Scope } from '@nestjs/common';
 import { QueryRunner, EntityManager, DataSource } from 'typeorm';
-import { UnitOfWorkNotInitializedError } from '../../errors/unit-of-work-not-initialized.error.ts';
+import { UnitOfWorkNotInitializedError } from '../../errors/unit-of-work-not-initialized.error';
 
 @Injectable({ scope: Scope.REQUEST })
 export class TypeOrmUnitOfWork implements IUnitOfWork {
