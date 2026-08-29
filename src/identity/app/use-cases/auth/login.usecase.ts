@@ -8,6 +8,7 @@ import type { IIDGenerator } from '@/shared/app/contracts/id-generator.contract'
 import type { IPasswordHasher } from '@/shared/app/contracts/password-hasher.contract';
 import { SHARED_TOKENS } from '@/shared/shared.token';
 import { Injectable, Inject } from '@nestjs/common';
+import { InvalidCredentialsError } from '../../errors/invalid-credentials.error';
 
 type LoginInput = {
     email: string;
@@ -36,14 +37,14 @@ export class LoginUseCase implements IBaseUseCase<LoginInput, LoginOutput> {
             new Email(input.email),
         );
 
-        if (!user) throw new Error('User not found');
+        if (!user) throw new InvalidCredentialsError();
 
         const passwordMatch = await this.passworder.compare(
             input.password,
             user.password,
         );
 
-        if (!passwordMatch) throw new Error('Invalid credentials');
+        if (!passwordMatch) throw new InvalidCredentialsError();
 
         const SESSION_DURATION_MS = 1000 * 60 * 60 * 24 * 30;
 

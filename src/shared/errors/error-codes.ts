@@ -10,6 +10,7 @@ export const ErrorCodes = {
         'SESSION_EXPIRATION_MUST_BE_AFTER_CREATION',
     INVALID_EMAIL: 'INVALID_EMAIL',
     INVALID_USERNAME: 'INVALID_USERNAME',
+    INVALID_CREDENTIALS: 'INVALID_CREDENTIALS',
 } as const;
 
 export type ErrorCode = (typeof ErrorCodes)[keyof typeof ErrorCodes];
