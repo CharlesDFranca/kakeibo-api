@@ -1,6 +1,7 @@
 import { BaseEntity } from '@/shared/domain/entities/base-entity.entity';
 import { Money } from '@/shared/domain/value-objects/money.vo';
 import { Name } from '@/shared/domain/value-objects/name.vo';
+import { InsufficientWalletBalanceError } from '../errors/insufficient-wallet-balance.error';
 
 type WalletProps = {
     userId: string;
@@ -44,7 +45,7 @@ export class Wallet extends BaseEntity<WalletProps> {
 
     public withdraw(amount: Money) {
         if (!this.canWithdraw(amount)) {
-            throw new Error('Insufficient balance');
+            throw new InsufficientWalletBalanceError();
         }
 
         this.props.balance = this.balance.subtract(amount);
