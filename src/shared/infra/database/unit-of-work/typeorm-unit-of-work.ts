@@ -13,6 +13,7 @@ import { TypeOrmGoalRepository } from '@/planning/infra/repositories/typeorm-goa
 import { IUnitOfWork } from '@/shared/app/contracts/unit-of-work.contract';
 import { Injectable, Scope } from '@nestjs/common';
 import { QueryRunner, EntityManager, DataSource } from 'typeorm';
+import { UnitOfWorkNotInitializedError } from '../../errors/unit-of-work-not-initialized.error.ts';
 
 @Injectable({ scope: Scope.REQUEST })
 export class TypeOrmUnitOfWork implements IUnitOfWork {
@@ -101,7 +102,7 @@ export class TypeOrmUnitOfWork implements IUnitOfWork {
 
     private async commit(): Promise<void> {
         if (!this.queryRunner) {
-            throw new Error('Transaction not started');
+            throw new UnitOfWorkNotInitializedError();
         }
 
         await this.queryRunner.commitTransaction();
@@ -109,7 +110,7 @@ export class TypeOrmUnitOfWork implements IUnitOfWork {
 
     private async rollback(): Promise<void> {
         if (!this.queryRunner) {
-            throw new Error('Transaction not started');
+            throw new UnitOfWorkNotInitializedError();
         }
 
         await this.queryRunner.rollbackTransaction();
@@ -132,7 +133,7 @@ export class TypeOrmUnitOfWork implements IUnitOfWork {
 
     private getManager(): EntityManager {
         if (!this.entityManager) {
-            throw new Error('Transaction not started');
+            throw new UnitOfWorkNotInitializedError();
         }
 
         return this.entityManager;
