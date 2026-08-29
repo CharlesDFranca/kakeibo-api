@@ -1,17 +1,20 @@
 import { Decimal } from 'decimal.js';
+import { MoneyValueCannotBeNegativeError } from '../errors/money-value-cannot-be-negative.error';
+import { MoneyValueMustBeFiniteError } from '../errors/money-value-must-be-finite.error';
+import { MoneyCannotHaveMoreThanTwoDecimalPlacesError } from '../errors/money-cannot-have-more-than-two-decimal-place.error';
 
 export class Money {
     private constructor(private readonly value: Decimal) {
         if (!value.isFinite()) {
-            throw new Error('Money value must be finite');
+            throw new MoneyValueMustBeFiniteError();
         }
 
         if (value.isNegative()) {
-            throw new Error('Money value cannot be negative');
+            throw new MoneyValueCannotBeNegativeError();
         }
 
         if (value.decimalPlaces() > 2) {
-            throw new Error('Money cannot have more than two decimal places');
+            throw new MoneyCannotHaveMoreThanTwoDecimalPlacesError();
         }
     }
 
@@ -43,7 +46,7 @@ export class Money {
         const result = this.value.minus(other.value);
 
         if (result.isNegative()) {
-            throw new Error('Money cannot have a negative value');
+            throw new MoneyValueCannotBeNegativeError();
         }
 
         return new Money(result);
