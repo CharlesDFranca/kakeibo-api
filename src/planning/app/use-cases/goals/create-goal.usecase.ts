@@ -11,6 +11,7 @@ import { PLANNING_TOKENS } from '@/planning/planning.tokens';
 import { SHARED_TOKENS } from '@/shared/shared.token';
 import { EGoalStatus } from '../../../domain/enums/goal-status.enum';
 import { IDENTITY_TOKENS } from '@/identity/identity.token';
+import { Name } from '@/shared/domain/value-objects/name.vo';
 
 type CreateGoalInput = {
     userId: string;
@@ -49,7 +50,7 @@ export class CreateGoalUseCase implements IBaseUseCase<
             {
                 userId: input.userId,
                 currentAmount: Money.zero(),
-                name: input.name,
+                name: new Name(input.name),
                 status: new GoalStatus(EGoalStatus.IN_PROGRESS),
                 targetAmount: Money.fromAmount(input.targetAmount),
                 deadline: input.deadline

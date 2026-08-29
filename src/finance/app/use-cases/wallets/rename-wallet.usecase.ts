@@ -1,6 +1,7 @@
 import type { IWalletRepository } from '@/finance/domain/repositories/wallet-repository.interface';
 import { FINANCE_TOKENS } from '@/finance/finance.tokens';
 import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
+import { Name } from '@/shared/domain/value-objects/name.vo';
 import { Inject, Injectable } from '@nestjs/common';
 
 type RenameWalletInput = {
@@ -31,7 +32,9 @@ export class RenameWalletUseCase implements IBaseUseCase<
 
         if (!wallet) throw new Error('Wallet not found');
 
-        if (wallet.name !== input.name) {
+        const name = new Name(input.name);
+
+        if (!wallet.name.equals(name)) {
             const walletWithSameName =
                 await this.walletRepository.findUserWalletByName(
                     input.userId,
@@ -43,7 +46,7 @@ export class RenameWalletUseCase implements IBaseUseCase<
             }
         }
 
-        wallet.rename(input.name);
+        wallet.rename(name);
 
         await this.walletRepository.update(wallet);
 

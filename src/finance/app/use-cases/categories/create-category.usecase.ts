@@ -5,6 +5,7 @@ import type { IIDGenerator } from '@/shared/app/contracts/id-generator.contract'
 import { SHARED_TOKENS } from '@/shared/shared.token';
 import { Inject, Injectable } from '@nestjs/common';
 import type { ICategoryRepository } from '../../../domain/repositories/category-repository.interface';
+import { Name } from '@/shared/domain/value-objects/name.vo';
 
 type CreateCategoryInput = {
     name: string;
@@ -41,7 +42,7 @@ export class CreateCategoryUseCase implements IBaseUseCase<
         const category = new Category(
             this.idGenerator.generate(),
             {
-                name: input.name,
+                name: new Name(input.name),
                 userId: input.userId,
             },
             now,

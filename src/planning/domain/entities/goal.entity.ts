@@ -4,10 +4,11 @@ import { Money } from '@/shared/domain/value-objects/money.vo';
 import { GoalDeadline } from '../value-objects/goal-deadline.vo';
 import { GoalStatus } from '../value-objects/goal-status.vo';
 import { EGoalStatus } from '../enums/goal-status.enum';
+import { Name } from '@/shared/domain/value-objects/name.vo';
 
 type GoalProps = {
     userId: string;
-    name: string;
+    name: Name;
     targetAmount: Money;
     currentAmount: Money;
     deadline?: GoalDeadline | undefined;
@@ -21,16 +22,12 @@ export class Goal extends BaseEntity<GoalProps> {
         createdAt: Date,
         updatedAt: Date,
     ) {
-        if (props.name.trim() === '') {
-            throw new Error('Name cannot be empty');
-        }
-
         super(id, props, createdAt, updatedAt);
 
         this.ensureValidAmounts();
     }
 
-    public get name(): string {
+    public get name(): Name {
         return this.props.name;
     }
 
@@ -72,12 +69,8 @@ export class Goal extends BaseEntity<GoalProps> {
             : this.targetAmount.subtract(this.currentAmount);
     }
 
-    public rename(name: string): void {
-        if (name.trim() === '') {
-            throw new Error('Name cannot be empty');
-        }
-
-        if (this.name === name) return;
+    public rename(name: Name): void {
+        if (this.name.equals(name)) return;
 
         this.props.name = name;
         this.touch();

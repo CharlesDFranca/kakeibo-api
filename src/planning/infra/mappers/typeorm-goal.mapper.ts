@@ -3,6 +3,7 @@ import { GoalDeadline } from '@/planning/domain/value-objects/goal-deadline.vo';
 import { GoalStatus } from '@/planning/domain/value-objects/goal-status.vo';
 import { Money } from '@/shared/domain/value-objects/money.vo';
 import { GoalEntity } from '../entities/typeorm-goal.entity';
+import { Name } from '@/shared/domain/value-objects/name.vo';
 
 export class TypeOrmGoalMapper {
     private constructor() {}
@@ -11,7 +12,7 @@ export class TypeOrmGoalMapper {
         return new Goal(
             raw.id,
             {
-                name: raw.name,
+                name: new Name(raw.name),
                 currentAmount: Money.fromCents(raw.currentAmount),
                 targetAmount: Money.fromCents(raw.targetAmount),
                 status: new GoalStatus(raw.status),
@@ -29,7 +30,7 @@ export class TypeOrmGoalMapper {
         const entity = new GoalEntity();
 
         entity.id = goal.id;
-        entity.name = goal.name;
+        entity.name = goal.name.value;
         entity.userId = goal.userId;
         entity.targetAmount = goal.targetAmount.toCents();
         entity.currentAmount = goal.currentAmount.toCents();

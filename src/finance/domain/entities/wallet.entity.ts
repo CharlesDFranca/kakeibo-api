@@ -1,9 +1,10 @@
 import { BaseEntity } from '@/shared/domain/entities/base-entity.entity';
 import { Money } from '@/shared/domain/value-objects/money.vo';
+import { Name } from '@/shared/domain/value-objects/name.vo';
 
 type WalletProps = {
     userId: string;
-    name: string;
+    name: Name;
     balance: Money;
 };
 
@@ -15,13 +16,9 @@ export class Wallet extends BaseEntity<WalletProps> {
         updatedAt: Date,
     ) {
         super(id, props, createdAt, updatedAt);
-
-        if (!props.name || props.name.trim() === '') {
-            throw new Error('Wallet name cannot be empty');
-        }
     }
 
-    public get name(): string {
+    public get name(): Name {
         return this.props.name;
     }
 
@@ -33,10 +30,8 @@ export class Wallet extends BaseEntity<WalletProps> {
         return this.props.userId;
     }
 
-    public rename(name: string): void {
-        if (!name || name.trim() === '') {
-            throw new Error('Wallet name cannot be empty');
-        }
+    public rename(name: Name): void {
+        if (this.name.equals(name)) return;
 
         this.props.name = name;
         this.touch();
