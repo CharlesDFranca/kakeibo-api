@@ -28,7 +28,7 @@ export class LoginUseCase implements IBaseUseCase<LoginInput, LoginOutput> {
         @Inject(SHARED_TOKENS.ID_GENERATOR)
         private readonly idGenerator: IIDGenerator,
         @Inject(SHARED_TOKENS.PASSWORD_HASHER)
-        private readonly passwordHasher: IPasswordHasher,
+        private readonly passworder: IPasswordHasher,
     ) {}
 
     async execute(input: LoginInput): Promise<LoginOutput> {
@@ -38,9 +38,9 @@ export class LoginUseCase implements IBaseUseCase<LoginInput, LoginOutput> {
 
         if (!user) throw new Error('User not found');
 
-        const passwordMatch = await this.passwordHasher.compare(
+        const passwordMatch = await this.passworder.compare(
             input.password,
-            user.passwordHash,
+            user.password,
         );
 
         if (!passwordMatch) throw new Error('Invalid credentials');

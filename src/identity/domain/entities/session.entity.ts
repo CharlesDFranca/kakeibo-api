@@ -1,3 +1,5 @@
+import { SessionExpirationMustBeAfterCreationError } from '../errors/session-expiration-must-be-after-creation.error';
+
 export class Session {
     constructor(
         private readonly _id: string,
@@ -5,7 +7,7 @@ export class Session {
         private _expiresAt: Date,
     ) {
         if (_expiresAt.getTime() <= Date.now()) {
-            throw new Error('Session expiration must be after creation');
+            throw new SessionExpirationMustBeAfterCreationError();
         }
     }
 

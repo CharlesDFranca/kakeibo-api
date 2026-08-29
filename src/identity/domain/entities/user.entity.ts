@@ -1,12 +1,13 @@
 import { BaseEntity } from '@/shared/domain/entities/base-entity.entity';
 import { Email } from '../value-objects/email.vo';
 import { Username } from '../value-objects/username.vo';
+import { Name } from '@/shared/domain/value-objects/name.vo';
 
 type UserProps = {
-    name: string;
+    name: Name;
     username: Username;
     email: Email;
-    passwordHash: string;
+    password: string;
 };
 
 export class User extends BaseEntity<UserProps> {
@@ -16,13 +17,10 @@ export class User extends BaseEntity<UserProps> {
         createdAt: Date,
         updatedAt: Date,
     ) {
-        super(id, { ...props, name: props.name.trim() }, createdAt, updatedAt);
-
-        this.validateName(props.name);
-        this.validatePasswordHash(props.passwordHash);
+        super(id, { ...props, name: props.name }, createdAt, updatedAt);
     }
 
-    public get name(): string {
+    public get name(): Name {
         return this.props.name;
     }
 
@@ -34,19 +32,15 @@ export class User extends BaseEntity<UserProps> {
         return this.props.email;
     }
 
-    public get passwordHash(): string {
-        return this.props.passwordHash;
+    public get password(): string {
+        return this.props.password;
     }
 
-    public rename(name: string): void {
-        const normilized = name.trim();
+    public rename(name: Name): void {
+        if (this.name.equals(name)) return;
 
-        this.validateName(normilized);
-
-        if (this.name !== normilized) {
-            this.props.name = normilized;
-            this.touch();
-        }
+        this.props.name = name;
+        this.touch();
     }
 
     public changeEmail(email: Email): void {
@@ -56,24 +50,10 @@ export class User extends BaseEntity<UserProps> {
         }
     }
 
-    public changePassword(passwordHash: string): void {
-        this.validatePasswordHash(passwordHash);
-
-        if (this.passwordHash !== passwordHash) {
-            this.props.passwordHash = passwordHash;
+    public changePassword(password: string): void {
+        if (this.password !== password) {
+            this.props.password = password;
             this.touch();
         }
-    }
-
-    private validateName(name: string): void {
-        if (!name || name.trim() === '')
-            throw new Error('User name cannot be empty');
-
-        if (name.trim().length < 3) throw new Error('Name too short [MIN: 3]');
-    }
-
-    private validatePasswordHash(passwordHash: string): void {
-        if (!passwordHash || passwordHash.trim() === '')
-            throw new Error('User passwordHash cannot be empty');
     }
 }

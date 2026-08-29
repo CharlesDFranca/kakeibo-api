@@ -6,6 +6,7 @@ import { IDENTITY_TOKENS } from '@/identity/identity.token';
 import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
 import type { IIDGenerator } from '@/shared/app/contracts/id-generator.contract';
 import type { IPasswordHasher } from '@/shared/app/contracts/password-hasher.contract';
+import { Name } from '@/shared/domain/value-objects/name.vo';
 import { SHARED_TOKENS } from '@/shared/shared.token';
 import { Injectable, Inject } from '@nestjs/common';
 
@@ -26,7 +27,7 @@ export class CreateUserUseCase implements IBaseUseCase<
         @Inject(IDENTITY_TOKENS.USER_REPOSITORY)
         private readonly userRepository: IUserRepository,
         @Inject(SHARED_TOKENS.PASSWORD_HASHER)
-        private readonly passwordHasher: IPasswordHasher,
+        private readonly passworder: IPasswordHasher,
         @Inject(SHARED_TOKENS.ID_GENERATOR)
         private readonly idGenerator: IIDGenerator,
     ) {}
@@ -48,17 +49,17 @@ export class CreateUserUseCase implements IBaseUseCase<
 
         if (!password.length) throw new Error('Password cannot be empty');
 
-        const passwordHash = await this.passwordHasher.hash(password);
+        const passwordHash = await this.passworder.hash(password);
 
         const now = new Date();
 
         const user = new User(
             this.idGenerator.generate(),
             {
-                name: input.name,
+                name: new Name(input.name),
                 username,
                 email,
-                passwordHash,
+                password: passwordHash,
             },
             now,
             now,

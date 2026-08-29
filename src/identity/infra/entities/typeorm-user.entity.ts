@@ -21,7 +21,7 @@ export class UserEntity {
     username!: string;
 
     @Column({ type: 'varchar' })
-    passwordHash!: string;
+    password!: string;
 
     @CreateDateColumn({ type: 'timestamptz' })
     createdAt!: Date;

@@ -28,6 +28,10 @@ export class FindUserByIdUseCase implements IBaseUseCase<
 
         if (!user) throw new Error('User not found');
 
-        return { id: user.id, name: user.name, username: user.username.value };
+        return {
+            id: user.id,
+            name: user.name.value,
+            username: user.username.value,
+        };
     }
 }
