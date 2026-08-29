@@ -4,6 +4,7 @@ import type { IGoalRepository } from '../../../domain/repositories/goal-reposito
 import type { IGoalMovementRepository } from '../../../domain/repositories/goal-movement-repository.interface';
 import type { IWalletRepository } from '@/finance/domain/repositories/wallet-repository.interface';
 import { PLANNING_TOKENS } from '@/planning/planning.tokens';
+import { GoalNotFoundError } from '../../errors/goal-not-found.error';
 
 type FindGoalByIdInput = {
     userId: string;
@@ -30,7 +31,7 @@ export class FindGoalByIdUseCase implements IBaseUseCase<
             input.goalId,
         );
 
-        if (!goal) throw new NotFoundException('Goal not found');
+        if (!goal) throw new GoalNotFoundError();
 
         const goalMovements = await this.goalMovementsRepository.findByGoalId(
             goal.id,

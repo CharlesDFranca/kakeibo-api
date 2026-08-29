@@ -12,6 +12,7 @@ import { SHARED_TOKENS } from '@/shared/shared.token';
 import { EGoalStatus } from '../../../domain/enums/goal-status.enum';
 import { IDENTITY_TOKENS } from '@/identity/identity.token';
 import { Name } from '@/shared/domain/value-objects/name.vo';
+import { UserNotFoundError } from '@/identity/app/errors/user-not-found.error';
 
 type CreateGoalInput = {
     userId: string;
@@ -40,7 +41,7 @@ export class CreateGoalUseCase implements IBaseUseCase<
         const user = await this.userRepository.findById(input.userId);
 
         if (!user) {
-            throw new NotFoundException('User not found');
+            throw new UserNotFoundError();
         }
 
         const now = new Date();

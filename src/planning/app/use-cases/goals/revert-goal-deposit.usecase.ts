@@ -1,19 +1,18 @@
-import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
-import {
-    ConflictException,
-    Inject,
-    Injectable,
-    NotFoundException,
-} from '@nestjs/common';
-import type { IUnitOfWork } from '@/shared/app/contracts/unit-of-work.contract';
-import type { IIDGenerator } from '@/shared/app/contracts/id-generator.contract';
+import { WalletNotFoundError } from '@/finance/app/errors/wallet-not-found.error';
 import { Transaction } from '@/finance/domain/entities/transaction.entity';
-import { TransactionType } from '@/finance/domain/value-objects/transaction-type.vo';
 import { ETransactionType } from '@/finance/domain/enums/transaction-type.enum';
+import { TransactionType } from '@/finance/domain/value-objects/transaction-type.vo';
+import { GoalMovement } from '@/planning/domain/entities/goal-movement.entity';
+import { EGoalMovementType } from '@/planning/domain/enums/goal-movement-type.enum';
+import { GoalMovementCannotBeRevertedError } from '@/planning/domain/errors/goal-movement-cannot-be-reverted.error';
+import { GoalMovementType } from '@/planning/domain/value-objects/goal-movement-type.vo';
+import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
+import type { IIDGenerator } from '@/shared/app/contracts/id-generator.contract';
+import type { IUnitOfWork } from '@/shared/app/contracts/unit-of-work.contract';
 import { SHARED_TOKENS } from '@/shared/shared.token';
-import { GoalMovement } from '../../../domain/entities/goal-movement.entity';
-import { GoalMovementType } from '../../../domain/value-objects/goal-movement-type.vo';
-import { EGoalMovementType } from '../../../domain/enums/goal-movement-type.enum';
+import { Injectable, Inject } from '@nestjs/common';
+import { GoalDepositNotFoundError } from '../../errors/goal-deposit-not-found.error';
+import { GoalNotFoundError } from '../../errors/goal-not-found.error';
 
 type RevertGoalDepositInput = {
     userId: string;
@@ -50,10 +49,10 @@ export class RevertGoalDepositUseCase implements IBaseUseCase<
                 input.depositId,
             );
 
-            if (!deposit) throw new NotFoundException('Goal deposit not found');
+            if (!deposit) throw new GoalDepositNotFoundError();
 
             if (!deposit.canRevert()) {
-                throw new ConflictException('Only deposits can be reverted');
+                throw new GoalMovementCannotBeRevertedError();
             }
 
             const wallet = await walletRepository.findUserWalletById(
@@ -61,18 +60,14 @@ export class RevertGoalDepositUseCase implements IBaseUseCase<
                 deposit.walletId,
             );
 
-            if (!wallet) {
-                throw new NotFoundException('Wallet not found');
-            }
+            if (!wallet) throw new WalletNotFoundError();
 
             const goal = await goalRepository.findUserGoalById(
                 input.userId,
                 deposit.goalId,
             );
 
-            if (!goal) {
-                throw new NotFoundException('Goal not found');
-            }
+            if (!goal) throw new GoalNotFoundError();
 
             const amount = deposit.amount;
 

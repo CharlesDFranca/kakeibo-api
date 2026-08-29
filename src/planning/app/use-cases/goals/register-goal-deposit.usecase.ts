@@ -10,6 +10,8 @@ import { ETransactionType } from '@/finance/domain/enums/transaction-type.enum';
 import { SHARED_TOKENS } from '@/shared/shared.token';
 import { GoalMovementType } from '../../../domain/value-objects/goal-movement-type.vo';
 import { EGoalMovementType } from '../../../domain/enums/goal-movement-type.enum';
+import { WalletNotFoundError } from '@/finance/app/errors/wallet-not-found.error';
+import { GoalNotFoundError } from '../../errors/goal-not-found.error';
 
 type RegisterGoalDepositInput = {
     userId: string;
@@ -47,26 +49,31 @@ export class RegisterGoalDepositUseCase implements IBaseUseCase<
                 input.walletId,
             );
 
-            if (!wallet) throw new NotFoundException('Wallet not found');
+            if (!wallet) throw new WalletNotFoundError();
 
             const goal = await goalRepository.findUserGoalById(
                 input.userId,
                 input.goalId,
             );
 
-            if (!goal) throw new NotFoundException('Goal not found');
+            if (!goal) throw new GoalNotFoundError();
 
             const amount = Money.fromAmount(input.amount);
+            const necessaryAmount = goal.necessaryToComplete();
 
-            wallet.withdraw(amount);
-            goal.contribute(amount);
+            const contribution = amount.isGreaterThan(necessaryAmount)
+                ? necessaryAmount
+                : amount;
+
+            wallet.withdraw(contribution);
+            goal.contribute(contribution);
 
             const now = new Date();
 
             const goalMovement = new GoalMovement(
                 this.idGenerator.generate(),
                 {
-                    amount: amount,
+                    amount: contribution,
                     goalId: goal.id,
                     walletId: wallet.id,
                     type: new GoalMovementType(EGoalMovementType.DEPOSIT),
@@ -78,7 +85,7 @@ export class RegisterGoalDepositUseCase implements IBaseUseCase<
             const transaction = new Transaction(
                 this.idGenerator.generate(),
                 {
-                    amount: amount,
+                    amount: contribution,
                     categoryId: input.categoryId,
                     walletId: wallet.id,
                     date: now,
