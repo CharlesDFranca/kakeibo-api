@@ -45,6 +45,7 @@ export const ErrorCodes = {
     NAME_CANNOT_BE_EMPTY: 'NAME_CANNOT_BE_EMPTY',
     NAME_CANNOT_EXCEED_MAXIMUM_LENGTH: 'NAME_CANNOT_EXCEED_MAXIMUM_LENGTH',
     UNIT_OF_WORK_NOT_INITIALIZED: 'UNIT_OF_WORK_NOT_INITIALIZED',
+    INVALID_ENUM_VALUE: 'INVALID_ENUM_VALUE',
 } as const;
 
 export type ErrorCode = (typeof ErrorCodes)[keyof typeof ErrorCodes];
