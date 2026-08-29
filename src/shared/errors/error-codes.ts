@@ -14,6 +14,7 @@ export const ErrorCodes = {
     EMAIL_ALREADY_EXISTS: 'EMAIL_ALREADY_EXISTS',
     USERNAME_ALREADY_EXISTS: 'USERNAME_ALREADY_EXISTS',
     PASSWORD_CANNOT_BE_EMPTY: 'PASSWORD_CANNOT_BE_EMPTY',
+    USER_NOT_FOUND: 'USER_NOT_FOUND',
 } as const;
 
 export type ErrorCode = (typeof ErrorCodes)[keyof typeof ErrorCodes];

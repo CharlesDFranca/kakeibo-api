@@ -2,6 +2,7 @@ import type { IUserRepository } from '@/identity/domain/repositories/user-reposi
 import { IDENTITY_TOKENS } from '@/identity/identity.token';
 import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
 import { Injectable, Inject } from '@nestjs/common';
+import { UserNotFoundError } from '../../errors/user-not-found.error';
 
 type FindUserByIdInput = {
     id: string;
@@ -26,7 +27,7 @@ export class FindUserByIdUseCase implements IBaseUseCase<
     async execute(input: FindUserByIdInput): Promise<FindUserByIdOutput> {
         const user = await this.userRepository.findById(input.id);
 
-        if (!user) throw new Error('User not found');
+        if (!user) throw new UserNotFoundError();
 
         return {
             id: user.id,
