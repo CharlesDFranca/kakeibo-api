@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { NodeCryptoIDGeneratorService } from './infra/services/id-generator.service';
+import { NodeCryptoIDGeneratorService } from '../core/infra/services/id-generator.service';
 import { SHARED_TOKENS } from './shared.token';
-import { BcryptPasswordHasher } from './infra/services/bcrypt-password-hasher.service';
-import { DatabaseModule } from './infra/database/database.module';
-import { RedisModule } from './infra/redis/redis.module';
-import { TypeOrmUnitOfWork } from './infra/database/unit-of-work/typeorm-unit-of-work';
+import { BcryptPasswordHasher } from '../core/infra/services/bcrypt-password-hasher.service';
+import { DatabaseModule } from '../core/infra/database/database.module';
+import { RedisModule } from '../core/infra/redis/redis.module';
+import { TypeOrmUnitOfWork } from '../core/infra/database/unit-of-work/typeorm-unit-of-work';
 
 @Module({
     imports: [DatabaseModule, RedisModule],
