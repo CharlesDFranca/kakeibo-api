@@ -5,6 +5,16 @@ import { GoalDeadline } from '../value-objects/goal-deadline.vo';
 import { GoalStatus } from '../value-objects/goal-status.vo';
 import { EGoalStatus } from '../enums/goal-status.enum';
 import { Name } from '@/shared/domain/value-objects/name.vo';
+import { CompletedGoalCannotBeExpiredError } from '../errors/completed-goal-cannot-be-expired.error';
+import { GoalWithoutDeadlineCannotExpireError } from '../errors/goal-without-deadline-cannot-expire.error';
+import { GoalDeadlineMustBeReachedBeforeExpirationError } from '../errors/goal-deadline-must-be-reached-before-expiration.error';
+import { OnlyExpiredGoalsCanBeReactivatedError } from '../errors/only-expired-goals-can-be-reactivated.error';
+import { GoalTargetAmountMustBeReachedError } from '../errors/goal-target-amount-must-be-reached.error';
+import { InsufficientGoalBalanceError } from '../errors/insufficient-goal-balance.error';
+import { GoalCurrentAmountCannotExceedTargetError } from '../errors/goal-current-amount-cannot-exceed-target-error';
+import { GoalMustBeInProgressError } from '../errors/goal-must-be-in-progress.error';
+import { ExpiredGoalCannotBeCompletedError } from '../errors/expired-goal-cannot-be-completed.error';
+import { GoalDeadlineCannotAlreadyBeExpiredError } from '../errors/goal-deadline-cannot-already-be-expired.error';
 
 type GoalProps = {
     userId: string;
@@ -93,7 +103,7 @@ export class Goal extends BaseEntity<GoalProps> {
         this.ensureInProgress();
 
         if (amount.isGreaterThan(this.currentAmount)) {
-            throw new Error('Insufficient goal balance');
+            throw new InsufficientGoalBalanceError();
         }
 
         this.props.currentAmount = this.currentAmount.subtract(amount);
@@ -109,7 +119,7 @@ export class Goal extends BaseEntity<GoalProps> {
         this.ensureCanComplete();
 
         if (this.currentAmount.isLessThan(this.targetAmount)) {
-            throw new Error('Target amount not reached');
+            throw new GoalTargetAmountMustBeReachedError();
         }
 
         this.props.status = new GoalStatus(EGoalStatus.COMPLETED);
@@ -124,7 +134,7 @@ export class Goal extends BaseEntity<GoalProps> {
 
     public reactivate(deadline?: GoalDeadline): void {
         if (!this.isExpired()) {
-            throw new Error('Only expired goals can be reactivated');
+            throw new OnlyExpiredGoalsCanBeReactivatedError();
         }
 
         this.props.deadline = deadline;
@@ -138,16 +148,12 @@ export class Goal extends BaseEntity<GoalProps> {
             return;
         }
 
-        if (this.isCompleted()) {
-            throw new Error('Cannot expire a completed goal');
-        }
+        if (this.isCompleted()) throw new CompletedGoalCannotBeExpiredError();
 
-        if (!this.deadline) {
-            throw new Error('A goal without a deadline cannot expire');
-        }
+        if (!this.deadline) throw new GoalWithoutDeadlineCannotExpireError();
 
         if (!this.deadline.isExpired()) {
-            throw new Error('Expiration date not reached');
+            throw new GoalDeadlineMustBeReachedBeforeExpirationError();
         }
 
         this.props.status = new GoalStatus(EGoalStatus.EXPIRED);
@@ -171,7 +177,7 @@ export class Goal extends BaseEntity<GoalProps> {
         this.ensureInProgress();
 
         if (deadline?.isExpired()) {
-            throw new Error('A deadline cannot already be expired');
+            throw new GoalDeadlineCannotAlreadyBeExpiredError();
         }
 
         this.props.deadline = deadline;
@@ -180,22 +186,16 @@ export class Goal extends BaseEntity<GoalProps> {
 
     private ensureValidAmounts(): void {
         if (this.currentAmount.isGreaterThan(this.targetAmount)) {
-            throw new Error(
-                'Current amount cannot be greater than target amount',
-            );
+            throw new GoalCurrentAmountCannotExceedTargetError();
         }
     }
 
     private ensureInProgress(): void {
-        if (!this.isInProgress()) {
-            throw new Error('Goal must be in progress');
-        }
+        if (!this.isInProgress()) throw new GoalMustBeInProgressError();
     }
 
     private ensureCanComplete(): void {
-        if (this.isExpired()) {
-            throw new Error('Cannot complete an expired goal');
-        }
+        if (this.isExpired()) throw new ExpiredGoalCannotBeCompletedError();
     }
 
     private removeDeadline(): void {
