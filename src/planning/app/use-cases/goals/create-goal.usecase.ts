@@ -1,8 +1,5 @@
-import type { IUserRepository } from '@/identity/domain/repositories/user-repository.interface';
 import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
-import { IDENTITY_TOKENS } from '@/identity/identity.token';
 import { Name } from '@/shared/domain/value-objects/name.vo';
-import { UserNotFoundError } from '@/identity/app/errors/user-not-found.error';
 import { CORE_TOKENS } from '@/core/core.tokens';
 import { Inject, Injectable } from '@nestjs/common';
 import { Goal } from '@/planning/domain/entities/goal.entity';
@@ -29,8 +26,6 @@ export class CreateGoalUseCase implements IBaseUseCase<
     CreateGoalOutput
 > {
     constructor(
-        @Inject(IDENTITY_TOKENS.USER_REPOSITORY)
-        private readonly userRepository: IUserRepository,
         @Inject(PLANNING_TOKENS.GOAL_REPOSITORY)
         private readonly goalRepository: IGoalRepository,
         @Inject(CORE_TOKENS.ID_GENERATOR)
@@ -38,12 +33,6 @@ export class CreateGoalUseCase implements IBaseUseCase<
     ) {}
 
     async execute(input: CreateGoalInput): Promise<CreateGoalOutput> {
-        const user = await this.userRepository.findById(input.userId);
-
-        if (!user) {
-            throw new UserNotFoundError();
-        }
-
         const now = new Date();
 
         const goal = new Goal(
