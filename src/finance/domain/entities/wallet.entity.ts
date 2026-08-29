@@ -1,5 +1,5 @@
 import { BaseEntity } from '@/shared/domain/entities/base-entity.entity';
-import { Money } from '@/shared/domain/value-objects/Money';
+import { Money } from '@/shared/domain/value-objects/money.vo';
 
 type WalletProps = {
     userId: string;

@@ -9,7 +9,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { Transaction } from '../../../domain/entities/transaction.entity';
 import { TransactionType } from '../../../domain/value-objects/transaction-type.vo';
 import type { ICategoryRepository } from '@/finance/domain/repositories/category-repository.interface';
-import { Money } from '@/shared/domain/value-objects/Money';
+import { Money } from '@/shared/domain/value-objects/money.vo';
 
 type CreateTransactionInput = {
     userId: string;

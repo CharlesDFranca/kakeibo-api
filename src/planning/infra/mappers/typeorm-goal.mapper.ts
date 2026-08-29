@@ -1,7 +1,7 @@
 import { Goal } from '@/planning/domain/entities/goal.entity';
-import { GoalDeadline } from '@/planning/domain/value-objects/goal-deadline';
+import { GoalDeadline } from '@/planning/domain/value-objects/goal-deadline.vo';
 import { GoalStatus } from '@/planning/domain/value-objects/goal-status.vo';
-import { Money } from '@/shared/domain/value-objects/Money';
+import { Money } from '@/shared/domain/value-objects/money.vo';
 import { GoalEntity } from '@/shared/infra/database/entities/typeorm-goal.entity';
 
 export class TypeOrmGoalMapper {

@@ -1,7 +1,7 @@
 import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import type { IUnitOfWork } from '@/shared/app/contracts/unit-of-work.contract';
-import { Money } from '@/shared/domain/value-objects/Money';
+import { Money } from '@/shared/domain/value-objects/money.vo';
 import { GoalMovement } from '../../../domain/entities/goal-movement.entity';
 import type { IIDGenerator } from '@/shared/app/contracts/id-generator.contract';
 import { Transaction } from '@/finance/domain/entities/transaction.entity';

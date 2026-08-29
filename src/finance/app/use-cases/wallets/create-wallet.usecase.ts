@@ -5,7 +5,7 @@ import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
 import type { IIDGenerator } from '@/shared/app/contracts/id-generator.contract';
 import { SHARED_TOKENS } from '@/shared/shared.token';
 import { Inject, Injectable } from '@nestjs/common';
-import { Money } from '@/shared/domain/value-objects/Money';
+import { Money } from '@/shared/domain/value-objects/money.vo';
 
 type CreateWalletInput = {
     name: string;

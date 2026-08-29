@@ -1,6 +1,6 @@
 import { GoalMovement } from '@/planning/domain/entities/goal-movement.entity';
 import { GoalMovementType } from '@/planning/domain/value-objects/goal-movement-type.vo';
-import { Money } from '@/shared/domain/value-objects/Money';
+import { Money } from '@/shared/domain/value-objects/money.vo';
 import { GoalMovementEntity } from '@/shared/infra/database/entities/typeorm-goal-movement.entity';
 
 export class TypeOrmGoalMovementMapper {

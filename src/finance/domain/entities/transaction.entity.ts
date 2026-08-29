@@ -1,7 +1,7 @@
 import { BaseEntity } from '@/shared/domain/entities/base-entity.entity';
 import { TransactionType } from '../value-objects/transaction-type.vo';
 import { ETransactionStatus } from '../enums/transaction-status.enum';
-import { Money } from '@/shared/domain/value-objects/Money';
+import { Money } from '@/shared/domain/value-objects/money.vo';
 
 type TransactionProps = {
     description: string;

@@ -1,7 +1,7 @@
 import { BaseEntity } from '@/shared/domain/entities/base-entity.entity';
-import { Money } from '@/shared/domain/value-objects/Money';
+import { Money } from '@/shared/domain/value-objects/money.vo';
 
-import { GoalDeadline } from '../value-objects/goal-deadline';
+import { GoalDeadline } from '../value-objects/goal-deadline.vo';
 import { GoalStatus } from '../value-objects/goal-status.vo';
 import { EGoalStatus } from '../enums/goal-status.enum';
 
