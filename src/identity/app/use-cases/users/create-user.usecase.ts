@@ -9,6 +9,9 @@ import type { IPasswordHasher } from '@/shared/app/contracts/password-hasher.con
 import { Name } from '@/shared/domain/value-objects/name.vo';
 import { SHARED_TOKENS } from '@/shared/shared.token';
 import { Injectable, Inject } from '@nestjs/common';
+import { EmailAlreadyExistsError } from '../../errors/email-already-exists.error';
+import { UsernameAlreadyExistsError } from '../../errors/username-already-exists.error';
+import { PasswordCannotBeEmptyError } from '../../errors/password-cannot-be-empty.error';
 
 type CreateUserInput = {
     name: string;
@@ -38,16 +41,16 @@ export class CreateUserUseCase implements IBaseUseCase<
 
         const emailAlredyUsed = await this.userRepository.findByEmail(email);
 
-        if (emailAlredyUsed) throw new Error('Email already exists');
+        if (emailAlredyUsed) throw new EmailAlreadyExistsError();
 
         const usernameAlredyUsed =
             await this.userRepository.findByUsername(username);
 
-        if (usernameAlredyUsed) throw new Error('Username already exists');
+        if (usernameAlredyUsed) throw new UsernameAlreadyExistsError();
 
         const password = input.password.trim();
 
-        if (!password.length) throw new Error('Password cannot be empty');
+        if (!password.length) throw new PasswordCannotBeEmptyError();
 
         const passwordHash = await this.passworder.hash(password);
 
