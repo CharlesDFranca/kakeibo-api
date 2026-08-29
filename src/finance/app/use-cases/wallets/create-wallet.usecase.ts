@@ -7,6 +7,7 @@ import { SHARED_TOKENS } from '@/shared/shared.token';
 import { Inject, Injectable } from '@nestjs/common';
 import { Money } from '@/shared/domain/value-objects/money.vo';
 import { Name } from '@/shared/domain/value-objects/name.vo';
+import { WalletAlreadyExistsError } from '../../errors/wallet-already-exists.error';
 
 type CreateWalletInput = {
     name: string;
@@ -35,9 +36,7 @@ export class CreateWalletUseCase implements IBaseUseCase<
             input.name,
         );
 
-        if (existsByName) {
-            throw new Error('Wallet already exists with this name');
-        }
+        if (existsByName) throw new WalletAlreadyExistsError();
 
         const now = new Date();
 

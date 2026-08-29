@@ -4,6 +4,7 @@ export const ErrorCodes = {
     CATEGORY_ALREADY_EXISTS: 'CATEGORY_ALREADY_EXISTS',
     CATEGORY_NOT_FOUND: 'CATEGORY_NOT_FOUND',
     WALLET_NOT_FOUND: 'WALLET_NOT_FOUND',
+    WALLET_ALREADY_EXISTS: 'WALLET_ALREADY_EXISTS',
 } as const;
 
 export type ErrorCode = (typeof ErrorCodes)[keyof typeof ErrorCodes];
