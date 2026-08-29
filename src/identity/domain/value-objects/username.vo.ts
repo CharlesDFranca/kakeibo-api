@@ -1,12 +1,12 @@
+import { InvalidUsernameError } from '../errors/invalid-username.error';
+
 export class Username {
     private readonly _value: string;
 
     constructor(value: string) {
         const normalized = value.trim().toLowerCase();
 
-        if (!Username.isValid(normalized)) {
-            throw new Error('Invalid username');
-        }
+        if (!Username.isValid(normalized)) throw new InvalidUsernameError();
 
         this._value = normalized;
     }

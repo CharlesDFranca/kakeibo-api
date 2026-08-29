@@ -8,6 +8,8 @@ export const ErrorCodes = {
     WALLET_HAS_ALLOCATED_MONEY: 'WALLET_HAS_ALLOCATED_MONEY',
     SESSION_EXPIRATION_MUST_BE_AFTER_CREATION:
         'SESSION_EXPIRATION_MUST_BE_AFTER_CREATION',
+    INVALID_EMAIL: 'INVALID_EMAIL',
+    INVALID_USERNAME: 'INVALID_USERNAME',
 } as const;
 
 export type ErrorCode = (typeof ErrorCodes)[keyof typeof ErrorCodes];
