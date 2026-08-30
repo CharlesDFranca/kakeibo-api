@@ -1,16 +1,30 @@
-# Kakeibo
+# Kakeibo (家計簿)
+
+![NestJS](https://img.shields.io/badge/nestjs-%23E0234E.svg?style=for-the-badge\&logo=nestjs\&logoColor=white)
+![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge\&logo=typescript\&logoColor=white)
+![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge\&logo=postgresql\&logoColor=white)
+![Redis](https://img.shields.io/badge/redis-%23DD0031.svg?style=for-the-badge\&logo=redis\&logoColor=white)
+![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge\&logo=docker\&logoColor=white)
 
 API para gerenciamento financeiro pessoal desenvolvida com **NestJS**, seguindo princípios de **Domain-Driven Design (DDD)** e **Clean Architecture**.
 
-O projeto permite o gerenciamento de usuários, autenticação, carteiras, categorias, transações financeiras e planejamento de objetivos financeiros, utilizando autenticação baseada em sessões armazenadas no Redis.
+O nome do projeto é inspirado no **Kakeibo**, o método tradicional japonês de organização financeira que busca trazer consciência e intenção para o uso do dinheiro.
 
-> API em construção
+Seguindo essa filosofia, a aplicação é organizada em contextos de negócio independentes, com responsabilidades bem definidas:
+
+* **Identity:** identidade, usuários e autenticação.
+* **Finance:** registro e gerenciamento da vida financeira atual.
+* **Planning:** planejamento financeiro e objetivos futuros.
+
+> API em construção 🚧
 
 ---
 
 ## Status
 
-Este projeto encontra-se em desenvolvimento contínuo. O objetivo é evoluir a API progressivamente, incorporando novas funcionalidades, testes automatizados, documentação, CI/CD e melhorias arquiteturais.
+Este projeto encontra-se em desenvolvimento contínuo.
+
+O objetivo é evoluir a API progressivamente, incorporando novas funcionalidades, testes automatizados, documentação, CI/CD e melhorias arquiteturais.
 
 ---
 
@@ -29,77 +43,143 @@ Este projeto encontra-se em desenvolvimento contínuo. O objetivo é evoluir a A
 
 ## Arquitetura
 
-O projeto é organizado em módulos e submódulos seguindo uma abordagem orientada ao domínio.
+O projeto utiliza uma arquitetura modular baseada em **Domain-Driven Design (DDD)** e **Clean Architecture**.
+
+Os principais módulos de negócio são organizados como *Bounded Contexts*, enquanto `Core` e `Shared` fornecem recursos transversais e abstrações reutilizáveis.
 
 ```text
 src
+├── core
 ├── identity
-│   ├── users
-│   └── auth
-│
 ├── finance
-│   ├── wallets
-│   ├── categories
-│   └── transactions
-│
 ├── planning
-│   └── goals
-│
 ├── shared
-│
-└── app.module.ts
+├── types
+├── app.module.ts
+└── main.ts
 ```
 
-Os principais contextos da aplicação são:
+### Contextos de negócio
 
-### Identity
+#### Identity
 
 Responsável pela identidade dos usuários e pelo processo de autenticação.
 
-```text
-Identity
-├── Users
-└── Auth
-```
+Inclui:
 
-### Finance
+* Usuários
+* Autenticação
+* Sessões
+* Contexto de autenticação
+* Hash de senhas
 
-Responsável pelo gerenciamento das movimentações e recursos financeiros do usuário.
+As sessões são persistidas no Redis.
 
-```text
-Finance
-├── Wallets
-├── Categories
-└── Transactions
-```
+#### Finance
 
-### Planning
+Representa o **System of Record** financeiro da aplicação.
 
-Responsável pelo planejamento financeiro e pelos objetivos que o usuário deseja alcançar.
+É responsável pelo registro e gerenciamento dos recursos financeiros atuais do usuário, incluindo:
 
-```text
-Planning
-└── Goals
-```
+* Carteiras
+* Categorias
+* Transações
+* Resumo financeiro
 
-### Shared
+O contexto garante a consistência das movimentações e dos saldos das carteiras.
 
-Fornece componentes compartilhados entre os módulos da aplicação.
+#### Planning
 
-```text
-Shared
-├── Application Contracts
-├── Domain
-├── Database
-├── Redis
-└── Services
-```
+Representa o **System of Guidance** da aplicação.
+
+É responsável pelo planejamento financeiro e pelos objetivos que o usuário deseja alcançar, incluindo:
+
+* Metas financeiras
+* Movimentações das metas
+* Aportes
+* Resgates
+* Reversões de aportes
+* Ciclo de vida das metas
 
 ---
 
-## Organização dos módulos
+## Core e Shared
 
-Os módulos de negócio seguem uma separação baseada em responsabilidades:
+A aplicação diferencia responsabilidades entre `Core` e `Shared`.
+
+### Core
+
+O `Core` contém componentes técnicos responsáveis por integrar a aplicação ao framework e fornecer infraestrutura transversal.
+
+```text
+core
+├── app
+│   └── contracts
+├── decorators
+├── filters
+├── infra
+│   ├── database
+│   │   └── unit-of-work
+│   ├── errors
+│   ├── redis
+│   └── services
+├── interceptors
+├── core.module.ts
+└── core.tokens.ts
+```
+
+Entre suas responsabilidades estão:
+
+* Contratos técnicos da aplicação
+* Decorators utilizados pela camada de apresentação
+* Tratamento global de exceções
+* Interceptors HTTP
+* Unit of Work
+* Integração com Redis
+* Geração de identificadores
+
+O `Core` possui dependências relacionadas à infraestrutura da aplicação e ao framework.
+
+### Shared
+
+O `Shared` contém abstrações e conceitos reutilizáveis entre os diferentes contextos de negócio.
+
+```text
+shared
+├── app
+│   └── contracts
+├── domain
+│   ├── entities
+│   ├── errors
+│   └── value-objects
+├── errors
+│   ├── formatters
+│   ├── mappers
+│   ├── types
+│   └── error-codes.ts
+└── utils
+```
+
+Entre seus componentes estão:
+
+* Contratos base para Use Cases
+* Unit of Work contract
+* Entidade base
+* Value Objects compartilhados
+* `Money`
+* `Name`
+* Erros base da aplicação
+* Mapeamento de erros
+* Formatação de respostas de erro
+* Utilitários genéricos
+
+O objetivo é evitar que conceitos genéricos e reutilizáveis sejam duplicados entre os contextos.
+
+---
+
+## Organização Interna dos Módulos
+
+Os contextos de negócio seguem uma estrutura baseada nas responsabilidades da Clean Architecture:
 
 ```text
 module/
@@ -111,34 +191,60 @@ module/
 
 ### App
 
-Contém a lógica de aplicação, principalmente os casos de uso, contratos e componentes necessários para orquestrar as operações do sistema.
+A camada `App` contém a lógica de aplicação e orquestração dos casos de uso.
+
+Pode conter:
+
+* Use Cases
+* Contratos específicos da aplicação
+* Policies
+* Queries
+* Services de aplicação
+* Types
+* Erros de aplicação
+
+Essa camada coordena o fluxo das operações sem implementar diretamente os detalhes de infraestrutura.
 
 ### Domain
 
-Contém as regras de negócio e os modelos pertencentes ao domínio.
+A camada `Domain` representa o núcleo do negócio.
 
-Inclui elementos como:
+Contém:
 
 * Entidades
 * Value Objects
 * Enums
-* Interfaces de repositórios
+* Erros de domínio
+* Contratos de repositórios
+* Contratos de serviços de domínio
+
+O domínio é mantido **livre de frameworks e detalhes de infraestrutura**.
 
 ### Infra
 
-Contém as implementações relacionadas à infraestrutura.
+A camada `Infra` contém as implementações técnicas necessárias para persistência e integração com recursos externos.
 
-Inclui elementos como:
+Contém, por exemplo:
 
+* Entidades TypeORM
 * Repositórios
 * Mappers
 * Queries
-* Persistência
-* Integrações com serviços externos
+* Integrações com infraestrutura
+
+As implementações de infraestrutura dependem dos contratos definidos pelas camadas internas.
 
 ### Presentation
 
-Responsável pela exposição das funcionalidades da aplicação, principalmente através dos controllers.
+A camada `Presentation` representa a entrada da aplicação.
+
+Contém:
+
+* Controllers
+* DTOs
+* Guards
+
+É responsável por adaptar requisições externas para os casos de uso da aplicação.
 
 ---
 
@@ -146,270 +252,232 @@ Responsável pela exposição das funcionalidades da aplicação, principalmente
 
 ### Identity
 
-O contexto `Identity` concentra as funcionalidades relacionadas aos usuários e à autenticação.
-
 #### Usuários
 
-O módulo `Users` é responsável pelo gerenciamento dos usuários da aplicação.
-
-* Criar usuários
-* Buscar usuário por ID
-* Validação de dados de usuário
-* Value Objects para `Email` e `Username`
-* Persistência dos usuários através de TypeORM
+* Criação de usuários
+* Busca de usuário por ID
+* Validação de `Email`
+* Validação de `Username`
+* Proteção contra e-mail duplicado
+* Proteção contra username duplicado
 
 #### Autenticação
 
-O módulo `Auth` é responsável pelo controle de autenticação e sessões.
-
 * Login
 * Logout
-* Criação e gerenciamento de sessões
-* Persistência das sessões no Redis
-* Session Guard
-* Identificação do usuário autenticado
-* Identificação da sessão atual
-* Rotas públicas através de `@Public()`
+* Gerenciamento de sessões
+* Sessões persistidas em Redis
+* Validação de sessão
+* `SessionGuard`
 * Contexto de autenticação
+
+A aplicação disponibiliza decorators como:
+
+* `@CurrentUserId`
+* `@CurrentAuth`
+* `@CurrentSessionId`
+* `@PublicRoute`
 
 ---
 
 ### Finance
 
-O contexto `Finance` concentra as funcionalidades relacionadas ao gerenciamento financeiro.
-
 #### Wallets
 
-O módulo `Wallets` representa as carteiras utilizadas pelo usuário para organizar seus recursos financeiros.
+Responsáveis pelo gerenciamento dos recursos financeiros do usuário.
 
-* Criar carteira
-* Listar carteiras
-* Renomear carteira
-* Remover carteira
-* Gerenciamento do saldo
-* Persistência através de TypeORM
+Funcionalidades:
+
+* Criação
+* Listagem
+* Renomeação
+* Exclusão
+* Controle de saldo
+
+A exclusão de carteiras é protegida por regras de negócio, como a impossibilidade de excluir uma carteira que possua recursos alocados em determinadas operações.
 
 #### Categories
 
-O módulo `Categories` permite classificar as transações financeiras.
+Responsáveis pela classificação das transações financeiras.
 
-* Criar categoria
-* Listar categorias
-* Persistência através de TypeORM
+Funcionalidades:
+
+* Criação
+* Listagem
+* Validação de nomes únicos
 
 #### Transactions
 
-O módulo `Transactions` representa as movimentações financeiras realizadas pelo usuário.
+Representam as movimentações financeiras do usuário.
 
-* Criar transação
-* Listar transações
-* Associar transações a carteiras
-* Associar transações a categorias
-* Classificação por tipo de transação
-* Controle de status da transação
-* Queries específicas para consulta de transações
-* Atualização do saldo da carteira
-
-O domínio de transações possui conceitos próprios para representar seu tipo e status:
-
-```text
-Transaction
-├── TransactionType
-└── TransactionStatus
-```
-
-#### Finance Summary
-
-O contexto financeiro também possui uma operação para obtenção de um resumo consolidado.
-
-O resumo permite consultar informações como:
+Incluem:
 
 * Receitas
 * Despesas
-* Saldo
-* Dados consolidados das movimentações
+* Data da transação
+* Carteira de origem
+* Categoria
+* Tipo
+* Status
+
+As movimentações atualizam o saldo das carteiras de forma consistente.
+
+#### Finance Summary
+
+Fornece uma visão consolidada da situação financeira do usuário, incluindo:
+
+* Receitas
+* Despesas
+* Balanço financeiro
 
 ---
 
 ### Planning
 
-O contexto `Planning` concentra as funcionalidades relacionadas ao planejamento financeiro.
-
-Atualmente, o módulo possui a estrutura inicial para trabalhar com objetivos financeiros.
-
-```text
-Planning
-└── Goals
-    ├── Domain
-    │   ├── Entities
-    │   │   └── Goal
-    │   └── Value Objects
-    │       └── GoalStatus
-    │
-    └── Presentation
-        └── GoalsController
-```
+O contexto `Planning` gerencia os objetivos financeiros e a alocação de recursos.
 
 #### Goals
 
-Uma `Goal` representa um objetivo financeiro que o usuário deseja alcançar.
+Representam objetivos financeiros definidos pelo usuário.
 
-A entidade possui:
+Uma meta possui, entre outras informações:
 
-* `userId`
-* `name`
-* `targetAmount`
-* `currentAmount`
-* `deadline`
-* `status`
+* Nome
+* Valor alvo
+* Valor atual
+* Prazo
+* Status
 
-```text
-Goal
-├── userId
-├── name
-├── targetAmount
-├── currentAmount
-├── deadline?
-└── status
-```
+O domínio controla o ciclo de vida da meta, incluindo estados como:
 
-O domínio da meta encapsula operações relacionadas à evolução do objetivo, incluindo:
+* Em progresso
+* Pausada
+* Concluída
+* Cancelada
+* Expirada
 
-* Depósito de valores
-* Retirada de valores
-* Atualização do valor alvo
-* Atualização do prazo
-* Conclusão
-* Cancelamento
-* Pausa
-* Reativação
-* Expiração
+As regras de negócio relacionadas a prazo, valores e transições de estado são encapsuladas no domínio.
 
-O status da meta é representado pelo Value Object `GoalStatus`.
+#### Goal Movements
 
-```text
-IN PROGRESS
-├── PAUSED
-├── COMPLETED
-├── CANCELLED
-└── EXPIRED
-```
+Registram o histórico de movimentações financeiras relacionadas às metas.
 
-As regras para essas operações permanecem encapsuladas na entidade `Goal`, evitando que regras de negócio relacionadas ao ciclo de vida da meta sejam distribuídas entre controllers ou outras camadas.
+Incluem:
 
-O módulo `Planning` encontra-se atualmente em desenvolvimento, portanto sua estrutura ainda não possui todas as camadas presentes nos módulos já implementados de `Finance` e `Identity`.
+* Depósitos
+* Resgates
+* Reversão de depósitos
+* Origem dos recursos em carteiras
+
+As movimentações permitem preservar o histórico das operações realizadas sobre uma meta.
 
 ---
 
-## Estrutura do projeto
+## Estrutura do Projeto
+
+A estrutura atual do projeto é organizada da seguinte forma:
 
 ```text
 src
+├── core
+│   ├── app
+│   │   └── contracts
+│   ├── decorators
+│   ├── filters
+│   ├── infra
+│   │   ├── database
+│   │   ├── errors
+│   │   ├── redis
+│   │   └── services
+│   ├── interceptors
+│   ├── core.module.ts
+│   └── core.tokens.ts
+│
+├── identity
+│   ├── app
+│   │   ├── contracts
+│   │   ├── errors
+│   │   ├── services
+│   │   ├── types
+│   │   └── use-cases
+│   ├── domain
+│   │   ├── entities
+│   │   ├── errors
+│   │   ├── repositories
+│   │   └── value-objects
+│   ├── infra
+│   │   ├── entities
+│   │   ├── mappers
+│   │   ├── repositories
+│   │   └── services
+│   ├── presentation
+│   │   ├── controllers
+│   │   ├── dto
+│   │   └── guards
+│   ├── identity.module.ts
+│   └── identity.token.ts
+│
 ├── finance
 │   ├── app
+│   │   ├── errors
+│   │   ├── policies
+│   │   ├── queries
+│   │   ├── types
 │   │   └── use-cases
-│   │
-│   ├── categories
-│   │   ├── app
-│   │   ├── domain
-│   │   ├── infra
-│   │   └── presentation
-│   │
-│   ├── transactions
-│   │   ├── app
-│   │   ├── domain
-│   │   ├── infra
-│   │   └── presentation
-│   │
-│   ├── wallets
-│   │   ├── app
-│   │   ├── domain
-│   │   ├── infra
-│   │   └── presentation
-│   │
-│   ├── finance.controller.ts
+│   ├── domain
+│   │   ├── entities
+│   │   ├── enums
+│   │   ├── errors
+│   │   ├── repositories
+│   │   ├── services
+│   │   └── value-objects
+│   ├── infra
+│   │   ├── entities
+│   │   ├── mappers
+│   │   ├── queries
+│   │   └── repositories
+│   ├── presentation
+│   │   └── controllers
 │   ├── finance.module.ts
 │   └── finance.tokens.ts
 │
-├── identity
-│   ├── auth
-│   │   ├── app
-│   │   ├── domain
-│   │   ├── dto
-│   │   ├── infra
-│   │   └── presentation
-│   │
-│   ├── users
-│   │   ├── app
-│   │   ├── domain
-│   │   ├── dto
-│   │   ├── infra
-│   │   └── presentation
-│   │
-│   └── identity.module.ts
-│
 ├── planning
-│   ├── goals
-│   │   ├── domain
-│   │   │   ├── entities
-│   │   │   └── value-objects
-│   │   ├── presentation
-│   │   └── goals.module.ts
-│   │
-│   └── planning.module.ts
+│   ├── app
+│   │   ├── errors
+│   │   └── use-cases
+│   ├── domain
+│   │   ├── entities
+│   │   ├── enums
+│   │   ├── errors
+│   │   ├── repositories
+│   │   └── value-objects
+│   ├── infra
+│   │   ├── entities
+│   │   ├── mappers
+│   │   └── repositories
+│   ├── presentation
+│   ├── planning.module.ts
+│   └── planning.tokens.ts
 │
 ├── shared
 │   ├── app
 │   │   └── contracts
 │   ├── domain
-│   │   └── entities
-│   ├── infra
-│   │   ├── database
-│   │   ├── redis
-│   │   └── services
-│   ├── utils
-│   ├── shared.module.ts
-│   └── shared.token.ts
+│   │   ├── entities
+│   │   ├── errors
+│   │   └── value-objects
+│   ├── errors
+│   │   ├── formatters
+│   │   ├── mappers
+│   │   └── types
+│   └── utils
 │
 ├── types
-├── app.controller.ts
+│   └── express.d.ts
+│
 ├── app.module.ts
-├── app.service.ts
 └── main.ts
 ```
-
----
-
-## Shared
-
-O módulo `Shared` contém componentes utilizados por diferentes contextos da aplicação.
-
-### Application Contracts
-
-Contratos compartilhados pela camada de aplicação:
-
-* `BaseUseCase`
-* `IdGenerator`
-* `PasswordHasher`
-
-### Domain
-
-Elementos compartilhados do domínio, como a entidade base utilizada pelas entidades da aplicação.
-
-### Database
-
-Configuração e entidades de persistência utilizando TypeORM.
-
-### Redis
-
-Integração com Redis, utilizada principalmente pelo contexto de autenticação para persistência das sessões.
-
-### Services
-
-Serviços compartilhados, incluindo:
-
-* Geração de IDs
-* Hash de senhas utilizando bcrypt
 
 ---
 
@@ -433,7 +501,7 @@ cd kakeibo-api
 cp .env.example .env
 ```
 
-O arquivo `.env.example` já contém uma configuração padrão para execução local.
+> O arquivo `.env.example` já contém uma configuração padrão para execução local.
 
 ### Inicie a aplicação
 
@@ -443,51 +511,80 @@ docker compose up --build
 
 A API ficará disponível em:
 
-```text
-http://localhost:3000
-```
+`http://localhost:3000`
 
 ---
 
 ## Ferramentas de desenvolvimento
 
-### PostgreSQL
-
-Adminer:
-
-```text
-http://localhost:8080
-```
-
-### Redis
-
-Redis Commander:
-
-```text
-http://localhost:8081
-```
-
----
-
-## Variáveis de ambiente
-
-As variáveis necessárias estão documentadas em `.env.example`.
+* **Adminer (PostgreSQL):** `http://localhost:8080`
+* **Redis Commander:** `http://localhost:8081`
 
 ---
 
 ## Roadmap
 
-* [ ] Finalizar implementação do módulo Planning
-* [ ] Implementar casos de uso de Goals
-* [ ] Implementar persistência de Goals
-* [ ] Implementar histórico de aportes nas metas
-* [ ] CRUD completo dos módulos
-* [ ] Testes automatizados
-* [ ] Migrations
+### Arquitetura e Base
+
+* [x] Definição da arquitetura (DDD + Clean Architecture)
+* [x] Estruturação dos Bounded Contexts
+* [x] Separação entre `Core` e `Shared`
+* [x] Implementação do Unit of Work
+* [x] Implementação da infraestrutura Redis
+* [x] Tratamento global de erros
+* [x] Padronização de respostas HTTP
+
+### Identity
+
+* [x] Criação de usuários
+* [x] Busca de usuários
+* [x] Value Objects `Email` e `Username`
+* [x] Login
+* [x] Logout
+* [x] Sessões persistidas em Redis
+* [x] `SessionGuard`
+* [x] Contexto de autenticação
+
+### Finance
+
+* [x] Wallets
+* [x] Categories
+* [x] Transactions
+* [x] Finance Summary
+* [x] Controle de saldo
+* [x] Unit of Work para operações transacionais
+* [x] Policies de domínio
+
+### Planning v1
+
+* [x] Goals
+* [x] Criação de metas
+* [x] Listagem de metas
+* [x] Busca de meta por ID
+* [x] Renomeação de metas
+* [x] Cancelamento de metas
+* [x] Goal Movements
+* [x] Registro de depósitos
+* [x] Reversão de depósitos
+* [x] Controle do ciclo de vida das metas
+* [x] Persistência estruturada em TypeORM
+
+### Planning v2
+
+* [ ] Limites de gastos (*Budgets*) por categoria
+* [ ] Disparos de alertas
+* [ ] Previsão de fluxo de caixa (*Forecast*)
+* [ ] Agendamento de transações recorrentes
+* [ ] Processamento de transações recorrentes
+
+### Evolução Técnica
+
+* [ ] CRUD completo dos recursos
 * [ ] Paginação
 * [ ] Filtros por período
-* [ ] Documentação da API
-* [ ] CI/CD
+* [ ] Testes unitários
+* [ ] Testes E2E
+* [ ] Migrations com TypeORM
+* [ ] Documentação interativa da API (Swagger/OpenAPI)
+* [ ] Pipelines de CI/CD
 * [ ] Deploy em nuvem
-
-```
