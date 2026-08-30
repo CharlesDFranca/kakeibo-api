@@ -1,6 +1,7 @@
 import { BaseEntity } from '@/shared/domain/entities/base-entity.entity';
-import { Money } from '@/shared/domain/value-objects/Money';
+import { Money } from '@/shared/domain/value-objects/money.vo';
 import { GoalMovementType } from '../value-objects/goal-movement-type.vo';
+import { GoalMovementAmountMustBeGreaterThanZeroError } from '../errors/goal-movement-amount-must-be-greater-than-zero.error';
 
 type GoalMovementProps = {
     walletId: string;
@@ -20,7 +21,7 @@ export class GoalMovement extends BaseEntity<GoalMovementProps> {
         super(id, props, createdAt, updatedAt);
 
         if (props.amount.isZero()) {
-            throw new Error('GoalMovement amount must be greater than zero');
+            throw new GoalMovementAmountMustBeGreaterThanZeroError();
         }
     }
 

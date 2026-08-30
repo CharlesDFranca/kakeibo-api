@@ -1,5 +1,6 @@
 import { Category } from '@/finance/domain/entities/category.entity';
-import { CategoryEntity } from '@/shared/infra/database/entities/typeorm-category.entity';
+import { CategoryEntity } from '@/finance/infra/entities/typeorm-category.entity';
+import { Name } from '@/shared/domain/value-objects/name.vo';
 
 export class TypeOrmCategoryMapper {
     private constructor() {}
@@ -7,7 +8,7 @@ export class TypeOrmCategoryMapper {
     public static toDomain(raw: CategoryEntity): Category {
         return new Category(
             raw.id,
-            { name: raw.name, userId: raw.userId },
+            { name: new Name(raw.name), userId: raw.userId },
             raw.createdAt,
             raw.updatedAt,
         );
@@ -17,7 +18,7 @@ export class TypeOrmCategoryMapper {
         const categoryEntity = new CategoryEntity();
 
         categoryEntity.id = category.id;
-        categoryEntity.name = category.name;
+        categoryEntity.name = category.name.value;
         categoryEntity.userId = category.userId;
         categoryEntity.createdAt = category.createdAt;
         categoryEntity.updatedAt = category.updatedAt;

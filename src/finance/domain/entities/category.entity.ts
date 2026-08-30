@@ -1,7 +1,8 @@
 import { BaseEntity } from '@/shared/domain/entities/base-entity.entity';
+import { Name } from '@/shared/domain/value-objects/name.vo';
 
 type CategoryProps = {
-    name: string;
+    name: Name;
     userId: string;
 };
 
@@ -12,14 +13,10 @@ export class Category extends BaseEntity<CategoryProps> {
         createdAt: Date,
         updatedAt: Date,
     ) {
-        if (!props.name || props.name.trim() === '') {
-            throw new Error('Category name cannot be empty');
-        }
-
         super(id, props, createdAt, updatedAt);
     }
 
-    public get name(): string {
+    public get name(): Name {
         return this.props.name;
     }
 
@@ -27,10 +24,8 @@ export class Category extends BaseEntity<CategoryProps> {
         return this.props.userId;
     }
 
-    public rename(name: string) {
-        if (!name || name.trim() === '') {
-            throw new Error('Category name cannot be empty');
-        }
+    public rename(name: Name) {
+        if (this.name.equals(name)) return;
 
         this.props.name = name;
         this.touch();

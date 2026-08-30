@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { SharedModule } from '@/shared/shared.module';
-import { UserEntity } from '@/shared/infra/database/entities/typeorm-user.entity';
+import { UserEntity } from '@/identity/infra/entities/typeorm-user.entity';
 
 import { AuthController } from './presentation/controllers/auth.controller';
 import { UsersController } from './presentation/controllers/user.controller';
@@ -18,9 +17,11 @@ import { AuthContextService } from './app/services/auth-context.service';
 import { IDENTITY_TOKENS } from './identity.token';
 import { APP_GUARD } from '@nestjs/core';
 import { SessionGuard } from './presentation/guards/session.guard';
+import { BcryptPasswordHasher } from './infra/services/bcrypt-password-hasher.service';
+import { CoreModule } from '@/core/core.module';
 
 @Module({
-    imports: [SharedModule, TypeOrmModule.forFeature([UserEntity])],
+    imports: [CoreModule, TypeOrmModule.forFeature([UserEntity])],
     controllers: [AuthController, UsersController],
     providers: [
         LoginUseCase,
@@ -38,11 +39,16 @@ import { SessionGuard } from './presentation/guards/session.guard';
             provide: IDENTITY_TOKENS.SESSION_REPOSITORY,
             useClass: RedisSessionRepository,
         },
+        {
+            provide: IDENTITY_TOKENS.PASSWORD_HASHER,
+            useClass: BcryptPasswordHasher,
+        },
         { provide: APP_GUARD, useClass: SessionGuard },
     ],
     exports: [
         IDENTITY_TOKENS.USER_REPOSITORY,
         IDENTITY_TOKENS.SESSION_REPOSITORY,
+        IDENTITY_TOKENS.PASSWORD_HASHER,
         AuthContextService,
     ],
 })

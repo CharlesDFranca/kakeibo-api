@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Session } from '../../domain/entities/session.entity';
-import { RedisService } from '@/shared/infra/redis/redis.service';
+import { RedisService } from '@/core/infra/redis/redis.service';
 import { RedisSessionMapper } from '../mappers/redis-session.mapper';
 import { ISessionRepository } from '@/identity/domain/repositories/session-repository.interface';
 

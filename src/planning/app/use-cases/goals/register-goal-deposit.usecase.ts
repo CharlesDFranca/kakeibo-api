@@ -1,15 +1,17 @@
 import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import type { IUnitOfWork } from '@/shared/app/contracts/unit-of-work.contract';
-import { Money } from '@/shared/domain/value-objects/Money';
-import { GoalMovement } from '../../../domain/entities/goal-movement.entity';
-import type { IIDGenerator } from '@/shared/app/contracts/id-generator.contract';
+import { Money } from '@/shared/domain/value-objects/money.vo';
+import type { IIDGenerator } from '@/core/app/contracts/id-generator.contract';
 import { Transaction } from '@/finance/domain/entities/transaction.entity';
 import { TransactionType } from '@/finance/domain/value-objects/transaction-type.vo';
 import { ETransactionType } from '@/finance/domain/enums/transaction-type.enum';
-import { SHARED_TOKENS } from '@/shared/shared.token';
-import { GoalMovementType } from '../../../domain/value-objects/goal-movement-type.vo';
-import { EGoalMovementType } from '../../../domain/enums/goal-movement-type.enum';
+import { CORE_TOKENS } from '@/core/core.tokens';
+import { WalletNotFoundError } from '@/finance/app/errors/wallet-not-found.error';
+import { GoalMovement } from '@/planning/domain/entities/goal-movement.entity';
+import { EGoalMovementType } from '@/planning/domain/enums/goal-movement-type.enum';
+import { GoalMovementType } from '@/planning/domain/value-objects/goal-movement-type.vo';
+import { GoalNotFoundError } from '../../errors/goal-not-found.error';
 
 type RegisterGoalDepositInput = {
     userId: string;
@@ -27,9 +29,9 @@ export class RegisterGoalDepositUseCase implements IBaseUseCase<
     RegisterGoalDepositOutput
 > {
     constructor(
-        @Inject(SHARED_TOKENS.UNIT_OF_WORK)
+        @Inject(CORE_TOKENS.UNIT_OF_WORK)
         private readonly uow: IUnitOfWork,
-        @Inject(SHARED_TOKENS.ID_GENERATOR)
+        @Inject(CORE_TOKENS.ID_GENERATOR)
         private readonly idGenerator: IIDGenerator,
     ) {}
 
@@ -47,26 +49,31 @@ export class RegisterGoalDepositUseCase implements IBaseUseCase<
                 input.walletId,
             );
 
-            if (!wallet) throw new NotFoundException('Wallet not found');
+            if (!wallet) throw new WalletNotFoundError();
 
             const goal = await goalRepository.findUserGoalById(
                 input.userId,
                 input.goalId,
             );
 
-            if (!goal) throw new NotFoundException('Goal not found');
+            if (!goal) throw new GoalNotFoundError();
 
             const amount = Money.fromAmount(input.amount);
+            const necessaryAmount = goal.necessaryToComplete();
 
-            wallet.withdraw(amount);
-            goal.contribute(amount);
+            const contribution = amount.isGreaterThan(necessaryAmount)
+                ? necessaryAmount
+                : amount;
+
+            wallet.withdraw(contribution);
+            goal.contribute(contribution);
 
             const now = new Date();
 
             const goalMovement = new GoalMovement(
                 this.idGenerator.generate(),
                 {
-                    amount: amount,
+                    amount: contribution,
                     goalId: goal.id,
                     walletId: wallet.id,
                     type: new GoalMovementType(EGoalMovementType.DEPOSIT),
@@ -78,7 +85,7 @@ export class RegisterGoalDepositUseCase implements IBaseUseCase<
             const transaction = new Transaction(
                 this.idGenerator.generate(),
                 {
-                    amount: amount,
+                    amount: contribution,
                     categoryId: input.categoryId,
                     walletId: wallet.id,
                     date: now,

@@ -30,7 +30,7 @@ export class ListWalletsUseCase implements IBaseUseCase<
 
         return wallets.map((w) => ({
             id: w.id,
-            name: w.name,
+            name: w.name.value,
             balance: w.balance.amount,
         }));
     }

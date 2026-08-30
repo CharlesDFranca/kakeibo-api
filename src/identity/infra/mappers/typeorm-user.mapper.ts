@@ -1,7 +1,8 @@
+import { Name } from '@/shared/domain/value-objects/name.vo';
 import { User } from '../../domain/entities/user.entity';
 import { Email } from '../../domain/value-objects/email.vo';
 import { Username } from '../../domain/value-objects/username.vo';
-import { UserEntity } from '@/shared/infra/database/entities/typeorm-user.entity';
+import { UserEntity } from '@/identity/infra/entities/typeorm-user.entity';
 
 export class TypeormUserMapper {
     private constructor() {}
@@ -10,10 +11,10 @@ export class TypeormUserMapper {
         return new User(
             raw.id,
             {
-                name: raw.name,
+                name: new Name(raw.name),
                 email: new Email(raw.email),
                 username: new Username(raw.username),
-                passwordHash: raw.passwordHash,
+                password: raw.password,
             },
             raw.createdAt,
             raw.updatedAt,
@@ -24,10 +25,10 @@ export class TypeormUserMapper {
         const entity = new UserEntity();
 
         entity.id = user.id;
-        entity.name = user.name;
+        entity.name = user.name.value;
         entity.username = user.username.value;
         entity.email = user.email.value;
-        entity.passwordHash = user.passwordHash;
+        entity.password = user.password;
 
         return entity;
     }

@@ -2,7 +2,7 @@ import {
     CreateCategoryUseCase,
     ListCategoriesUseCase,
 } from '@/finance/app/use-cases/categories';
-import { CurrentUserId } from '@/shared/decorators/current-user-id.decorator';
+import { CurrentUserId } from '@/core/decorators/current-user-id.decorator';
 import {
     Body,
     Controller,

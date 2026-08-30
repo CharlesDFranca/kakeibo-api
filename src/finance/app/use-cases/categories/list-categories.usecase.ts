@@ -26,7 +26,7 @@ export class ListCategoriesUseCase implements IBaseUseCase<
         );
 
         return categories.map((c) => {
-            return { id: c.id, name: c.name };
+            return { id: c.id, name: c.name.value };
         });
     }
 }

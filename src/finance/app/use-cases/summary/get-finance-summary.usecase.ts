@@ -4,7 +4,7 @@ import type { IWalletRepository } from '@/finance/domain/repositories/wallet-rep
 import { FINANCE_TOKENS } from '@/finance/finance.tokens';
 
 import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
-import { Money } from '@/shared/domain/value-objects/Money';
+import { Money } from '@/shared/domain/value-objects/money.vo';
 
 import { Inject, Injectable } from '@nestjs/common';
 

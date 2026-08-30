@@ -2,6 +2,7 @@ import type { IGoalMovementRepository } from '@/planning/domain/repositories/goa
 import { Inject, Injectable } from '@nestjs/common';
 import { IWalletDeletionPolicy } from '../../domain/services/wallet-deletion-policy.interface';
 import { PLANNING_TOKENS } from '@/planning/planning.tokens';
+import { WalletHasAllocatedMoneyError } from '@/finance/domain/errors/wallet-has-allocated-money.error';
 
 @Injectable()
 export class WalletDeletionPolicy implements IWalletDeletionPolicy {
@@ -17,8 +18,6 @@ export class WalletDeletionPolicy implements IWalletDeletionPolicy {
                 walletId,
             );
 
-        if (hasAllocatedMoney) {
-            throw new Error('Cannot delete wallet with allocated money');
-        }
+        if (hasAllocatedMoney) throw new WalletHasAllocatedMoneyError();
     }
 }

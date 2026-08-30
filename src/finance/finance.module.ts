@@ -1,11 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { SharedModule } from '@/shared/shared.module';
-
-import { WalletEntity } from '@/shared/infra/database/entities/typeorm-wallet.entity';
-import { TransactionEntity } from '@/shared/infra/database/entities/typeorm-transaction.entity';
-import { CategoryEntity } from '@/shared/infra/database/entities/typeorm-category.entity';
+import { WalletEntity } from '@/finance/infra/entities/typeorm-wallet.entity';
+import { TransactionEntity } from '@/finance/infra/entities/typeorm-transaction.entity';
+import { CategoryEntity } from '@/finance/infra/entities/typeorm-category.entity';
 
 import { FinanceController } from './presentation/controllers/finance.controller';
 import { WalletController } from './presentation/controllers/wallet.controller';
@@ -33,10 +31,11 @@ import { TypeOrmTransactionQuery } from './infra/queries/typeorm-transaction.que
 import { WalletDeletionPolicy } from './app/policies/wallet-deletion.policy';
 import { FINANCE_TOKENS } from './finance.tokens';
 import { PlanningModule } from '@/planning/planning.module';
+import { CoreModule } from '@/core/core.module';
 
 @Module({
     imports: [
-        SharedModule,
+        CoreModule,
         PlanningModule,
         TypeOrmModule.forFeature([
             WalletEntity,

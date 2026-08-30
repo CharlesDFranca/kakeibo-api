@@ -33,7 +33,7 @@ export class ListGoalsUseCase implements IBaseUseCase<
         return {
             goals: goals.map((goal) => ({
                 id: goal.id,
-                name: goal.name,
+                name: goal.name.value,
                 currentAmount: goal.currentAmount.amount,
                 targetAmount: goal.targetAmount.amount,
                 deadline: goal.deadline?.date.toISOString() ?? null,

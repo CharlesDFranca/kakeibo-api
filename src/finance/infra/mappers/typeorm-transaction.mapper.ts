@@ -1,8 +1,8 @@
-import { TransactionEntity } from '@/shared/infra/database/entities/typeorm-transaction.entity';
+import { TransactionEntity } from '@/finance/infra/entities/typeorm-transaction.entity';
 import { TransactionType } from '../../domain/value-objects/transaction-type.vo';
 import { Transaction } from '../../domain/entities/transaction.entity';
 import { TransactionDetails } from '../../app/types/transaction-details.type';
-import { Money } from '@/shared/domain/value-objects/Money';
+import { Money } from '@/shared/domain/value-objects/money.vo';
 
 export class TypeOrmTransactionMapper {
     private constructor() {}

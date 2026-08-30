@@ -1,4 +1,4 @@
-import { AuthContext } from '@/identity/auth/app/types/auth-context.type';
+import { AuthContext } from '@/identity/app/types/auth-context.type';
 
 declare global {
     namespace Express {

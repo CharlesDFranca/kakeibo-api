@@ -2,6 +2,9 @@ import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
 import type { IGoalRepository } from '../../../domain/repositories/goal-repository.interface';
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { PLANNING_TOKENS } from '@/planning/planning.tokens';
+import { Name } from '@/shared/domain/value-objects/name.vo';
+import { GoalNotFoundError } from '../../errors/goal-not-found.error';
+import { GoalAlreadyExistsError } from '../../errors/goal-already-exists.error';
 
 type RenameGoalInput = {
     userId: string;
@@ -27,9 +30,20 @@ export class RenameGoalUseCase implements IBaseUseCase<
             input.goalId,
         );
 
-        if (!goal) throw new NotFoundException('Goal not found');
+        if (!goal) throw new GoalNotFoundError();
 
-        goal.rename(input.name);
+        const name = new Name(input.name);
+
+        if (!goal.name.equals(name)) {
+            const exists = await this.goalRepository.findUserGoalByName(
+                input.userId,
+                name.value,
+            );
+
+            if (exists) throw new GoalAlreadyExistsError();
+        }
+
+        goal.rename(name);
 
         await this.goalRepository.update(goal);
     }

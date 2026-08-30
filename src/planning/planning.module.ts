@@ -9,18 +9,19 @@ import {
     RevertGoalDepositUseCase,
     CancelGoalUseCase,
     FindGoalByIdUseCase,
-} from './app/';
-import { GoalMovementEntity } from '@/shared/infra/database/entities/typeorm-goal-movement.entity';
-import { GoalEntity } from '@/shared/infra/database/entities/typeorm-goal.entity';
-import { SharedModule } from '@/shared/shared.module';
+} from './app/use-cases/goals';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { TypeOrmGoalRepository, TypeOrmGoalMovementRepository } from './infra';
 import { GoalMovementsController } from './presentation/goal-movements.controller';
 import { IdentityModule } from '@/identity/identity.module';
+import { TypeOrmGoalMovementRepository } from './infra/repositories/typeorm-goal-movement.repository';
+import { TypeOrmGoalRepository } from './infra/repositories/typeorm-goal.repository';
+import { GoalMovementEntity } from './infra/entities/typeorm-goal-movement.entity';
+import { GoalEntity } from './infra/entities/typeorm-goal.entity';
+import { CoreModule } from '@/core/core.module';
 
 @Module({
     imports: [
-        SharedModule,
+        CoreModule,
         IdentityModule,
         TypeOrmModule.forFeature([GoalEntity, GoalMovementEntity]),
     ],

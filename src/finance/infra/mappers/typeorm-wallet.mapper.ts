@@ -1,6 +1,7 @@
 import { Wallet } from '@/finance/domain/entities/wallet.entity';
-import { Money } from '@/shared/domain/value-objects/Money';
-import { WalletEntity } from '@/shared/infra/database/entities/typeorm-wallet.entity';
+import { Money } from '@/shared/domain/value-objects/money.vo';
+import { WalletEntity } from '@/finance/infra/entities/typeorm-wallet.entity';
+import { Name } from '@/shared/domain/value-objects/name.vo';
 
 export class TypeOrmWalletMapper {
     private constructor() {}
@@ -9,7 +10,7 @@ export class TypeOrmWalletMapper {
         return new Wallet(
             raw.id,
             {
-                name: raw.name,
+                name: new Name(raw.name),
                 balance: Money.fromCents(raw.balance),
                 userId: raw.userId,
             },
@@ -22,7 +23,7 @@ export class TypeOrmWalletMapper {
         const walletEntity = new WalletEntity();
 
         walletEntity.id = wallet.id;
-        walletEntity.name = wallet.name;
+        walletEntity.name = wallet.name.value;
         walletEntity.balance = wallet.balance.toCents();
         walletEntity.userId = wallet.userId;
         walletEntity.createdAt = wallet.createdAt;

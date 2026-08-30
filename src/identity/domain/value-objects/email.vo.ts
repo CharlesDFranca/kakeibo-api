@@ -1,12 +1,11 @@
+import { isEmail } from 'validator';
+import { InvalidEmailError } from '../errors/invalid-email.error';
+
 export class Email {
-    private readonly _value: string;
+    constructor(private readonly _value: string) {
+        const normalized = _value.trim().toLowerCase();
 
-    constructor(value: string) {
-        const normalized = value.trim().toLowerCase();
-
-        if (!Email.isValid(normalized)) {
-            throw new Error('Invalid email');
-        }
+        if (!isEmail(normalized)) throw new InvalidEmailError();
 
         this._value = normalized;
     }
@@ -17,11 +16,5 @@ export class Email {
 
     public equals(other: Email): boolean {
         return this._value === other.value;
-    }
-
-    private static isValid(email: string): boolean {
-        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-        return regex.test(email);
     }
 }
