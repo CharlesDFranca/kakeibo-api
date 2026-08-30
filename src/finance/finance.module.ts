@@ -32,6 +32,8 @@ import { WalletDeletionPolicy } from './app/policies/wallet-deletion.policy';
 import { FINANCE_TOKENS } from './finance.tokens';
 import { PlanningModule } from '@/planning/planning.module';
 import { CoreModule } from '@/core/core.module';
+import { TypeOrmFinanceUnitOfWork } from './infra/database/typeorm-finance.uow';
+import { FinanceFacade } from './app/services/finance-facade';
 
 @Module({
     imports: [
@@ -83,12 +85,22 @@ import { CoreModule } from '@/core/core.module';
             provide: FINANCE_TOKENS.ENSURE_CAN_DELETE_WALLET,
             useClass: WalletDeletionPolicy,
         },
+        {
+            provide: FINANCE_TOKENS.UNIT_OF_WORK,
+            useClass: TypeOrmFinanceUnitOfWork,
+        },
+        {
+            provide: FINANCE_TOKENS.FACADE,
+            useClass: FinanceFacade,
+        },
     ],
     exports: [
         FINANCE_TOKENS.WALLET_REPOSITORY,
         FINANCE_TOKENS.TRANSACTION_REPOSITORY,
         FINANCE_TOKENS.CATEGORY_REPOSITORY,
         FINANCE_TOKENS.TRANSACTION_QUERY,
+        FINANCE_TOKENS.UNIT_OF_WORK,
+        FINANCE_TOKENS.FACADE,
     ],
 })
 export class FinanceModule {}
