@@ -1,14 +1,17 @@
-import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
 import { Inject, Injectable } from '@nestjs/common';
-import type { IUnitOfWork } from '@/shared/app/contracts/unit-of-work.contract';
+import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
 import { Money } from '@/shared/domain/value-objects/money.vo';
+import { FINANCE_TOKENS } from '@/finance/finance.tokens';
+import { PLANNING_TOKENS } from '@/planning/planning.tokens';
+
+import type { IPlanningUnitOfWork } from '../../contracts/planning-unit-of-work.contract';
 import { GoalNotFoundError } from '../../errors/goal-not-found.error';
-import { GoalMovementReferencesNonExistentWalletError } from '../../errors/goal-movement-references-non-existent-wallet.error';
-import { CORE_TOKENS } from '@/core/core.tokens';
+import type { IFinanceFacade } from '@/finance/app/contracts/fincance-facade.contract';
 
 type CancelGoalInput = {
     userId: string;
     goalId: string;
+    categoryId: string;
 };
 
 type CancelGoalOutput = void;
@@ -19,15 +22,17 @@ export class CancelGoalUseCase implements IBaseUseCase<
     CancelGoalOutput
 > {
     constructor(
-        @Inject(CORE_TOKENS.UNIT_OF_WORK)
-        private readonly uow: IUnitOfWork,
+        @Inject(PLANNING_TOKENS.UNIT_OF_WORK)
+        private readonly planningUow: IPlanningUnitOfWork,
+        @Inject(FINANCE_TOKENS.FACADE)
+        private readonly financeFacade: IFinanceFacade,
     ) {}
 
     async execute(input: CancelGoalInput): Promise<CancelGoalOutput> {
-        return this.uow.transaction(async () => {
-            const goalRepository = this.uow.getGoalRepository();
-            const walletRepository = this.uow.getWalletRepository();
-            const goalMovementRepository = this.uow.getGoalMovementRepository();
+        return this.planningUow.transaction(async () => {
+            const goalRepository = this.planningUow.getGoalRepository();
+            const goalMovementRepository =
+                this.planningUow.getGoalMovementRepository();
 
             const goal = await goalRepository.findUserGoalById(
                 input.userId,
@@ -39,7 +44,6 @@ export class CancelGoalUseCase implements IBaseUseCase<
             const movements = await goalMovementRepository.findByGoalId(
                 goal.id,
             );
-
             const walletAmounts = new Map<string, Money>();
 
             for (const movement of movements) {
@@ -54,20 +58,17 @@ export class CancelGoalUseCase implements IBaseUseCase<
             }
 
             for (const [walletId, amount] of walletAmounts) {
-                if (amount.isZero()) continue;
+                if (amount.isZero() || amount.isLessThan(Money.zero()))
+                    continue;
 
-                const wallet = await walletRepository.findUserWalletById(
-                    input.userId,
+                await this.financeFacade.depositToWallet({
+                    userId: input.userId,
                     walletId,
-                );
-
-                if (!wallet) {
-                    throw new GoalMovementReferencesNonExistentWalletError();
-                }
-
-                wallet.deposit(amount);
-
-                await walletRepository.update(wallet);
+                    amount,
+                    categoryId: input.categoryId,
+                    description: `Estorno por cancelamento da meta: ${goal.name}`,
+                    date: new Date(),
+                });
             }
 
             await goalMovementRepository.deleteByGoalId(goal.id);

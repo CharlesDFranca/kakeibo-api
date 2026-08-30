@@ -45,7 +45,7 @@ export class FindGoalByIdUseCase implements IBaseUseCase<
 
         return {
             goalId: goal.id,
-            name: goal.name,
+            name: goal.name.value,
             status: goal.status.value,
             targetAmount: goal.targetAmount.amount,
             currentAmount: goal.currentAmount.amount,
