@@ -6,6 +6,8 @@ type TransferProps = {
     amount: Money;
     sourceWalletId: string;
     destinationWalletId: string;
+    sourceTransactionId: string;
+    destinationTransactionId: string;
 };
 
 export class Transfer extends BaseEntity<TransferProps> {
@@ -32,5 +34,13 @@ export class Transfer extends BaseEntity<TransferProps> {
 
     public get destinationWalletId(): string {
         return this.props.destinationWalletId;
+    }
+
+    public get sourceTransactionId(): string {
+        return this.props.sourceTransactionId;
+    }
+
+    public get destinationTransactionId(): string {
+        return this.props.destinationTransactionId;
     }
 }

@@ -12,6 +12,8 @@ export class TypeOrmTransferMapper {
                 amount: Money.fromCents(raw.amount),
                 sourceWalletId: raw.sourceWalletId,
                 destinationWalletId: raw.destinationWalletId,
+                sourceTransactionId: raw.sourceTransactionId,
+                destinationTransactionId: raw.destinationTransactionId,
             },
             raw.createdAt,
             raw.updatedAt,
@@ -25,6 +27,9 @@ export class TypeOrmTransferMapper {
         transferEntity.amount = transfer.amount.toCents();
         transferEntity.sourceWalletId = transfer.sourceWalletId;
         transferEntity.destinationWalletId = transfer.destinationWalletId;
+        transferEntity.sourceTransactionId = transfer.sourceTransactionId;
+        transferEntity.destinationTransactionId =
+            transfer.destinationTransactionId;
         transferEntity.createdAt = transfer.createdAt;
         transferEntity.updatedAt = transfer.updatedAt;
 

@@ -8,6 +8,7 @@ import {
     UpdateDateColumn,
 } from 'typeorm';
 import { WalletEntity } from './typeorm-wallet.entity';
+import { TransactionEntity } from './typeorm-transaction.entity';
 
 @Entity('transfers')
 export class TransferEntity {
@@ -23,6 +24,12 @@ export class TransferEntity {
     @Column()
     destinationWalletId!: string;
 
+    @Column()
+    sourceTransactionId!: string;
+
+    @Column()
+    destinationTransactionId!: string;
+
     @CreateDateColumn({ type: 'timestamptz' })
     createdAt!: Date;
 
@@ -36,4 +43,12 @@ export class TransferEntity {
     @ManyToOne(() => WalletEntity)
     @JoinColumn({ name: 'destinationWalletId' })
     destinationWallet!: WalletEntity;
+
+    @ManyToOne(() => TransactionEntity)
+    @JoinColumn({ name: 'sourceTransactionId' })
+    sourceTransaction!: TransactionEntity;
+
+    @ManyToOne(() => TransactionEntity)
+    @JoinColumn({ name: 'destinationTransactionId' })
+    destinationTransaction!: TransactionEntity;
 }

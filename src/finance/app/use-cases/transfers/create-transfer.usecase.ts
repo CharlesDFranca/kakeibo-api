@@ -1,5 +1,4 @@
 import type { IIDGenerator } from '@/core/app/contracts/id-generator.contract';
-import type { ITransferRepository } from '@/finance/domain/repositories/transfer-repository.interface';
 import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
 import { Inject, Injectable } from '@nestjs/common';
 import type { IFinanceUnitOfWork } from '../../contracts/finance-unit-of-work.contract';
@@ -11,6 +10,8 @@ import { Transaction } from '@/finance/domain/entities/transaction.entity';
 import { TransactionType } from '@/finance/domain/value-objects/transaction-type.vo';
 import { ETransactionType } from '@/finance/domain/enums/transaction-type.enum';
 import { CategoryNotFoundError } from '../../errors/category-not-found.error';
+import { WalletNotFoundError } from '../../errors/wallet-not-found.error';
+import { CannotTransferToSameWalletError } from '@/finance/domain/errors/cannot-transfer-to-same-wallet.error';
 
 type CreateTransferInput = {
     userId: string;
@@ -35,6 +36,10 @@ export class CreateTransferUseCase implements IBaseUseCase<
     ) {}
 
     async execute(input: CreateTransferInput): Promise<CreateTransferOutput> {
+        if (input.sourceWalletId === input.destinationWalletId) {
+            throw new CannotTransferToSameWalletError();
+        }
+
         const transfer = await this.financeUow.transaction(async () => {
             const walletRepository = this.financeUow.getWalletRepository();
             const categoryRepository = this.financeUow.getCategoryRepository();
@@ -47,14 +52,14 @@ export class CreateTransferUseCase implements IBaseUseCase<
                 input.sourceWalletId,
             );
 
-            if (!sourceWallet) throw new Error();
+            if (!sourceWallet) throw new WalletNotFoundError();
 
             const destinationWallet = await walletRepository.findUserWalletById(
                 input.userId,
                 input.destinationWalletId,
             );
 
-            if (!destinationWallet) throw new Error();
+            if (!destinationWallet) throw new WalletNotFoundError();
 
             const category = await categoryRepository.findUserCategoryById(
                 input.userId,
@@ -65,17 +70,6 @@ export class CreateTransferUseCase implements IBaseUseCase<
 
             const now = new Date();
             const amount = Money.fromAmount(input.amount);
-
-            const transfer = new Transfer(
-                this.idGenerator.generate(),
-                {
-                    amount,
-                    sourceWalletId: sourceWallet.id,
-                    destinationWalletId: destinationWallet.id,
-                },
-                now,
-                now,
-            );
 
             const sourceTransaction = new Transaction(
                 this.idGenerator.generate(),
@@ -100,6 +94,19 @@ export class CreateTransferUseCase implements IBaseUseCase<
                     description: 'Transfer',
                     type: new TransactionType(ETransactionType.TRANSFER),
                     date: now,
+                },
+                now,
+                now,
+            );
+
+            const transfer = new Transfer(
+                this.idGenerator.generate(),
+                {
+                    amount,
+                    sourceWalletId: sourceWallet.id,
+                    destinationWalletId: destinationWallet.id,
+                    sourceTransactionId: sourceTransaction.id,
+                    destinationTransactionId: destinationTransaction.id,
                 },
                 now,
                 now,
