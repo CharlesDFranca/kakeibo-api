@@ -34,4 +34,9 @@ export class TypeOrmTransferRepository implements ITransferRepository {
 
         return TypeOrmTransferMapper.toDomain(transfer);
     }
+
+    async update(transfer: Transfer): Promise<void> {
+        const entity = TypeOrmTransferMapper.toPersistence(transfer);
+        await this.transferRepository.save(entity);
+    }
 }

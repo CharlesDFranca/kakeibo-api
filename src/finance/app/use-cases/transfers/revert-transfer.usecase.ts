@@ -11,23 +11,19 @@ import { TransactionType } from '@/finance/domain/value-objects/transaction-type
 import { ETransactionType } from '@/finance/domain/enums/transaction-type.enum';
 import { CategoryNotFoundError } from '../../errors/category-not-found.error';
 import { WalletNotFoundError } from '../../errors/wallet-not-found.error';
-import { CannotTransferToSameWalletError } from '@/finance/domain/errors/cannot-transfer-to-same-wallet.error';
-import { ETransferStatus } from '@/finance/domain/enums/transfer-status.enum';
 
-type CreateTransferInput = {
+type RevertTransferInput = {
     userId: string;
-    amount: string;
+    transferId: string;
     categoryId: string;
-    sourceWalletId: string;
-    destinationWalletId: string;
 };
 
-type CreateTransferOutput = { id: string };
+type RevertTransferOutput = void;
 
 @Injectable()
-export class CreateTransferUseCase implements IBaseUseCase<
-    CreateTransferInput,
-    CreateTransferOutput
+export class RevertTransferUseCase implements IBaseUseCase<
+    RevertTransferInput,
+    RevertTransferOutput
 > {
     constructor(
         @Inject(CORE_TOKENS.ID_GENERATOR)
@@ -36,28 +32,32 @@ export class CreateTransferUseCase implements IBaseUseCase<
         private readonly financeUow: IFinanceUnitOfWork,
     ) {}
 
-    async execute(input: CreateTransferInput): Promise<CreateTransferOutput> {
-        if (input.sourceWalletId === input.destinationWalletId) {
-            throw new CannotTransferToSameWalletError();
-        }
-
-        const transfer = await this.financeUow.transaction(async () => {
+    async execute(input: RevertTransferInput): Promise<RevertTransferOutput> {
+        await this.financeUow.transaction(async () => {
             const walletRepository = this.financeUow.getWalletRepository();
             const categoryRepository = this.financeUow.getCategoryRepository();
             const transferRepository = this.financeUow.getTransferRepository();
             const transactionRepository =
                 this.financeUow.getTransactionRepository();
 
+            const transfer = await transferRepository.findUserTransferById(
+                input.userId,
+                input.transferId,
+            );
+
+            if (!transfer) throw new Error();
+            if (!transfer.canRervert()) throw new Error();
+
             const sourceWallet = await walletRepository.findUserWalletById(
                 input.userId,
-                input.sourceWalletId,
+                transfer.destinationWalletId,
             );
 
             if (!sourceWallet) throw new WalletNotFoundError();
 
             const destinationWallet = await walletRepository.findUserWalletById(
                 input.userId,
-                input.destinationWalletId,
+                transfer.sourceWalletId,
             );
 
             if (!destinationWallet) throw new WalletNotFoundError();
@@ -70,12 +70,11 @@ export class CreateTransferUseCase implements IBaseUseCase<
             if (!category) throw new CategoryNotFoundError();
 
             const now = new Date();
-            const amount = Money.fromAmount(input.amount);
 
             const sourceTransaction = new Transaction(
                 this.idGenerator.generate(),
                 {
-                    amount,
+                    amount: transfer.amount,
                     walletId: sourceWallet.id,
                     categoryId: category.id,
                     description: 'Transfer',
@@ -89,7 +88,7 @@ export class CreateTransferUseCase implements IBaseUseCase<
             const destinationTransaction = new Transaction(
                 this.idGenerator.generate(),
                 {
-                    amount,
+                    amount: transfer.amount,
                     walletId: destinationWallet.id,
                     categoryId: category.id,
                     description: 'Transfer',
@@ -100,22 +99,9 @@ export class CreateTransferUseCase implements IBaseUseCase<
                 now,
             );
 
-            const transfer = new Transfer(
-                this.idGenerator.generate(),
-                {
-                    amount,
-                    sourceWalletId: sourceWallet.id,
-                    destinationWalletId: destinationWallet.id,
-                    sourceTransactionId: sourceTransaction.id,
-                    destinationTransactionId: destinationTransaction.id,
-                    status: ETransferStatus.COMPLETED,
-                },
-                now,
-                now,
-            );
-
-            sourceWallet.withdraw(amount);
-            destinationWallet.deposit(amount);
+            sourceWallet.withdraw(transfer.amount);
+            destinationWallet.deposit(transfer.amount);
+            transfer.revert();
 
             await walletRepository.update(sourceWallet);
             await walletRepository.update(destinationWallet);
@@ -123,11 +109,9 @@ export class CreateTransferUseCase implements IBaseUseCase<
             await transactionRepository.create(sourceTransaction);
             await transactionRepository.create(destinationTransaction);
 
-            await transferRepository.create(transfer);
+            await transferRepository.update(transfer);
 
             return transfer;
         });
-
-        return { id: transfer.id };
     }
 }

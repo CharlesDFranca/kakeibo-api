@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { WalletEntity } from './typeorm-wallet.entity';
 import { TransactionEntity } from './typeorm-transaction.entity';
+import { ETransferStatus } from '@/finance/domain/enums/transfer-status.enum';
 
 @Entity('transfers')
 export class TransferEntity {
@@ -29,6 +30,9 @@ export class TransferEntity {
 
     @Column()
     destinationTransactionId!: string;
+
+    @Column({ type: 'enum', enum: ETransferStatus })
+    status!: ETransferStatus;
 
     @CreateDateColumn({ type: 'timestamptz' })
     createdAt!: Date;

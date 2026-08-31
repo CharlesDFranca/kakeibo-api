@@ -1,6 +1,7 @@
 import { BaseEntity } from '@/shared/domain/entities/base-entity.entity';
 import { Money } from '@/shared/domain/value-objects/money.vo';
 import { CannotTransferToSameWalletError } from '../errors/cannot-transfer-to-same-wallet.error';
+import { ETransferStatus } from '../enums/transfer-status.enum';
 
 type TransferProps = {
     amount: Money;
@@ -8,6 +9,7 @@ type TransferProps = {
     destinationWalletId: string;
     sourceTransactionId: string;
     destinationTransactionId: string;
+    status: ETransferStatus;
 };
 
 export class Transfer extends BaseEntity<TransferProps> {
@@ -42,5 +44,20 @@ export class Transfer extends BaseEntity<TransferProps> {
 
     public get destinationTransactionId(): string {
         return this.props.destinationTransactionId;
+    }
+
+    public get status(): ETransferStatus {
+        return this.props.status;
+    }
+
+    public revert(): void {
+        if (!this.canRervert()) return;
+
+        this.props.status = ETransferStatus.REVERTED;
+        this.touch();
+    }
+
+    public canRervert(): boolean {
+        return this.status === ETransferStatus.COMPLETED;
     }
 }

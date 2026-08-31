@@ -14,6 +14,7 @@ export class TypeOrmTransferMapper {
                 destinationWalletId: raw.destinationWalletId,
                 sourceTransactionId: raw.sourceTransactionId,
                 destinationTransactionId: raw.destinationTransactionId,
+                status: raw.status
             },
             raw.createdAt,
             raw.updatedAt,
@@ -30,6 +31,7 @@ export class TypeOrmTransferMapper {
         transferEntity.sourceTransactionId = transfer.sourceTransactionId;
         transferEntity.destinationTransactionId =
             transfer.destinationTransactionId;
+        transferEntity.status = transfer.status
         transferEntity.createdAt = transfer.createdAt;
         transferEntity.updatedAt = transfer.updatedAt;
 
