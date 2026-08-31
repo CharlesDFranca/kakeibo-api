@@ -11,10 +11,7 @@ import {
     HttpStatus,
     Post,
 } from '@nestjs/common';
-
-type CreateCategoryDTO = {
-    name: string;
-};
+import { CreateCategoryDto } from '../dtos/create-category.dto';
 
 @Controller('categories')
 export class CategoryController {
@@ -27,7 +24,7 @@ export class CategoryController {
     @HttpCode(HttpStatus.CREATED)
     async create(
         @CurrentUserId() userId: string,
-        @Body() body: CreateCategoryDTO,
+        @Body() body: CreateCategoryDto,
     ) {
         const category = await this.createCategoryUseCase.execute({
             name: body.name,
