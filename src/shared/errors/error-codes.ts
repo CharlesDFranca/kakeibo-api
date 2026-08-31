@@ -54,6 +54,7 @@ export const ErrorCodes = {
     INVALID_ENTITY_UPDATED_AT: 'INVALID_ENTITY_UPDATED_AT',
     ENTITY_CREATED_AT_CANNOT_BE_AFTER_UPDATED_AT:
         'ENTITY_CREATED_AT_CANNOT_BE_AFTER_UPDATED_AT',
+    TRANSFER_SAME_WALLET: 'TRANSFER_SAME_WALLET',
 } as const;
 
 export type ErrorCode = (typeof ErrorCodes)[keyof typeof ErrorCodes];
