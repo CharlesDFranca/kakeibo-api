@@ -4,7 +4,7 @@ import type { IPlanningUnitOfWork } from '@/planning/app/contracts/planning-unit
 import {
     IPlanningFacade,
     HasWalletAllocatedToGoalsInput,
-} from '../contracts/planning-facade.contract';
+} from '../api/planning-facade.contract';
 
 @Injectable()
 export class PlanningFacade implements IPlanningFacade {

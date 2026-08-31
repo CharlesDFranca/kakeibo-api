@@ -8,7 +8,7 @@ import {
     // WithdrawFromWalletOutput,
     DepositToWalletInput,
     // DepositToWalletOutput,
-} from '../contracts/fincance-facade.contract';
+} from '../../api/fincance-facade.contract';
 import { WalletNotFoundError } from '../errors/wallet-not-found.error';
 import { Transaction } from '@/finance/domain/entities/transaction.entity';
 import { TransactionType } from '@/finance/domain/value-objects/transaction-type.vo';

@@ -14,7 +14,7 @@ import { GoalMovementType } from '@/planning/domain/value-objects/goal-movement-
 import { GoalDepositNotFoundError } from '../../errors/goal-deposit-not-found.error';
 import { GoalNotFoundError } from '../../errors/goal-not-found.error';
 
-import type { IFinanceFacade } from '@/finance/app/contracts/fincance-facade.contract';
+import type { IFinanceFacade } from '@/finance/api/fincance-facade.contract';
 
 type RevertGoalDepositInput = {
     userId: string;

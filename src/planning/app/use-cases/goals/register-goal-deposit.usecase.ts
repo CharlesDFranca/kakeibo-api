@@ -13,7 +13,7 @@ import { EGoalMovementType } from '@/planning/domain/enums/goal-movement-type.en
 import { GoalMovementType } from '@/planning/domain/value-objects/goal-movement-type.vo';
 import { GoalNotFoundError } from '../../errors/goal-not-found.error';
 
-import type { IFinanceFacade } from '@/finance/app/contracts/fincance-facade.contract';
+import type { IFinanceFacade } from '@/finance/api/fincance-facade.contract';
 
 type RegisterGoalDepositInput = {
     userId: string;

@@ -6,7 +6,7 @@ import { PLANNING_TOKENS } from '@/planning/planning.tokens';
 
 import type { IPlanningUnitOfWork } from '../../contracts/planning-unit-of-work.contract';
 import { GoalNotFoundError } from '../../errors/goal-not-found.error';
-import type { IFinanceFacade } from '@/finance/app/contracts/fincance-facade.contract';
+import type { IFinanceFacade } from '@/finance/api/fincance-facade.contract';
 
 type CancelGoalInput = {
     userId: string;
