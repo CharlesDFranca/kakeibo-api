@@ -11,16 +11,8 @@ import {
 
 import { RegisterGoalDepositUseCase } from '../../app/use-cases/goals/register-goal-deposit.usecase';
 import { RevertGoalDepositUseCase } from '../../app/use-cases/goals/revert-goal-deposit.usecase';
-
-type RegisterGoalDepositDTO = {
-    walletId: string;
-    categoryId: string;
-    amount: string;
-};
-
-type RevertGoalDepositDTO = {
-    categoryId: string;
-};
+import { RegisterGoalDepositDto } from '../dtos/register-goal-deposito.dto';
+import { RevertGoalDepositDto } from '../dtos/revert-goal-deposit.dto';
 
 @Controller('goals')
 export class GoalMovementsController {
@@ -34,7 +26,7 @@ export class GoalMovementsController {
     async create(
         @CurrentUserId() userId: string,
         @Param('id') goalId: string,
-        @Body() body: RegisterGoalDepositDTO,
+        @Body() body: RegisterGoalDepositDto,
     ) {
         return this.registerGoalDeposit.execute({
             userId,
@@ -50,7 +42,7 @@ export class GoalMovementsController {
     async revert(
         @CurrentUserId() userId: string,
         @Param('movementId') depositId: string,
-        @Body() body: RevertGoalDepositDTO,
+        @Body() body: RevertGoalDepositDto,
     ) {
         return this.revertGoalDeposit.execute({
             userId,
