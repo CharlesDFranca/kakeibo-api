@@ -13,15 +13,7 @@ import {
     HttpStatus,
     Post,
 } from '@nestjs/common';
-
-type CreateTransactionDTO = {
-    amount: string;
-    categoryId: string;
-    date: Date;
-    description: string;
-    type: 'INCOME' | 'EXPENSE' | 'TRANSFER';
-    walletId: string;
-};
+import { CreateTransactionDto } from '../dtos/create-transaction.dto';
 
 @Controller('transactions')
 export class TransactionController {
@@ -34,14 +26,14 @@ export class TransactionController {
     @HttpCode(HttpStatus.CREATED)
     async create(
         @CurrentUserId() userId: string,
-        @Body() body: CreateTransactionDTO,
+        @Body() body: CreateTransactionDto,
     ) {
         const transaction = await this.createTransactionUseCase.execute({
             userId,
             amount: body.amount,
             description: body.description,
             date: new Date(body.date),
-            type: parseEnum(body.type, ETransactionType),
+            type: body.type,
             categoryId: body.categoryId,
             walletId: body.walletId,
         });
