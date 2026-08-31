@@ -12,6 +12,9 @@ import { WalletEntity } from '../entities/typeorm-wallet.entity';
 import { TypeOrmCategoryRepository } from '../repositories/typeorm-category.repository';
 import { TypeOrmTransactionRepository } from '../repositories/typeorm-transaction.repository';
 import { TypeOrmWalletRepository } from '../repositories/typeorm-wallet.repository';
+import { ITransferRepository } from '@/finance/domain/repositories/transfer-repository.interface';
+import { TypeOrmTransferRepository } from '../repositories/typeorm-transfer.repository';
+import { TransferEntity } from '../entities/typeorm-transfer.entity';
 
 @Injectable()
 export class TypeOrmFinanceUnitOfWork
@@ -38,6 +41,13 @@ export class TypeOrmFinanceUnitOfWork
         const manager = TransactionContext.getManager(this.dataSource.manager);
         return new TypeOrmCategoryRepository(
             manager.getRepository(CategoryEntity),
+        );
+    }
+
+    public getTransferRepository(): ITransferRepository {
+        const manager = TransactionContext.getManager(this.dataSource.manager);
+        return new TypeOrmTransferRepository(
+            manager.getRepository(TransferEntity),
         );
     }
 }

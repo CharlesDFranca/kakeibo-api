@@ -25,11 +25,14 @@ import { CategoryEntity } from './infra/entities/typeorm-category.entity';
 
 import { TypeOrmWalletRepository } from './infra/repositories/typeorm-wallet.repository';
 import { TypeOrmTransactionRepository } from './infra/repositories/typeorm-transaction.repository';
+import { TypeOrmTransferRepository } from './infra/repositories/typeorm-transfer.repository';
 import { TypeOrmCategoryRepository } from './infra/repositories/typeorm-category.repository';
 import { TypeOrmTransactionQuery } from './infra/queries/typeorm-transaction.query';
 import { WalletDeletionPolicy } from './app/policies/wallet-deletion.policy';
 import { TypeOrmFinanceUnitOfWork } from './infra/database/typeorm-finance.uow';
 import { FinanceFacade } from './app/services/finance-facade';
+import { CreateTransferUseCase } from './app/use-cases/transfers/create-transfer.usecase';
+import { TransferEntity } from './infra/entities/typeorm-transfer.entity';
 
 @Module({
     imports: [
@@ -39,6 +42,7 @@ import { FinanceFacade } from './app/services/finance-facade';
             WalletEntity,
             TransactionEntity,
             CategoryEntity,
+            TransferEntity,
         ]),
     ],
     controllers: [
@@ -57,6 +61,7 @@ import { FinanceFacade } from './app/services/finance-facade';
         ListTransactionsUseCase,
         CreateCategoryUseCase,
         ListCategoriesUseCase,
+        CreateTransferUseCase,
 
         {
             provide: FINANCE_TOKENS.ENSURE_CAN_DELETE_WALLET,
@@ -74,6 +79,10 @@ import { FinanceFacade } from './app/services/finance-facade';
         {
             provide: FINANCE_TOKENS.CATEGORY_REPOSITORY,
             useClass: TypeOrmCategoryRepository,
+        },
+        {
+            provide: FINANCE_TOKENS.TRANSFER_REPOSITORY,
+            useClass: TypeOrmTransferRepository,
         },
         {
             provide: FINANCE_TOKENS.TRANSACTION_QUERY,
