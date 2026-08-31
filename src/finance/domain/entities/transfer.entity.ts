@@ -21,4 +21,16 @@ export class Transfer extends BaseEntity<TransferProps> {
 
         super(id, props, createdAt, updatedAt);
     }
+
+    public get amount(): Money {
+        return this.props.amount;
+    }
+
+    public get sourceWalletId(): string {
+        return this.props.sourceWalletId;
+    }
+
+    public get destinationWalletId(): string {
+        return this.props.destinationWalletId;
+    }
 }
