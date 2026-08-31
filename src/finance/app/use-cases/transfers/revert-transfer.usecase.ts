@@ -11,6 +11,8 @@ import { TransactionType } from '@/finance/domain/value-objects/transaction-type
 import { ETransactionType } from '@/finance/domain/enums/transaction-type.enum';
 import { CategoryNotFoundError } from '../../errors/category-not-found.error';
 import { WalletNotFoundError } from '../../errors/wallet-not-found.error';
+import { TransferNotFoundError } from '../../errors/transfer-not-found.error';
+import { TransferCannotBeRevertedError } from '@/finance/domain/errors/transfer-cannot-be-reverted.error';
 
 type RevertTransferInput = {
     userId: string;
@@ -45,8 +47,11 @@ export class RevertTransferUseCase implements IBaseUseCase<
                 input.transferId,
             );
 
-            if (!transfer) throw new Error();
-            if (!transfer.canRervert()) throw new Error();
+            if (!transfer) throw new TransferNotFoundError();
+
+            if (!transfer.canRervert()) {
+                throw new TransferCannotBeRevertedError();
+            }
 
             const sourceWallet = await walletRepository.findUserWalletById(
                 input.userId,
