@@ -48,8 +48,16 @@ export class GoalsController {
 
     @Delete(':id')
     @HttpCode(HttpStatus.NO_CONTENT)
-    async delete(@CurrentUserId() userId: string, @Param('id') id: string) {
-        return this.cancelGoalUseCase.execute({ userId, goalId: id });
+    async delete(
+        @CurrentUserId() userId: string,
+        @Param('id') id: string,
+        @Body() body: { categoryId: string },
+    ) {
+        return this.cancelGoalUseCase.execute({
+            userId,
+            goalId: id,
+            categoryId: body.categoryId,
+        });
     }
 
     @Get(':id')

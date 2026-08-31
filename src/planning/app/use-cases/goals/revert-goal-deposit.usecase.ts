@@ -1,18 +1,20 @@
+import { Inject, Injectable } from '@nestjs/common';
+import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
 import { CORE_TOKENS } from '@/core/core.tokens';
-import { WalletNotFoundError } from '@/finance/app/errors/wallet-not-found.error';
-import { Transaction } from '@/finance/domain/entities/transaction.entity';
-import { ETransactionType } from '@/finance/domain/enums/transaction-type.enum';
-import { TransactionType } from '@/finance/domain/value-objects/transaction-type.vo';
+import { FINANCE_TOKENS } from '@/finance/finance.tokens';
+import { PLANNING_TOKENS } from '@/planning/planning.tokens';
+
+import type { IIDGenerator } from '@/core/app/contracts/id-generator.contract';
+import type { IPlanningUnitOfWork } from '../../contracts/planning-unit-of-work.contract';
+
 import { GoalMovement } from '@/planning/domain/entities/goal-movement.entity';
 import { EGoalMovementType } from '@/planning/domain/enums/goal-movement-type.enum';
 import { GoalMovementCannotBeRevertedError } from '@/planning/domain/errors/goal-movement-cannot-be-reverted.error';
 import { GoalMovementType } from '@/planning/domain/value-objects/goal-movement-type.vo';
-import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
-import type { IIDGenerator } from '@/core/app/contracts/id-generator.contract';
-import type { IUnitOfWork } from '@/shared/app/contracts/unit-of-work.contract';
-import { Injectable, Inject } from '@nestjs/common';
 import { GoalDepositNotFoundError } from '../../errors/goal-deposit-not-found.error';
 import { GoalNotFoundError } from '../../errors/goal-not-found.error';
+
+import type { IFinanceFacade } from '@/finance/api/fincance-facade.contract';
 
 type RevertGoalDepositInput = {
     userId: string;
@@ -30,20 +32,21 @@ export class RevertGoalDepositUseCase implements IBaseUseCase<
     RevertGoalDepositOutput
 > {
     constructor(
-        @Inject(CORE_TOKENS.UNIT_OF_WORK)
-        private readonly uow: IUnitOfWork,
+        @Inject(PLANNING_TOKENS.UNIT_OF_WORK)
+        private readonly planningUow: IPlanningUnitOfWork,
         @Inject(CORE_TOKENS.ID_GENERATOR)
         private readonly idGenerator: IIDGenerator,
+        @Inject(FINANCE_TOKENS.FACADE)
+        private readonly financeFacade: IFinanceFacade,
     ) {}
 
     async execute(
         input: RevertGoalDepositInput,
     ): Promise<RevertGoalDepositOutput> {
-        return this.uow.transaction(async () => {
-            const goalRepository = this.uow.getGoalRepository();
-            const walletRepository = this.uow.getWalletRepository();
-            const goalMovementRepository = this.uow.getGoalMovementRepository();
-            const transactionRepository = this.uow.getTransactionRepository();
+        return this.planningUow.transaction(async () => {
+            const goalRepository = this.planningUow.getGoalRepository();
+            const goalMovementRepository =
+                this.planningUow.getGoalMovementRepository();
 
             const deposit = await goalMovementRepository.findById(
                 input.depositId,
@@ -55,61 +58,42 @@ export class RevertGoalDepositUseCase implements IBaseUseCase<
                 throw new GoalMovementCannotBeRevertedError();
             }
 
-            const wallet = await walletRepository.findUserWalletById(
-                input.userId,
-                deposit.walletId,
-            );
-
-            if (!wallet) throw new WalletNotFoundError();
-
             const goal = await goalRepository.findUserGoalById(
                 input.userId,
                 deposit.goalId,
             );
-
             if (!goal) throw new GoalNotFoundError();
 
-            const amount = deposit.amount;
+            await this.financeFacade.depositToWallet({
+                userId: input.userId,
+                walletId: deposit.walletId,
+                amount: deposit.amount,
+                categoryId: input.categoryId,
+                description: `Reversão de aporte da meta: ${goal.name}`,
+                date: new Date(),
+            });
 
-            goal.withdraw(amount);
-            wallet.deposit(amount);
+            goal.withdraw(deposit.amount);
 
             const now = new Date();
-
-            const withdraw = new GoalMovement(
+            const withdrawMovement = new GoalMovement(
                 this.idGenerator.generate(),
                 {
                     amount: deposit.amount,
                     goalId: goal.id,
                     type: new GoalMovementType(EGoalMovementType.WITHDRAW),
-                    walletId: wallet.id,
+                    walletId: deposit.walletId,
                     revertedDepositId: deposit.id,
                 },
                 now,
                 now,
             );
 
-            const transaction = new Transaction(
-                this.idGenerator.generate(),
-                {
-                    amount,
-                    categoryId: input.categoryId,
-                    walletId: wallet.id,
-                    date: now,
-                    description: 'Goal deposit reversion',
-                    type: new TransactionType(ETransactionType.TRANSFER),
-                },
-                now,
-                now,
-            );
-
             await goalRepository.update(goal);
-            await walletRepository.update(wallet);
-            await goalMovementRepository.create(withdraw);
-            await transactionRepository.create(transaction);
+            await goalMovementRepository.create(withdrawMovement);
 
             return {
-                id: withdraw.id,
+                id: withdrawMovement.id,
             };
         });
     }

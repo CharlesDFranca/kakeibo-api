@@ -1,5 +1,10 @@
 export type ApiErrorType =
-    'Validation' | 'Domain' | 'Application' | 'Infrastructure' | 'Internal';
+    | 'Validation'
+    | 'Domain'
+    | 'Application'
+    | 'Infrastructure'
+    | 'Internal'
+    | 'HTTP';
 
 export type ApiError = {
     code: string;
