@@ -29,10 +29,8 @@ export type DepositToWalletInput = {
 // };
 
 export interface IFinanceFacade {
-    withdrawFromWallet(
-        input: WithdrawFromWalletInput,
-    ): Promise<void>;
-    depositToWallet(
-        input: DepositToWalletInput,
-    ): Promise<void>;
+    withdrawFromWallet(input: WithdrawFromWalletInput): Promise<void>;
+    depositToWallet(input: DepositToWalletInput): Promise<void>;
+    createBasicCategories(userId: string): Promise<void>;
+    createSystemCategories(userId: string): Promise<void>;
 }
