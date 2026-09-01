@@ -10,7 +10,7 @@ import { LogoutUseCase } from './app/use-cases/auth/logout.usecase';
 import { CreateUserUseCase } from './app/use-cases/users/create-user.usecase';
 import { FindUserByIdUseCase } from './app/use-cases/users/find-user-by-id.usecase';
 
-import { TypeormUserRepository } from './infra/repositories/typeorm-user.repository';
+import { TypeOrmUserRepository } from './infra/repositories/typeorm-user.repository';
 import { RedisSessionRepository } from './infra/repositories/redis-session.repository';
 
 import { AuthContextService } from './app/services/auth-context.service';
@@ -19,6 +19,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { SessionGuard } from './presentation/guards/session.guard';
 import { BcryptPasswordHasher } from './infra/services/bcrypt-password-hasher.service';
 import { CoreModule } from '@/core/core.module';
+import { TypeOrmIdentityUnitOfWork } from './infra/database/typeorm-identity.uow';
 
 @Module({
     imports: [CoreModule, TypeOrmModule.forFeature([UserEntity])],
@@ -33,7 +34,7 @@ import { CoreModule } from '@/core/core.module';
 
         {
             provide: IDENTITY_TOKENS.USER_REPOSITORY,
-            useClass: TypeormUserRepository,
+            useClass: TypeOrmUserRepository,
         },
         {
             provide: IDENTITY_TOKENS.SESSION_REPOSITORY,
@@ -42,6 +43,10 @@ import { CoreModule } from '@/core/core.module';
         {
             provide: IDENTITY_TOKENS.PASSWORD_HASHER,
             useClass: BcryptPasswordHasher,
+        },
+        {
+            provide: IDENTITY_TOKENS.UNIT_OF_WORK,
+            useClass: TypeOrmIdentityUnitOfWork,
         },
         { provide: APP_GUARD, useClass: SessionGuard },
     ],

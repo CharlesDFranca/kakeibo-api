@@ -9,7 +9,7 @@ import { Username } from '../../domain/value-objects/username.vo';
 import { UserEntity } from '@/identity/infra/entities/typeorm-user.entity';
 
 @Injectable()
-export class TypeormUserRepository implements IUserRepository {
+export class TypeOrmUserRepository implements IUserRepository {
     constructor(
         @InjectRepository(UserEntity)
         private readonly userRepository: Repository<UserEntity>,
