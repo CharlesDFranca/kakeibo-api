@@ -1,9 +1,15 @@
 import { Category } from '../entities/category.entity';
+import { SystemCategory } from '../enums/system-cateogories.enum';
 
 export interface ICategoryRepository {
-    create(cateogry: Category): Promise<void>;
+    create(cateogory: Category): Promise<void>;
+    createMany(categories: Category[]): Promise<void>;
     update(cateogry: Category): Promise<void>;
     findAllForUser(userId: string): Promise<Category[]>;
+    findSystemCategory(
+        userId: string,
+        category: SystemCategory,
+    ): Promise<Category | null>;
     findUserCategoryByName(
         userId: string,
         name: string,

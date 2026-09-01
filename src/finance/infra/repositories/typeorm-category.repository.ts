@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { CategoryEntity } from '@/finance/infra/entities/typeorm-category.entity';
 import { TypeOrmCategoryMapper } from '../mappers/typeorm-category.mapper';
 import { ICategoryRepository } from '../../domain/repositories/category-repository.interface';
+import { SystemCategory } from '@/finance/domain/enums/system-cateogories.enum';
 
 @Injectable()
 export class TypeOrmCategoryRepository implements ICategoryRepository {
@@ -16,6 +17,14 @@ export class TypeOrmCategoryRepository implements ICategoryRepository {
     async create(category: Category): Promise<void> {
         const entity = TypeOrmCategoryMapper.toPersistence(category);
         await this.categoryRepository.save(entity);
+    }
+
+    async createMany(categories: Category[]): Promise<void> {
+        const entities = categories.map((category) =>
+            TypeOrmCategoryMapper.toPersistence(category),
+        );
+
+        await this.categoryRepository.save(entities);
     }
 
     async update(category: Category): Promise<void> {
@@ -36,12 +45,25 @@ export class TypeOrmCategoryRepository implements ICategoryRepository {
         name: string,
     ): Promise<Category | null> {
         const category = await this.categoryRepository.findOne({
-            where: { userId, id: name },
+            where: { userId, name },
         });
 
         if (!category) return null;
 
         return TypeOrmCategoryMapper.toDomain(category);
+    }
+
+    async findSystemCategory(
+        userId: string,
+        category: SystemCategory,
+    ): Promise<Category | null> {
+        const entity = await this.categoryRepository.findOne({
+            where: { userId, name: category, isSystem: true },
+        });
+
+        if (!entity) return null;
+
+        return TypeOrmCategoryMapper.toDomain(entity);
     }
 
     async findUserCategoryById(
@@ -61,6 +83,10 @@ export class TypeOrmCategoryRepository implements ICategoryRepository {
         userId: string,
         categoryId: string,
     ): Promise<void> {
-        await this.categoryRepository.delete({ userId, id: categoryId });
+        await this.categoryRepository.delete({
+            userId,
+            id: categoryId,
+            isSystem: false,
+        });
     }
 }

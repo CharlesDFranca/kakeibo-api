@@ -8,7 +8,11 @@ export class TypeOrmCategoryMapper {
     public static toDomain(raw: CategoryEntity): Category {
         return new Category(
             raw.id,
-            { name: new Name(raw.name), userId: raw.userId },
+            {
+                name: new Name(raw.name),
+                userId: raw.userId,
+                isSystem: raw.isSystem,
+            },
             raw.createdAt,
             raw.updatedAt,
         );
@@ -20,6 +24,7 @@ export class TypeOrmCategoryMapper {
         categoryEntity.id = category.id;
         categoryEntity.name = category.name.value;
         categoryEntity.userId = category.userId;
+        categoryEntity.isSystem = category.isSystem;
         categoryEntity.createdAt = category.createdAt;
         categoryEntity.updatedAt = category.updatedAt;
 

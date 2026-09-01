@@ -1,3 +1,4 @@
+import { UserEntity } from '@/identity/infra/entities/typeorm-user.entity';
 import {
     Column,
     CreateDateColumn,
@@ -8,7 +9,6 @@ import {
     Unique,
     UpdateDateColumn,
 } from 'typeorm';
-import { UserEntity } from '../../../identity/infra/entities/typeorm-user.entity';
 
 @Entity('categories')
 @Unique(['userId', 'name'])
@@ -16,11 +16,14 @@ export class CategoryEntity {
     @PrimaryColumn()
     id!: string;
 
-    @Column({ type: 'varchar', length: 100, unique: true })
+    @Column({ type: 'varchar', length: 100 })
     name!: string;
 
     @Column()
     userId!: string;
+
+    @Column({ type: 'boolean' })
+    isSystem!: boolean;
 
     @ManyToOne(() => UserEntity, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'userId' })
