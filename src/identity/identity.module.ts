@@ -20,9 +20,14 @@ import { SessionGuard } from './presentation/guards/session.guard';
 import { BcryptPasswordHasher } from './infra/services/bcrypt-password-hasher.service';
 import { CoreModule } from '@/core/core.module';
 import { TypeOrmIdentityUnitOfWork } from './infra/database/typeorm-identity.uow';
+import { FinanceModule } from '@/finance/finance.module';
 
 @Module({
-    imports: [CoreModule, TypeOrmModule.forFeature([UserEntity])],
+    imports: [
+        CoreModule,
+        FinanceModule,
+        TypeOrmModule.forFeature([UserEntity]),
+    ],
     controllers: [AuthController, UsersController],
     providers: [
         LoginUseCase,
