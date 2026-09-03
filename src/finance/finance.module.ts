@@ -65,12 +65,12 @@ import { CategoryDeletionPolicy } from './app/policies/category-deletion.policy'
         CreateTransferUseCase,
 
         {
-            provide: FINANCE_TOKENS.ENSURE_CAN_DELETE_WALLET,
+            provide: FINANCE_TOKENS.WALLET_DELETION_POLICY,
             useClass: WalletDeletionPolicy,
         },
 
         {
-            provide: FINANCE_TOKENS.CAN_DELETE_CATEGORY,
+            provide: FINANCE_TOKENS.CATEGORY_DELETION_POLICY,
             useClass: CategoryDeletionPolicy,
         },
 

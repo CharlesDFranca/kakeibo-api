@@ -19,7 +19,7 @@ export class DeleteWalletUseCase implements IBaseUseCase<
     constructor(
         @Inject(FINANCE_TOKENS.WALLET_REPOSITORY)
         private readonly walletRepository: IWalletRepository,
-        @Inject(FINANCE_TOKENS.ENSURE_CAN_DELETE_WALLET)
+        @Inject(FINANCE_TOKENS.WALLET_DELETION_POLICY)
         private readonly walletDeletionPolicy: IWalletDeletionPolicy,
     ) {}
 

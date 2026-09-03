@@ -41,7 +41,21 @@ export class Category extends BaseEntity<CategoryProps> {
         this.touch();
     }
 
-    public canDelete(): boolean {
+    public canBeRevomed(): boolean {
         return !this.isSystem;
+    }
+
+    public deactivate(): void {
+        if (!this.isActive) return;
+
+        this.props.isActive = false;
+        this.touch();
+    }
+
+    public active(): void {
+        if (this.isActive) return;
+
+        this.props.isActive = true;
+        this.touch();
     }
 }
