@@ -12,6 +12,7 @@ export class TypeOrmCategoryMapper {
                 name: new Name(raw.name),
                 userId: raw.userId,
                 isSystem: raw.isSystem,
+                isActive: raw.isActive,
             },
             raw.createdAt,
             raw.updatedAt,
@@ -25,6 +26,7 @@ export class TypeOrmCategoryMapper {
         categoryEntity.name = category.name.value;
         categoryEntity.userId = category.userId;
         categoryEntity.isSystem = category.isSystem;
+        categoryEntity.isActive = category.isActive;
         categoryEntity.createdAt = category.createdAt;
         categoryEntity.updatedAt = category.updatedAt;
 

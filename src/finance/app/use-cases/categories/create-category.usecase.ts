@@ -46,6 +46,7 @@ export class CreateCategoryUseCase implements IBaseUseCase<
                 name: new Name(input.name),
                 userId: input.userId,
                 isSystem: false,
+                isActive: true,
             },
             now,
             now,

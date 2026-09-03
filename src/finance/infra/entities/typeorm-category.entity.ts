@@ -25,6 +25,9 @@ export class CategoryEntity {
     @Column({ type: 'boolean' })
     isSystem!: boolean;
 
+    @Column({ type: 'boolean', default: true })
+    isActive!: boolean;
+
     @ManyToOne(() => UserEntity, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'userId' })
     user!: UserEntity;

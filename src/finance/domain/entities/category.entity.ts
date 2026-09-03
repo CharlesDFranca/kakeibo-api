@@ -5,6 +5,7 @@ type CategoryProps = {
     name: Name;
     userId: string;
     isSystem: boolean;
+    isActive: boolean;
 };
 
 export class Category extends BaseEntity<CategoryProps> {
@@ -29,6 +30,10 @@ export class Category extends BaseEntity<CategoryProps> {
         return this.props.isSystem;
     }
 
+    public get isActive(): boolean {
+        return this.props.isActive;
+    }
+
     public rename(name: Name) {
         if (this.name.equals(name)) return;
 
@@ -37,6 +42,6 @@ export class Category extends BaseEntity<CategoryProps> {
     }
 
     public canDelete(): boolean {
-        return this.isSystem === false;
+        return !this.isSystem;
     }
 }
