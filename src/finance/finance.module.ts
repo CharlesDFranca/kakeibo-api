@@ -35,6 +35,7 @@ import { CreateTransferUseCase } from './app/use-cases/transfers/create-transfer
 import { TransferEntity } from './infra/entities/typeorm-transfer.entity';
 import { CategoryDeletionPolicy } from './app/policies/category-deletion.policy';
 import { RemoveCategoryUseCase } from './app/use-cases/categories/remove-category.usecase';
+import { RenameCategoryUseCase } from './app/use-cases/categories/rename-category.usecase';
 
 @Module({
     imports: [
@@ -63,6 +64,7 @@ import { RemoveCategoryUseCase } from './app/use-cases/categories/remove-categor
         ListTransactionsUseCase,
         CreateCategoryUseCase,
         RemoveCategoryUseCase,
+        RenameCategoryUseCase,
         ListCategoriesUseCase,
         CreateTransferUseCase,
 

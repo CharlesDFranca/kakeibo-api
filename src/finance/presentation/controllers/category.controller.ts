@@ -11,10 +11,13 @@ import {
     HttpCode,
     HttpStatus,
     Param,
+    Patch,
     Post,
 } from '@nestjs/common';
 import { CreateCategoryDto } from '../dtos/create-category.dto';
 import { RemoveCategoryUseCase } from '@/finance/app/use-cases/categories/remove-category.usecase';
+import { RenameCategoryDto } from '../dtos/rename-category.dto';
+import { RenameCategoryUseCase } from '@/finance/app/use-cases/categories/rename-category.usecase';
 
 @Controller('categories')
 export class CategoryController {
@@ -22,6 +25,7 @@ export class CategoryController {
         private readonly createCategoryUseCase: CreateCategoryUseCase,
         private readonly listCategoriesUseCase: ListCategoriesUseCase,
         private readonly removeCategoryUseCase: RemoveCategoryUseCase,
+        private readonly renameCategoryUseCase: RenameCategoryUseCase,
     ) {}
 
     @Post()
@@ -51,5 +55,19 @@ export class CategoryController {
         @Param('id') categoryId: string,
     ) {
         return this.removeCategoryUseCase.execute({ userId, categoryId });
+    }
+
+    @Patch('id')
+    @HttpCode(HttpStatus.NO_CONTENT)
+    async rename(
+        @CurrentUserId() userId: string,
+        @Param('id') categoryId: string,
+        @Body() body: RenameCategoryDto,
+    ) {
+        return this.renameCategoryUseCase.execute({
+            userId,
+            categoryId,
+            name: body.name,
+        });
     }
 }
