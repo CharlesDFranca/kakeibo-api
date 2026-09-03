@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { IWalletDeletionPolicy } from '../../domain/services/wallet-deletion-policy.interface';
 import { PLANNING_TOKENS } from '@/planning/planning.tokens';
 import { WalletHasAllocatedMoneyError } from '@/finance/domain/errors/wallet-has-allocated-money.error';
-import type { IPlanningFacade } from '@/planning/app/api/planning-facade.contract';
+import type { IPlanningFacade } from '@/planning/api/planning-facade.contract';
 
 @Injectable()
 export class WalletDeletionPolicy implements IWalletDeletionPolicy {
