@@ -34,6 +34,7 @@ import { FinanceFacade } from './app/services/finance-facade';
 import { CreateTransferUseCase } from './app/use-cases/transfers/create-transfer.usecase';
 import { TransferEntity } from './infra/entities/typeorm-transfer.entity';
 import { CategoryDeletionPolicy } from './app/policies/category-deletion.policy';
+import { RemoveCategoryUseCase } from './app/use-cases/categories/remove-category.usecase';
 
 @Module({
     imports: [
@@ -61,6 +62,7 @@ import { CategoryDeletionPolicy } from './app/policies/category-deletion.policy'
         CreateTransactionUseCase,
         ListTransactionsUseCase,
         CreateCategoryUseCase,
+        RemoveCategoryUseCase,
         ListCategoriesUseCase,
         CreateTransferUseCase,
 
