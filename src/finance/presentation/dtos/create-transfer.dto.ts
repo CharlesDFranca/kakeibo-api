@@ -6,9 +6,6 @@ export class CreateTransferDto {
     amount!: string;
 
     @IsUUID()
-    categoryId!: string;
-
-    @IsUUID()
     sourceWalletId!: string;
 
     @IsUUID()

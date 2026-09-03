@@ -13,11 +13,11 @@ import { CategoryNotFoundError } from '../../errors/category-not-found.error';
 import { WalletNotFoundError } from '../../errors/wallet-not-found.error';
 import { TransferNotFoundError } from '../../errors/transfer-not-found.error';
 import { TransferCannotBeRevertedError } from '@/finance/domain/errors/transfer-cannot-be-reverted.error';
+import { SystemCategory } from '@/finance/domain/enums/system-cateogories.enum';
 
 type RevertTransferInput = {
     userId: string;
     transferId: string;
-    categoryId: string;
 };
 
 type RevertTransferOutput = void;
@@ -67,9 +67,9 @@ export class RevertTransferUseCase implements IBaseUseCase<
 
             if (!destinationWallet) throw new WalletNotFoundError();
 
-            const category = await categoryRepository.findUserCategoryById(
+            const category = await categoryRepository.findSystemCategory(
                 input.userId,
-                input.categoryId,
+                SystemCategory.TRANSFER,
             );
 
             if (!category) throw new CategoryNotFoundError();

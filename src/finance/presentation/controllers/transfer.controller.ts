@@ -10,7 +10,6 @@ import {
     Param,
 } from '@nestjs/common';
 import { CreateTransferDto } from '../dtos/create-transfer.dto';
-import { RevertTransferDto } from '../dtos/revert-transfer.dto';
 
 @Controller('transfers')
 export class TransferController {
@@ -29,7 +28,6 @@ export class TransferController {
         return this.createTransferUseCase.execute({
             userId,
             amount: body.amount,
-            categoryId: body.categoryId,
             destinationWalletId: body.destinationWalletId,
             sourceWalletId: body.sourceWalletId,
         });
@@ -40,12 +38,10 @@ export class TransferController {
     async revert(
         @CurrentUserId() userId: string,
         @Param('id') transferId: string,
-        @Body() body: RevertTransferDto,
     ) {
         await this.revertTransferUseCase.execute({
             userId,
             transferId,
-            categoryId: body.categoryId,
         });
     }
 }

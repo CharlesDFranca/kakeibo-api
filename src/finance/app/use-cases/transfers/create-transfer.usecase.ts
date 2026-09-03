@@ -13,11 +13,11 @@ import { CategoryNotFoundError } from '../../errors/category-not-found.error';
 import { WalletNotFoundError } from '../../errors/wallet-not-found.error';
 import { CannotTransferToSameWalletError } from '@/finance/domain/errors/cannot-transfer-to-same-wallet.error';
 import { ETransferStatus } from '@/finance/domain/enums/transfer-status.enum';
+import { SystemCategory } from '@/finance/domain/enums/system-cateogories.enum';
 
 type CreateTransferInput = {
     userId: string;
     amount: string;
-    categoryId: string;
     sourceWalletId: string;
     destinationWalletId: string;
 };
@@ -62,9 +62,9 @@ export class CreateTransferUseCase implements IBaseUseCase<
 
             if (!destinationWallet) throw new WalletNotFoundError();
 
-            const category = await categoryRepository.findUserCategoryById(
+            const category = await categoryRepository.findSystemCategory(
                 input.userId,
-                input.categoryId,
+                SystemCategory.TRANSFER,
             );
 
             if (!category) throw new CategoryNotFoundError();
