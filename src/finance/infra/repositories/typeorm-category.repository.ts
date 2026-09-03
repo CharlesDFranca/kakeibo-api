@@ -34,7 +34,7 @@ export class TypeOrmCategoryRepository implements ICategoryRepository {
 
     async findAllForUser(userId: string): Promise<Category[]> {
         const categories = await this.categoryRepository.find({
-            where: { userId },
+            where: { userId, isSystem: false, isActive: true },
         });
 
         return categories.map((c) => TypeOrmCategoryMapper.toDomain(c));

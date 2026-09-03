@@ -1,12 +1,12 @@
+import { Inject, Injectable } from '@nestjs/common';
 import { Category } from '@/finance/domain/entities/category.entity';
 import { FINANCE_TOKENS } from '@/finance/finance.tokens';
-import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
+import type { ICategoryRepository } from '@/finance/domain/repositories/category-repository.interface';
+import { CORE_TOKENS } from '@/core/core.tokens';
 import type { IIDGenerator } from '@/core/app/contracts/id-generator.contract';
-import { Inject, Injectable } from '@nestjs/common';
-import type { ICategoryRepository } from '../../../domain/repositories/category-repository.interface';
+import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
 import { Name } from '@/shared/domain/value-objects/name.vo';
 import { CategoryAlreadyExistsError } from '../../errors/category-already-exists.error';
-import { CORE_TOKENS } from '@/core/core.tokens';
 
 type CreateCategoryInput = {
     name: string;
@@ -30,13 +30,24 @@ export class CreateCategoryUseCase implements IBaseUseCase<
     ) {}
 
     async execute(input: CreateCategoryInput): Promise<CreateCategoryOutput> {
-        const existsByName =
+        const existingCategory =
             await this.categoryRepository.findUserCategoryByName(
                 input.userId,
                 input.name,
             );
 
-        if (existsByName) throw new CategoryAlreadyExistsError();
+        if (existingCategory) {
+            if (existingCategory.isActive) {
+                throw new CategoryAlreadyExistsError();
+            }
+
+            existingCategory.activate();
+            await this.categoryRepository.update(existingCategory);
+
+            return {
+                id: existingCategory.id,
+            };
+        }
 
         const now = new Date();
 
@@ -54,6 +65,8 @@ export class CreateCategoryUseCase implements IBaseUseCase<
 
         await this.categoryRepository.create(category);
 
-        return { id: category.id };
+        return {
+            id: category.id,
+        };
     }
 }

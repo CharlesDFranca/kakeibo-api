@@ -52,7 +52,7 @@ export class Category extends BaseEntity<CategoryProps> {
         this.touch();
     }
 
-    public active(): void {
+    public activate(): void {
         if (this.isActive) return;
 
         this.props.isActive = true;
