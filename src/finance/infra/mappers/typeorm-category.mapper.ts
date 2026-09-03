@@ -1,7 +1,7 @@
 import { Category } from '@/finance/domain/entities/category.entity';
 import { CategoryEntity } from '@/finance/infra/entities/typeorm-category.entity';
 import { Name } from '@/shared/domain/value-objects/name.vo';
-import { normalizeName } from '@/shared/utils/normilize-name';
+import { normalizeName } from '@/shared/utils/normalize-name';
 
 export class TypeOrmCategoryMapper {
     private constructor() {}

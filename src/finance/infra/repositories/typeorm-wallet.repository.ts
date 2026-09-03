@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { TypeOrmWalletMapper } from '../mappers/typeorm-wallet.mapper';
 import { WalletEntity } from '@/finance/infra/entities/typeorm-wallet.entity';
+import { normalizeName } from '@/shared/utils/normalize-name';
 
 @Injectable()
 export class TypeOrmWalletRepository implements IWalletRepository {
@@ -23,38 +24,14 @@ export class TypeOrmWalletRepository implements IWalletRepository {
         await this.walletRepository.save(entity);
     }
 
-    async delete(id: string): Promise<void> {
-        await this.walletRepository.delete(id);
-    }
-
-    async findById(id: string): Promise<Wallet | null> {
-        const wallet = await this.walletRepository.findOne({ where: { id } });
-
-        if (!wallet) return null;
-
-        return TypeOrmWalletMapper.toDomain(wallet);
-    }
-
-    async findAll(): Promise<Wallet[]> {
-        const wallets = await this.walletRepository.find();
-
-        return wallets.map((wallet) => TypeOrmWalletMapper.toDomain(wallet));
-    }
-
-    async findByName(name: string): Promise<Wallet | null> {
-        const wallet = await this.walletRepository.findOne({ where: { name } });
-
-        if (!wallet) return null;
-
-        return TypeOrmWalletMapper.toDomain(wallet);
-    }
-
     async findUserWalletByName(
         userId: string,
         name: string,
     ): Promise<Wallet | null> {
+        const normalizedName = normalizeName(name);
+
         const wallet = await this.walletRepository.findOne({
-            where: { userId, name },
+            where: { userId, normalizedName },
         });
 
         if (!wallet) return null;

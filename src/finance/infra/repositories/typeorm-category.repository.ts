@@ -6,7 +6,7 @@ import { CategoryEntity } from '@/finance/infra/entities/typeorm-category.entity
 import { TypeOrmCategoryMapper } from '../mappers/typeorm-category.mapper';
 import { ICategoryRepository } from '../../domain/repositories/category-repository.interface';
 import { SystemCategory } from '@/finance/domain/enums/system-cateogories.enum';
-import { normalizeName } from '@/shared/utils/normilize-name';
+import { normalizeName } from '@/shared/utils/normalize-name';
 
 @Injectable()
 export class TypeOrmCategoryRepository implements ICategoryRepository {
