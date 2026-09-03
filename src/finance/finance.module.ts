@@ -33,6 +33,7 @@ import { TypeOrmFinanceUnitOfWork } from './infra/database/typeorm-finance.uow';
 import { FinanceFacade } from './app/services/finance-facade';
 import { CreateTransferUseCase } from './app/use-cases/transfers/create-transfer.usecase';
 import { TransferEntity } from './infra/entities/typeorm-transfer.entity';
+import { CategoryDeletionPolicy } from './app/policies/category-deletion.policy';
 
 @Module({
     imports: [
@@ -66,6 +67,11 @@ import { TransferEntity } from './infra/entities/typeorm-transfer.entity';
         {
             provide: FINANCE_TOKENS.ENSURE_CAN_DELETE_WALLET,
             useClass: WalletDeletionPolicy,
+        },
+
+        {
+            provide: FINANCE_TOKENS.CAN_DELETE_CATEGORY,
+            useClass: CategoryDeletionPolicy,
         },
 
         {

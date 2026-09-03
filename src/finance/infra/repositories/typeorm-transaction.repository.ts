@@ -84,9 +84,17 @@ export class TypeOrmTransactionRepository implements ITransactionRepository {
         }));
     }
 
-    async existsById(id: string): Promise<boolean> {
+    async existsUserTransactionByCategoryId(
+        userId: string,
+        categoryId: string,
+    ): Promise<boolean> {
         return this.transactionRepository.exists({
-            where: { id },
+            where: {
+                category: {
+                    id: categoryId,
+                    userId,
+                },
+            },
         });
     }
 }

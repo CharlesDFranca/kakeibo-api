@@ -24,4 +24,8 @@ export interface ITransactionRepository {
     update(transaction: Transaction): Promise<void>;
     delete(id: string): Promise<void>;
     findAllForUser(userId: string): Promise<Transaction[]>;
+    existsUserTransactionByCategoryId(
+        userId: string,
+        categoryId: string,
+    ): Promise<boolean>;
 }
