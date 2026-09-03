@@ -11,13 +11,16 @@ import {
 } from 'typeorm';
 
 @Entity('categories')
-@Unique(['userId', 'name'])
+@Unique(['userId', 'normalizedName'])
 export class CategoryEntity {
     @PrimaryColumn()
     id!: string;
 
     @Column({ type: 'varchar', length: 100 })
     name!: string;
+
+    @Column({ type: 'varchar', length: 100 })
+    normalizedName!: string;
 
     @Column()
     userId!: string;

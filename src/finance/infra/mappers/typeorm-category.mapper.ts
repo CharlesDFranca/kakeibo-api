@@ -1,6 +1,7 @@
 import { Category } from '@/finance/domain/entities/category.entity';
 import { CategoryEntity } from '@/finance/infra/entities/typeorm-category.entity';
 import { Name } from '@/shared/domain/value-objects/name.vo';
+import { normalizeName } from '@/shared/utils/normilize-name';
 
 export class TypeOrmCategoryMapper {
     private constructor() {}
@@ -24,6 +25,7 @@ export class TypeOrmCategoryMapper {
 
         categoryEntity.id = category.id;
         categoryEntity.name = category.name.value;
+        categoryEntity.normalizedName = normalizeName(category.name.value);
         categoryEntity.userId = category.userId;
         categoryEntity.isSystem = category.isSystem;
         categoryEntity.isActive = category.isActive;

@@ -6,6 +6,7 @@ import { CategoryEntity } from '@/finance/infra/entities/typeorm-category.entity
 import { TypeOrmCategoryMapper } from '../mappers/typeorm-category.mapper';
 import { ICategoryRepository } from '../../domain/repositories/category-repository.interface';
 import { SystemCategory } from '@/finance/domain/enums/system-cateogories.enum';
+import { normalizeName } from '@/shared/utils/normilize-name';
 
 @Injectable()
 export class TypeOrmCategoryRepository implements ICategoryRepository {
@@ -44,8 +45,10 @@ export class TypeOrmCategoryRepository implements ICategoryRepository {
         userId: string,
         name: string,
     ): Promise<Category | null> {
+        const normalizedName = normalizeName(name);
+
         const category = await this.categoryRepository.findOne({
-            where: { userId, name },
+            where: { userId, normalizedName },
         });
 
         if (!category) return null;
