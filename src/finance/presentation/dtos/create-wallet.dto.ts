@@ -4,4 +4,8 @@ export class CreateWalletDto {
     @IsString()
     @IsNotEmpty()
     name!: string;
+
+    @IsString()
+    @IsNotEmpty()
+    balance!: string;
 }
