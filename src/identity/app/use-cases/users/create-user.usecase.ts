@@ -1,5 +1,4 @@
 import { User } from '@/identity/domain/entities/user.entity';
-import type { IUserRepository } from '@/identity/domain/repositories/user-repository.interface';
 import { Email } from '@/identity/domain/value-objects/email.vo';
 import { Username } from '@/identity/domain/value-objects/username.vo';
 import { IDENTITY_TOKENS } from '@/identity/identity.token';
@@ -12,6 +11,9 @@ import { EmailAlreadyExistsError } from '../../errors/email-already-exists.error
 import { UsernameAlreadyExistsError } from '../../errors/username-already-exists.error';
 import { PasswordCannotBeEmptyError } from '../../errors/password-cannot-be-empty.error';
 import { CORE_TOKENS } from '@/core/core.tokens';
+import type { IIdentityUnitOfWork } from '../../contracts/identity-unit-of-work.contract';
+import type { IFinanceFacade } from '@/finance/api/fincance-facade.contract';
+import { FINANCE_TOKENS } from '@/finance/finance.tokens';
 
 type CreateUserInput = {
     name: string;
@@ -27,48 +29,58 @@ export class CreateUserUseCase implements IBaseUseCase<
     CreateUserOutput
 > {
     constructor(
-        @Inject(IDENTITY_TOKENS.USER_REPOSITORY)
-        private readonly userRepository: IUserRepository,
         @Inject(IDENTITY_TOKENS.PASSWORD_HASHER)
         private readonly passworder: IPasswordHasher,
         @Inject(CORE_TOKENS.ID_GENERATOR)
         private readonly idGenerator: IIDGenerator,
+        @Inject(IDENTITY_TOKENS.UNIT_OF_WORK)
+        private readonly identityUow: IIdentityUnitOfWork,
+        @Inject(FINANCE_TOKENS.FACADE)
+        private readonly financeFacade: IFinanceFacade,
     ) {}
 
     async execute(input: CreateUserInput): Promise<CreateUserOutput> {
-        const email = new Email(input.email);
-        const username = new Username(input.username);
+        const user = await this.identityUow.transaction(async () => {
+            const userRepository = this.identityUow.getUserRepository();
 
-        const emailAlredyUsed = await this.userRepository.findByEmail(email);
+            const email = new Email(input.email);
+            const username = new Username(input.username);
 
-        if (emailAlredyUsed) throw new EmailAlreadyExistsError();
+            const emailAlredyUsed = await userRepository.findByEmail(email);
 
-        const usernameAlredyUsed =
-            await this.userRepository.findByUsername(username);
+            if (emailAlredyUsed) throw new EmailAlreadyExistsError();
 
-        if (usernameAlredyUsed) throw new UsernameAlreadyExistsError();
+            const usernameAlredyUsed =
+                await userRepository.findByUsername(username);
 
-        const password = input.password.trim();
+            if (usernameAlredyUsed) throw new UsernameAlreadyExistsError();
 
-        if (!password.length) throw new PasswordCannotBeEmptyError();
+            const password = input.password.trim();
 
-        const passwordHash = await this.passworder.hash(password);
+            if (!password.length) throw new PasswordCannotBeEmptyError();
 
-        const now = new Date();
+            const passwordHash = await this.passworder.hash(password);
 
-        const user = new User(
-            this.idGenerator.generate(),
-            {
-                name: new Name(input.name),
-                username,
-                email,
-                password: passwordHash,
-            },
-            now,
-            now,
-        );
+            const now = new Date();
 
-        await this.userRepository.create(user);
+            const user = new User(
+                this.idGenerator.generate(),
+                {
+                    name: new Name(input.name),
+                    username,
+                    email,
+                    password: passwordHash,
+                },
+                now,
+                now,
+            );
+
+            await userRepository.create(user);
+            await this.financeFacade.createSystemCategories(user.id);
+            await this.financeFacade.createBasicCategories(user.id);
+
+            return user;
+        });
 
         return { id: user.id };
     }

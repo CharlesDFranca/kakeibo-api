@@ -1,5 +1,6 @@
 import { CategoryEntity } from '@/finance/infra/entities/typeorm-category.entity';
 import { TransactionEntity } from '@/finance/infra/entities/typeorm-transaction.entity';
+import { TransferEntity } from '@/finance/infra/entities/typeorm-transfer.entity';
 import { WalletEntity } from '@/finance/infra/entities/typeorm-wallet.entity';
 import { UserEntity } from '@/identity/infra/entities/typeorm-user.entity';
 import { GoalMovementEntity } from '@/planning/infra/entities/typeorm-goal-movement.entity';
@@ -18,6 +19,7 @@ export const dataSourceOptions: DataSourceOptions = {
         UserEntity,
         GoalEntity,
         GoalMovementEntity,
+        TransferEntity,
     ],
     migrations: [],
     synchronize: true,

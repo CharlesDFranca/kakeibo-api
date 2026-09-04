@@ -4,8 +4,8 @@ import { CoreModule } from '@/core/core.module';
 import { FinanceModule } from '@/finance/finance.module';
 
 import { PLANNING_TOKENS } from './planning.tokens';
-import { GoalsController } from './presentation/goals.controller';
-import { GoalMovementsController } from './presentation/goal-movements.controller';
+import { GoalsController } from './presentation/controllers/goals.controller';
+import { GoalMovementsController } from './presentation/controllers/goal-movements.controller';
 
 import {
     CreateGoalUseCase,
@@ -58,8 +58,6 @@ import { PlanningFacade } from './app/services/planning-facade';
             useClass: PlanningFacade,
         },
     ],
-    exports: [
-        PLANNING_TOKENS.FACADE,
-    ],
+    exports: [PLANNING_TOKENS.FACADE],
 })
 export class PlanningModule {}

@@ -4,6 +4,7 @@ import { Name } from '@/shared/domain/value-objects/name.vo';
 type CategoryProps = {
     name: Name;
     userId: string;
+    isSystem: boolean;
 };
 
 export class Category extends BaseEntity<CategoryProps> {
@@ -24,10 +25,18 @@ export class Category extends BaseEntity<CategoryProps> {
         return this.props.userId;
     }
 
+    public get isSystem(): boolean {
+        return this.props.isSystem;
+    }
+
     public rename(name: Name) {
         if (this.name.equals(name)) return;
 
         this.props.name = name;
         this.touch();
+    }
+
+    public canDelete(): boolean {
+        return this.isSystem === false;
     }
 }

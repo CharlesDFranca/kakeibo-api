@@ -9,19 +9,15 @@ import {
     Patch,
     Post,
 } from '@nestjs/common';
-import { CreateGoalUseCase } from '../app/use-cases/goals/create-goal.usecase';
-import { CancelGoalUseCase } from '../app/use-cases/goals/cancel-goal.usecase';
-import { ListGoalsUseCase } from '../app/use-cases/goals/list-goals.usecase';
-import { RenameGoalUseCase } from '../app/use-cases/goals/rename-goal.usecase';
+import { CreateGoalUseCase } from '../../app/use-cases/goals/create-goal.usecase';
+import { CancelGoalUseCase } from '../../app/use-cases/goals/cancel-goal.usecase';
+import { ListGoalsUseCase } from '../../app/use-cases/goals/list-goals.usecase';
+import { RenameGoalUseCase } from '../../app/use-cases/goals/rename-goal.usecase';
 import { CurrentUserId } from '@/core/decorators/current-user-id.decorator';
-import { FindGoalByIdUseCase } from '../app/use-cases/goals/find-goal-by-id.usecase';
-
-type CreateGoalInput = {
-    userId: string;
-    name: string;
-    targetAmount: string;
-    deadline?: Date | undefined;
-};
+import { FindGoalByIdUseCase } from '../../app/use-cases/goals/find-goal-by-id.usecase';
+import { CreateGoalDto } from '../dtos/create-goal.dto';
+import { CancelGoalDto } from '../dtos/cancel-goal.dto';
+import { RenameGoalDto } from '../dtos/rename-goal.dto';
 
 @Controller('goals')
 export class GoalsController {
@@ -35,10 +31,7 @@ export class GoalsController {
 
     @Post()
     @HttpCode(HttpStatus.CREATED)
-    async create(
-        @CurrentUserId() userId: string,
-        @Body() body: CreateGoalInput,
-    ) {
+    async create(@CurrentUserId() userId: string, @Body() body: CreateGoalDto) {
         return this.createGoalUseCase.execute({
             ...body,
             userId,
@@ -51,7 +44,7 @@ export class GoalsController {
     async delete(
         @CurrentUserId() userId: string,
         @Param('id') id: string,
-        @Body() body: { categoryId: string },
+        @Body() body: CancelGoalDto,
     ) {
         return this.cancelGoalUseCase.execute({
             userId,
@@ -76,7 +69,7 @@ export class GoalsController {
     @HttpCode(HttpStatus.OK)
     async rename(
         @CurrentUserId() userId: string,
-        @Body() body: { name: string },
+        @Body() body: RenameGoalDto,
         @Param('id') id: string,
     ) {
         return this.renameGoalUseCase.execute({

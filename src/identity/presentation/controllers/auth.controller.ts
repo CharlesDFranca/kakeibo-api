@@ -10,11 +10,7 @@ import {
     Res,
 } from '@nestjs/common';
 import type { Response } from 'express';
-
-type LoginDTO = {
-    email: string;
-    password: string;
-};
+import { LoginDto } from '../dto/login.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -27,7 +23,7 @@ export class AuthController {
     @Post('login')
     @HttpCode(HttpStatus.OK)
     async login(
-        @Body() body: LoginDTO,
+        @Body() body: LoginDto,
         @Res({ passthrough: true }) response: Response,
     ): Promise<void> {
         const { sessionId } = await this.loginUseCase.execute({

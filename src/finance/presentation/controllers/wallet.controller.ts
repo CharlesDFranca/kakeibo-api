@@ -17,10 +17,9 @@ import {
     Patch,
     Post,
 } from '@nestjs/common';
+import { CreateWalletDto } from '../dtos/create-wallet.dto';
+import { RenameWalletDto } from '../dtos/rename-wallet.dto';
 
-type CreateWalletDTO = {
-    name: string;
-};
 
 @Controller('wallets')
 export class WalletController {
@@ -35,7 +34,7 @@ export class WalletController {
     @HttpCode(HttpStatus.CREATED)
     async create(
         @CurrentUserId() userId: string,
-        @Body() body: CreateWalletDTO,
+        @Body() body: CreateWalletDto,
     ) {
         const wallet = await this.createWalletUseCase.execute({
             userId,
@@ -56,7 +55,7 @@ export class WalletController {
     async rename(
         @CurrentUserId() userId: string,
         @Param('id') id: string,
-        @Body() body: { name: string },
+        @Body() body: RenameWalletDto,
     ) {
         return this.renameWalletUseCase.execute({
             walletId: id,

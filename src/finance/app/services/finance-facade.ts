@@ -5,15 +5,17 @@ import type { IFinanceUnitOfWork } from '@/finance/app/contracts/finance-unit-of
 import {
     IFinanceFacade,
     WithdrawFromWalletInput,
-    // WithdrawFromWalletOutput,
     DepositToWalletInput,
-    // DepositToWalletOutput,
 } from '../../api/fincance-facade.contract';
 import { WalletNotFoundError } from '../errors/wallet-not-found.error';
 import { Transaction } from '@/finance/domain/entities/transaction.entity';
 import { TransactionType } from '@/finance/domain/value-objects/transaction-type.vo';
 import { ETransactionType } from '@/finance/domain/enums/transaction-type.enum';
 import type { IIDGenerator } from '@/core/app/contracts/id-generator.contract';
+import { BasicCategories } from '@/finance/domain/enums/basic-categories.enum';
+import { Category } from '@/finance/domain/entities/category.entity';
+import { Name } from '@/shared/domain/value-objects/name.vo';
+import { SystemCategory } from '@/finance/domain/enums/system-cateogories.enum';
 
 @Injectable()
 export class FinanceFacade implements IFinanceFacade {
@@ -82,5 +84,47 @@ export class FinanceFacade implements IFinanceFacade {
 
         await walletRepo.update(wallet);
         await txRepo.create(transaction);
+    }
+
+    async createBasicCategories(userId: string): Promise<void> {
+        const categoryRepo = this.financeUow.getCategoryRepository();
+        const now = new Date();
+
+        const categories = Object.values(BasicCategories).map(
+            (name) =>
+                new Category(
+                    this.idGenerator.generate(),
+                    {
+                        userId,
+                        name: new Name(name),
+                        isSystem: false,
+                    },
+                    now,
+                    now,
+                ),
+        );
+
+        await categoryRepo.createMany(categories);
+    }
+
+    async createSystemCategories(userId: string): Promise<void> {
+        const categoryRepo = this.financeUow.getCategoryRepository();
+        const now = new Date();
+
+        const categories = Object.values(SystemCategory).map(
+            (name) =>
+                new Category(
+                    this.idGenerator.generate(),
+                    {
+                        userId,
+                        name: new Name(name),
+                        isSystem: true,
+                    },
+                    now,
+                    now,
+                ),
+        );
+
+        await categoryRepo.createMany(categories);
     }
 }
