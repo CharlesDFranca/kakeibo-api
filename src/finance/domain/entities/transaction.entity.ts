@@ -1,6 +1,5 @@
 import { BaseEntity } from '@/shared/domain/entities/base-entity.entity';
 import { TransactionType } from '../value-objects/transaction-type.vo';
-import { ETransactionStatus } from '../enums/transaction-status.enum';
 import { Money } from '@/shared/domain/value-objects/money.vo';
 import { InvalidTransactionDateError } from '../errors/invalid-transaction-date.error';
 
@@ -52,13 +51,7 @@ export class Transaction extends BaseEntity<TransactionProps> {
         return this.props.categoryId;
     }
 
-    public get status(): ETransactionStatus {
-        const now = new Date();
-
-        return this.date.getTime() > now.getTime()
-            ? ETransactionStatus.PENDING
-            : ETransactionStatus.COMPLETED;
-    }
+   
     //#endregion
 
     public isIncome(): boolean {
@@ -71,13 +64,5 @@ export class Transaction extends BaseEntity<TransactionProps> {
 
     public isTransfer(): boolean {
         return this.type.isTransfer();
-    }
-
-    public isPending(): boolean {
-        return this.status === ETransactionStatus.PENDING;
-    }
-
-    public isCompleted(): boolean {
-        return this.status === ETransactionStatus.COMPLETED;
     }
 }

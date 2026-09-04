@@ -76,12 +76,10 @@ export class CreateTransactionUseCase implements IBaseUseCase<
                 now,
             );
 
-            if (transaction.isCompleted()) {
-                if (transaction.isIncome()) {
-                    wallet.deposit(transaction.amount);
-                } else {
-                    wallet.withdraw(transaction.amount);
-                }
+            if (transaction.isIncome()) {
+                wallet.deposit(transaction.amount);
+            } else {
+                wallet.withdraw(transaction.amount);
             }
 
             await transactionRepository.create(transaction);

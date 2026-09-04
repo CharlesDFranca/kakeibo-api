@@ -1,3 +1,4 @@
+import { ETransactionType } from '@/finance/domain/enums/transaction-type.enum';
 import type { ITransactionRepository } from '@/finance/domain/repositories/transaction-repository.interface';
 import type { IWalletRepository } from '@/finance/domain/repositories/wallet-repository.interface';
 
@@ -46,10 +47,6 @@ export class GetFinanceSummaryUseCase implements IBaseUseCase<
 
         const { totalIncome, totalExpense } = transactions.reduce(
             (acc, transaction) => {
-                if (!transaction.isCompleted()) {
-                    return acc;
-                }
-
                 if (transaction.isIncome()) {
                     acc.totalIncome = acc.totalIncome.add(transaction.amount);
                 }

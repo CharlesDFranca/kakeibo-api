@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { TransactionEntity } from '@/finance/infra/entities/typeorm-transaction.entity';
 import { Repository } from 'typeorm';
 import { TypeOrmTransactionMapper } from '../mappers/typeorm-transaction.mapper';
+import { TransactionFilters } from '@/finance/app/types/transaction-filters.type';
 
 @Injectable()
 export class TypeOrmTransactionQuery implements ITransactionQuery {
@@ -13,15 +14,52 @@ export class TypeOrmTransactionQuery implements ITransactionQuery {
         private readonly transactionRepository: Repository<TransactionEntity>,
     ) {}
 
-    async findAllForUser(userId: string): Promise<TransactionDetails[]> {
-        const transactions = await this.transactionRepository.find({
-            where: {
-                wallet: { userId },
-                category: { userId },
-            },
-            relations: { category: true, wallet: true },
-        });
+    async findAllForUser(
+        userId: string,
+        filters?: TransactionFilters,
+    ): Promise<TransactionDetails[]> {
+        const query = this.transactionRepository
+            .createQueryBuilder('transaction')
+            .innerJoinAndSelect('transaction.wallet', 'wallet')
+            .innerJoinAndSelect('transaction.category', 'category')
+            .where('wallet.userId = :userId', { userId });
 
-        return transactions.map((t) => TypeOrmTransactionMapper.toDetails(t));
+        if (filters?.categoryIds?.length) {
+            query.andWhere('category.id IN (:...categoryIds)', {
+                categoryIds: filters.categoryIds,
+            });
+        }
+
+        if (filters?.walletIds?.length) {
+            query.andWhere('wallet.id IN (:...walletIds)', {
+                walletIds: filters.walletIds,
+            });
+        }
+
+        if (filters?.startDate) {
+            query.andWhere('transaction.date >= :startDate', {
+                startDate: filters.startDate,
+            });
+        }
+
+        if (filters?.endDate) {
+            query.andWhere('transaction.date <= :endDate', {
+                endDate: filters.endDate,
+            });
+        }
+
+        if (filters?.type) {
+            query.andWhere('transaction.type = :type', {
+                type: filters.type,
+            });
+        }
+
+        const transactions = await query
+            .orderBy('transaction.date', 'DESC')
+            .getMany();
+
+        return transactions.map((transaction) =>
+            TypeOrmTransactionMapper.toDetails(transaction),
+        );
     }
 }

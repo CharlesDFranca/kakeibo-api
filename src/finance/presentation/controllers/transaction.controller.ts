@@ -10,8 +10,10 @@ import {
     HttpCode,
     HttpStatus,
     Post,
+    Query,
 } from '@nestjs/common';
 import { CreateTransactionDto } from '../dtos/create-transaction.dto';
+import { ListTransactionsDto } from '../dtos/list-transaction.dto';
 
 @Controller('transactions')
 export class TransactionController {
@@ -41,7 +43,21 @@ export class TransactionController {
 
     @Get()
     @HttpCode(HttpStatus.OK)
-    async list(@CurrentUserId() userId: string) {
-        return this.listTransactionsUseCase.execute({ userId });
+    async list(
+        @CurrentUserId() userId: string,
+        @Query() query: ListTransactionsDto,
+    ) {
+        return this.listTransactionsUseCase.execute({
+            userId,
+            filters: {
+                categoryIds: query.categoryIds,
+                walletIds: query.walletIds,
+                startDate: query.startDate
+                    ? new Date(query.startDate)
+                    : undefined,
+                endDate: query.endDate ? new Date(query.endDate) : undefined,
+                type: query.type,
+            },
+        });
     }
 }
