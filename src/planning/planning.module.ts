@@ -23,6 +23,7 @@ import { TypeOrmGoalRepository } from './infra/repositories/typeorm-goal.reposit
 import { TypeOrmGoalMovementRepository } from './infra/repositories/typeorm-goal-movement.repository';
 import { TypeOrmPlanningUnitOfWork } from './infra/database/typeorm-planning.uow';
 import { PlanningFacade } from './app/services/planning-facade';
+import { TypeOrmPlanningDashboardQuery } from './infra/queries/typeorm-planning-dashboard.query';
 
 @Module({
     imports: [
@@ -56,6 +57,10 @@ import { PlanningFacade } from './app/services/planning-facade';
         {
             provide: PLANNING_TOKENS.FACADE,
             useClass: PlanningFacade,
+        },
+        {
+            provide: PLANNING_TOKENS.PLANNING_DASHBOARD_QUERY,
+            useClass: TypeOrmPlanningDashboardQuery,
         },
     ],
     exports: [PLANNING_TOKENS.FACADE],
