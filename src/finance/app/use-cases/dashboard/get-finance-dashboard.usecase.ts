@@ -7,7 +7,7 @@ import {
     FinanceDashboardFilters,
 } from '@/finance/app/types/finance-dashboard-details.type';
 import type { IFinanceDashboardQuery } from '../../queries/finance-dashboard-query.interface';
-import { InvalidDateRangeError } from '@/finance/domain/errors/invalid-date-range.error';
+import { InvalidDateRangeError } from '@/finance/app/errors/invalid-date-range.error';
 
 type GetFinanceDashboardInput = {
     userId: string;

@@ -6,7 +6,7 @@ import {
     IFinanceFacade,
     WithdrawFromWalletInput,
     DepositToWalletInput,
-} from '../../api/fincance-facade.contract';
+} from '../../api/finance-facade.api';
 import { WalletNotFoundError } from '../errors/wallet-not-found.error';
 import { Transaction } from '@/finance/domain/entities/transaction.entity';
 import { TransactionType } from '@/finance/domain/value-objects/transaction-type.vo';
@@ -15,7 +15,7 @@ import type { IIDGenerator } from '@/core/app/contracts/id-generator.contract';
 import { BasicCategories } from '@/finance/domain/enums/basic-categories.enum';
 import { Category } from '@/finance/domain/entities/category.entity';
 import { Name } from '@/shared/domain/value-objects/name.vo';
-import { SystemCategory } from '@/finance/domain/enums/system-cateogories.enum';
+import { SystemCategory } from '@/finance/domain/enums/system-categories.enum';
 
 @Injectable()
 export class FinanceFacade implements IFinanceFacade {

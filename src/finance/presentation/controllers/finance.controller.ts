@@ -1,7 +1,7 @@
 import { Controller, Get, HttpCode, HttpStatus, Query } from '@nestjs/common';
 import { CurrentUserId } from '@/core/decorators/current-user-id.decorator';
 import { GetFinanceDashboardUseCase } from '@/finance/app/use-cases/dashboard/get-finance-dashboard.usecase';
-import { GetFinanceDashboardDto } from '../dtos/finance-dashborad.dto';
+import { GetFinanceDashboardDto } from '../dtos/finance-dashboard.dto';
 
 @Controller('finance')
 export class FinanceController {

@@ -1,5 +1,5 @@
 import { Category } from '../entities/category.entity';
-import { SystemCategory } from '../enums/system-cateogories.enum';
+import { SystemCategory } from '../enums/system-categories.enum';
 
 export interface ICategoryRepository {
     create(cateogory: Category): Promise<void>;

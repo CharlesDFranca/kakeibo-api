@@ -8,7 +8,7 @@ import { Name } from '@/shared/domain/value-objects/name.vo';
 import { WalletAlreadyExistsError } from '../../errors/wallet-already-exists.error';
 import { CORE_TOKENS } from '@/core/core.tokens';
 import { Transaction } from '@/finance/domain/entities/transaction.entity';
-import { SystemCategory } from '@/finance/domain/enums/system-cateogories.enum';
+import { SystemCategory } from '@/finance/domain/enums/system-categories.enum';
 import { CategoryNotFoundError } from '../../errors/category-not-found.error';
 import { TransactionType } from '@/finance/domain/value-objects/transaction-type.vo';
 import { ETransactionType } from '@/finance/domain/enums/transaction-type.enum';

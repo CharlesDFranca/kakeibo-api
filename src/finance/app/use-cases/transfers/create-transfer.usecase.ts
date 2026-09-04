@@ -13,7 +13,7 @@ import { CategoryNotFoundError } from '../../errors/category-not-found.error';
 import { WalletNotFoundError } from '../../errors/wallet-not-found.error';
 import { CannotTransferToSameWalletError } from '@/finance/domain/errors/cannot-transfer-to-same-wallet.error';
 import { ETransferStatus } from '@/finance/domain/enums/transfer-status.enum';
-import { SystemCategory } from '@/finance/domain/enums/system-cateogories.enum';
+import { SystemCategory } from '@/finance/domain/enums/system-categories.enum';
 
 type CreateTransferInput = {
     userId: string;

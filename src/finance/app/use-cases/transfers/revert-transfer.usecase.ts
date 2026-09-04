@@ -13,7 +13,7 @@ import { CategoryNotFoundError } from '../../errors/category-not-found.error';
 import { WalletNotFoundError } from '../../errors/wallet-not-found.error';
 import { TransferNotFoundError } from '../../errors/transfer-not-found.error';
 import { TransferCannotBeRevertedError } from '@/finance/domain/errors/transfer-cannot-be-reverted.error';
-import { SystemCategory } from '@/finance/domain/enums/system-cateogories.enum';
+import { SystemCategory } from '@/finance/domain/enums/system-categories.enum';
 
 type RevertTransferInput = {
     userId: string;

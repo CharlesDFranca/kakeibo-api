@@ -11,7 +11,7 @@ import {
 
 import { RegisterGoalDepositUseCase } from '../../app/use-cases/goals/register-goal-deposit.usecase';
 import { RevertGoalDepositUseCase } from '../../app/use-cases/goals/revert-goal-deposit.usecase';
-import { RegisterGoalDepositDto } from '../dtos/register-goal-deposito.dto';
+import { RegisterGoalDepositDto } from '../dtos/register-goal-deposit.dto';
 import { RevertGoalDepositDto } from '../dtos/revert-goal-deposit.dto';
 
 @Controller('goals')
