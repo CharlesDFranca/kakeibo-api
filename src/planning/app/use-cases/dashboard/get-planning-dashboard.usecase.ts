@@ -4,11 +4,11 @@ import { PLANNING_TOKENS } from '@/planning/planning.tokens';
 import { PlanningDashboardDetails } from '../../types/planning-dashboard-details.type';
 import type { IPlanningDashboardQuery } from '../../queries/planning-dashboard-query.interface';
 
-export type GetPlanningDashboardInput = {
+type GetPlanningDashboardInput = {
     userId: string;
 };
 
-export type GetPlanningDashboardOutput = PlanningDashboardDetails[];
+type GetPlanningDashboardOutput = PlanningDashboardDetails[];
 
 @Injectable()
 export class GetPlanningDashboardUseCase {

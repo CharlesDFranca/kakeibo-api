@@ -24,6 +24,8 @@ import { TypeOrmGoalMovementRepository } from './infra/repositories/typeorm-goal
 import { TypeOrmPlanningUnitOfWork } from './infra/database/typeorm-planning.uow';
 import { PlanningFacade } from './app/services/planning-facade';
 import { TypeOrmPlanningDashboardQuery } from './infra/queries/typeorm-planning-dashboard.query';
+import { PlanningController } from './presentation/controllers/planning.controller';
+import { GetPlanningDashboardUseCase } from './app/use-cases/dashboard/get-planning-dashboard.usecase';
 
 @Module({
     imports: [
@@ -31,7 +33,7 @@ import { TypeOrmPlanningDashboardQuery } from './infra/queries/typeorm-planning-
         forwardRef(() => FinanceModule),
         TypeOrmModule.forFeature([GoalEntity, GoalMovementEntity]),
     ],
-    controllers: [GoalsController, GoalMovementsController],
+    controllers: [PlanningController, GoalsController, GoalMovementsController],
     providers: [
         CreateGoalUseCase,
         RenameGoalUseCase,
@@ -40,6 +42,7 @@ import { TypeOrmPlanningDashboardQuery } from './infra/queries/typeorm-planning-
         RevertGoalDepositUseCase,
         CancelGoalUseCase,
         FindGoalByIdUseCase,
+        GetPlanningDashboardUseCase,
 
         {
             provide: PLANNING_TOKENS.GOAL_REPOSITORY,
