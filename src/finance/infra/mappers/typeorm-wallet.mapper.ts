@@ -2,6 +2,7 @@ import { Wallet } from '@/finance/domain/entities/wallet.entity';
 import { Money } from '@/shared/domain/value-objects/money.vo';
 import { WalletEntity } from '@/finance/infra/entities/typeorm-wallet.entity';
 import { Name } from '@/shared/domain/value-objects/name.vo';
+import { normalizeName } from '@/shared/utils/normalize-name';
 
 export class TypeOrmWalletMapper {
     private constructor() {}
@@ -24,6 +25,7 @@ export class TypeOrmWalletMapper {
 
         walletEntity.id = wallet.id;
         walletEntity.name = wallet.name.value;
+        walletEntity.normalizedName = normalizeName(wallet.name.value);
         walletEntity.balance = wallet.balance.toCents();
         walletEntity.userId = wallet.userId;
         walletEntity.createdAt = wallet.createdAt;

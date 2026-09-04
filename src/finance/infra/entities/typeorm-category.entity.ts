@@ -11,7 +11,7 @@ import {
 } from 'typeorm';
 
 @Entity('categories')
-@Unique(['userId', 'name'])
+@Unique(['userId', 'normalizedName'])
 export class CategoryEntity {
     @PrimaryColumn()
     id!: string;
@@ -19,11 +19,17 @@ export class CategoryEntity {
     @Column({ type: 'varchar', length: 100 })
     name!: string;
 
+    @Column({ type: 'varchar', length: 100 })
+    normalizedName!: string;
+
     @Column()
     userId!: string;
 
     @Column({ type: 'boolean' })
     isSystem!: boolean;
+
+    @Column({ type: 'boolean', default: true })
+    isActive!: boolean;
 
     @ManyToOne(() => UserEntity, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'userId' })

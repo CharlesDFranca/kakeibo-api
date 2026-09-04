@@ -22,7 +22,10 @@ import { GoalMovementEntity } from './infra/entities/typeorm-goal-movement.entit
 import { TypeOrmGoalRepository } from './infra/repositories/typeorm-goal.repository';
 import { TypeOrmGoalMovementRepository } from './infra/repositories/typeorm-goal-movement.repository';
 import { TypeOrmPlanningUnitOfWork } from './infra/database/typeorm-planning.uow';
-import { PlanningFacade } from './app/services/planning-facade';
+import { PlanningFacadeService } from './app/services/planning-facade.service';
+import { TypeOrmPlanningDashboardQuery } from './infra/queries/typeorm-planning-dashboard.query';
+import { PlanningController } from './presentation/controllers/planning.controller';
+import { GetPlanningDashboardUseCase } from './app/use-cases/dashboard/get-planning-dashboard.usecase';
 
 @Module({
     imports: [
@@ -30,7 +33,7 @@ import { PlanningFacade } from './app/services/planning-facade';
         forwardRef(() => FinanceModule),
         TypeOrmModule.forFeature([GoalEntity, GoalMovementEntity]),
     ],
-    controllers: [GoalsController, GoalMovementsController],
+    controllers: [PlanningController, GoalsController, GoalMovementsController],
     providers: [
         CreateGoalUseCase,
         RenameGoalUseCase,
@@ -39,6 +42,7 @@ import { PlanningFacade } from './app/services/planning-facade';
         RevertGoalDepositUseCase,
         CancelGoalUseCase,
         FindGoalByIdUseCase,
+        GetPlanningDashboardUseCase,
 
         {
             provide: PLANNING_TOKENS.GOAL_REPOSITORY,
@@ -55,7 +59,11 @@ import { PlanningFacade } from './app/services/planning-facade';
 
         {
             provide: PLANNING_TOKENS.FACADE,
-            useClass: PlanningFacade,
+            useClass: PlanningFacadeService,
+        },
+        {
+            provide: PLANNING_TOKENS.PLANNING_DASHBOARD_QUERY,
+            useClass: TypeOrmPlanningDashboardQuery,
         },
     ],
     exports: [PLANNING_TOKENS.FACADE],

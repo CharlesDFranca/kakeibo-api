@@ -19,7 +19,7 @@ import {
 } from '@nestjs/common';
 import { CreateWalletDto } from '../dtos/create-wallet.dto';
 import { RenameWalletDto } from '../dtos/rename-wallet.dto';
-
+import { Money } from '@/shared/domain/value-objects/money.vo';
 
 @Controller('wallets')
 export class WalletController {
@@ -39,6 +39,7 @@ export class WalletController {
         const wallet = await this.createWalletUseCase.execute({
             userId,
             name: body.name,
+            balance: body.balance,
         });
 
         return wallet;

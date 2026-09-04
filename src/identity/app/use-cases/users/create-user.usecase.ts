@@ -12,7 +12,7 @@ import { UsernameAlreadyExistsError } from '../../errors/username-already-exists
 import { PasswordCannotBeEmptyError } from '../../errors/password-cannot-be-empty.error';
 import { CORE_TOKENS } from '@/core/core.tokens';
 import type { IIdentityUnitOfWork } from '../../contracts/identity-unit-of-work.contract';
-import type { IFinanceFacade } from '@/finance/api/fincance-facade.contract';
+import type { IFinanceFacade } from '@/finance/api/finance-facade.api';
 import { FINANCE_TOKENS } from '@/finance/finance.tokens';
 
 type CreateUserInput = {

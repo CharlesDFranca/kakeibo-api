@@ -1,16 +1,24 @@
-import { Controller, Get, HttpCode, HttpStatus } from '@nestjs/common';
+import { Controller, Get, HttpCode, HttpStatus, Query } from '@nestjs/common';
 import { CurrentUserId } from '@/core/decorators/current-user-id.decorator';
-import { GetFinanceSummaryUseCase } from '@/finance/app/use-cases/summary';
+import { GetFinanceDashboardUseCase } from '@/finance/app/use-cases/dashboard/get-finance-dashboard.usecase';
+import { GetFinanceDashboardDto } from '../dtos/finance-dashboard.dto';
 
-@Controller('finances')
+@Controller('finance')
 export class FinanceController {
     constructor(
-        private readonly getFinanceSummaryUseCase: GetFinanceSummaryUseCase,
+        private readonly getFinanceDashboardUseCase: GetFinanceDashboardUseCase,
     ) {}
 
-    @Get()
+    @Get('dashboard')
     @HttpCode(HttpStatus.OK)
-    async summary(@CurrentUserId() userId: string) {
-        return this.getFinanceSummaryUseCase.execute({ userId });
+    async getDashboard(
+        @CurrentUserId() userId: string,
+        @Query() query: GetFinanceDashboardDto,
+    ) {
+        return this.getFinanceDashboardUseCase.execute({
+            userId,
+            startDate: query.startDate ? new Date(query.startDate) : undefined,
+            endDate: query.endDate ? new Date(query.endDate) : undefined,
+        });
     }
 }
