@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 
 import { PLANNING_TOKENS } from '@/planning/planning.tokens';
-import { PlanningDashboardDetails } from '../../types/planning-dashboard-details.type';
-import type { IPlanningDashboardQuery } from '../../queries/planning-dashboard-query.interface';
+import { PlanningDashboardDetails } from '../../contracts/planning-dashboard-details.type';
+import type { IPlanningDashboardQuery } from '../../contracts/planning-dashboard-query.interface';
 
 type GetPlanningDashboardInput = {
     userId: string;

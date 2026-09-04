@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { AuthContext } from '../types/auth-context.type';
+import { AuthContext } from '../contracts/auth-context.type';
 import type { ISessionRepository } from '@/identity/domain/repositories/session-repository.interface';
 import { IDENTITY_TOKENS } from '@/identity/identity.token';
 import { InvalidSessionError } from '../errors/invalid-session.error';

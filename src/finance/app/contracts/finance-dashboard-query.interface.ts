@@ -3,9 +3,9 @@ import {
     FinancialEvolution,
     ExpensesByCategory,
     FinanceDashboardFilters,
-} from '../types/finance-dashboard-details.type';
+} from './finance-dashboard-details.type';
 
-import { TransactionDetails } from '../types/transaction-details.type';
+import { TransactionDetails } from './transaction-details.type';
 export interface IFinanceDashboardQuery {
     getBalance(
         userId: string,

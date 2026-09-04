@@ -1,5 +1,5 @@
-import { TransactionDetails } from '../types/transaction-details.type';
-import { TransactionFilters } from '../types/transaction-filters.type';
+import { TransactionDetails } from './transaction-details.type';
+import { TransactionFilters } from './transaction-filters.type';
 
 export interface ITransactionQuery {
     findAllForUser(

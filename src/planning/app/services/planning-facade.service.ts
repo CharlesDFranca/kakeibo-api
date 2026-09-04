@@ -7,7 +7,7 @@ import {
 } from '../../api/planning-facade.api';
 
 @Injectable()
-export class PlanningFacade implements IPlanningFacade {
+export class PlanningFacadeService implements IPlanningFacade {
     constructor(
         @Inject(PLANNING_TOKENS.UNIT_OF_WORK)
         private readonly planningUow: IPlanningUnitOfWork,

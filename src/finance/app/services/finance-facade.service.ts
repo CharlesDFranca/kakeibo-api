@@ -18,7 +18,7 @@ import { Name } from '@/shared/domain/value-objects/name.vo';
 import { SystemCategory } from '@/finance/domain/enums/system-categories.enum';
 
 @Injectable()
-export class FinanceFacade implements IFinanceFacade {
+export class FinanceFacadeService implements IFinanceFacade {
     constructor(
         @Inject(FINANCE_TOKENS.UNIT_OF_WORK)
         private readonly financeUow: IFinanceUnitOfWork,

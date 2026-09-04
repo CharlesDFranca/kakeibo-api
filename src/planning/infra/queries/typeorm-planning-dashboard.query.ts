@@ -1,6 +1,6 @@
 import { EGoalStatus } from '@/planning/domain/enums/goal-status.enum';
-import { IPlanningDashboardQuery } from '@/planning/app/queries/planning-dashboard-query.interface';
-import { PlanningDashboardDetails } from '@/planning/app/types/planning-dashboard-details.type';
+import { IPlanningDashboardQuery } from '@/planning/app/contracts/planning-dashboard-query.interface';
+import { PlanningDashboardDetails } from '@/planning/app/contracts/planning-dashboard-details.type';
 import { Money } from '@/shared/domain/value-objects/money.vo';
 
 import { Injectable } from '@nestjs/common';

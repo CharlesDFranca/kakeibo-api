@@ -1,4 +1,4 @@
-import { AuthContext } from '@/identity/app/types/auth-context.type';
+import { AuthContext } from '@/identity/app/contracts/auth-context.type';
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { Request } from 'express';
 

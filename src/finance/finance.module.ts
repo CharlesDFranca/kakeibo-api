@@ -27,12 +27,12 @@ import { TypeOrmTransactionRepository } from './infra/repositories/typeorm-trans
 import { TypeOrmTransferRepository } from './infra/repositories/typeorm-transfer.repository';
 import { TypeOrmCategoryRepository } from './infra/repositories/typeorm-category.repository';
 import { TypeOrmTransactionQuery } from './infra/queries/typeorm-transaction.query';
-import { WalletDeletionPolicy } from './app/policies/wallet-deletion.policy';
+import { WalletDeletionPolicy } from './app/services/wallet-deletion.policy';
 import { TypeOrmFinanceUnitOfWork } from './infra/database/typeorm-finance.uow';
-import { FinanceFacade } from './app/services/finance-facade';
+import { FinanceFacadeService } from './app/services/finance-facade.service';
 import { CreateTransferUseCase } from './app/use-cases/transfers/create-transfer.usecase';
 import { TransferEntity } from './infra/entities/typeorm-transfer.entity';
-import { CategoryDeletionPolicy } from './app/policies/category-deletion.policy';
+import { CategoryDeletionPolicy } from './app/services/category-deletion.policy';
 import { RemoveCategoryUseCase } from './app/use-cases/categories/remove-category.usecase';
 import { RenameCategoryUseCase } from './app/use-cases/categories/rename-category.usecase';
 import { GetFinanceDashboardUseCase } from './app/use-cases/dashboard';
@@ -110,7 +110,7 @@ import { TypeOrmFinanceDashboardQuery } from './infra/queries/typeorm-finance-da
 
         {
             provide: FINANCE_TOKENS.FACADE,
-            useClass: FinanceFacade,
+            useClass: FinanceFacadeService,
         },
     ],
     exports: [FINANCE_TOKENS.FACADE],

@@ -6,16 +6,16 @@ import { Repository } from 'typeorm';
 
 import { ETransactionType } from '@/finance/domain/enums/transaction-type.enum';
 
-import { IFinanceDashboardQuery } from '@/finance/app/queries/finance-dashboard-query.interface';
+import { IFinanceDashboardQuery } from '@/finance/app/contracts/finance-dashboard-query.interface';
 
 import {
     DashboardBalance,
     FinanceDashboardFilters,
     FinancialEvolution,
     ExpensesByCategory,
-} from '@/finance/app/types/finance-dashboard-details.type';
+} from '@/finance/app/contracts/finance-dashboard-details.type';
 
-import { TransactionDetails } from '@/finance/app/types/transaction-details.type';
+import { TransactionDetails } from '@/finance/app/contracts/transaction-details.type';
 
 import { TransactionEntity } from '../entities/typeorm-transaction.entity';
 import { WalletEntity } from '../entities/typeorm-wallet.entity';

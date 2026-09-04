@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { ITransactionQuery } from '../../app/queries/transaction-query.interface';
-import { TransactionDetails } from '../../app/types/transaction-details.type';
+import { ITransactionQuery } from '../../app/contracts/transaction-query.interface';
+import { TransactionDetails } from '../../app/contracts/transaction-details.type';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TransactionEntity } from '@/finance/infra/entities/typeorm-transaction.entity';
 import { Repository } from 'typeorm';
 import { TypeOrmTransactionMapper } from '../mappers/typeorm-transaction.mapper';
-import { TransactionFilters } from '@/finance/app/types/transaction-filters.type';
+import { TransactionFilters } from '@/finance/app/contracts/transaction-filters.type';
 
 @Injectable()
 export class TypeOrmTransactionQuery implements ITransactionQuery {

@@ -1,4 +1,4 @@
-import { PlanningDashboardDetails } from '../types/planning-dashboard-details.type';
+import { PlanningDashboardDetails } from './planning-dashboard-details.type';
 
 export interface IPlanningDashboardQuery {
     findForDashboard(

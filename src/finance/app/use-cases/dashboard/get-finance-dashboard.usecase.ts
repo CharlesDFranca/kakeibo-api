@@ -5,8 +5,8 @@ import { FINANCE_TOKENS } from '@/finance/finance.tokens';
 import {
     FinanceDashboardDetails,
     FinanceDashboardFilters,
-} from '@/finance/app/types/finance-dashboard-details.type';
-import type { IFinanceDashboardQuery } from '../../queries/finance-dashboard-query.interface';
+} from '@/finance/app/contracts/finance-dashboard-details.type';
+import type { IFinanceDashboardQuery } from '../../contracts/finance-dashboard-query.interface';
 import { InvalidDateRangeError } from '@/finance/app/errors/invalid-date-range.error';
 
 type GetFinanceDashboardInput = {

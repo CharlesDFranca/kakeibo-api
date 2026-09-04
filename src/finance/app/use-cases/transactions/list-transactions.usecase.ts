@@ -1,9 +1,9 @@
 import { FINANCE_TOKENS } from '@/finance/finance.tokens';
 import { IBaseUseCase } from '@/shared/app/contracts/base-usecase.contract';
 import { Inject, Injectable } from '@nestjs/common';
-import type { ITransactionQuery } from '../../queries/transaction-query.interface';
-import { TransactionDetails } from '../../types/transaction-details.type';
-import { TransactionFilters } from '../../types/transaction-filters.type';
+import type { ITransactionQuery } from '../../contracts/transaction-query.interface';
+import { TransactionDetails } from '../../contracts/transaction-details.type';
+import { TransactionFilters } from '../../contracts/transaction-filters.type';
 
 type ListTransactionsInput = {
     userId: string;

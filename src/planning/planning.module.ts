@@ -22,7 +22,7 @@ import { GoalMovementEntity } from './infra/entities/typeorm-goal-movement.entit
 import { TypeOrmGoalRepository } from './infra/repositories/typeorm-goal.repository';
 import { TypeOrmGoalMovementRepository } from './infra/repositories/typeorm-goal-movement.repository';
 import { TypeOrmPlanningUnitOfWork } from './infra/database/typeorm-planning.uow';
-import { PlanningFacade } from './app/services/planning-facade';
+import { PlanningFacadeService } from './app/services/planning-facade.service';
 import { TypeOrmPlanningDashboardQuery } from './infra/queries/typeorm-planning-dashboard.query';
 import { PlanningController } from './presentation/controllers/planning.controller';
 import { GetPlanningDashboardUseCase } from './app/use-cases/dashboard/get-planning-dashboard.usecase';
@@ -59,7 +59,7 @@ import { GetPlanningDashboardUseCase } from './app/use-cases/dashboard/get-plann
 
         {
             provide: PLANNING_TOKENS.FACADE,
-            useClass: PlanningFacade,
+            useClass: PlanningFacadeService,
         },
         {
             provide: PLANNING_TOKENS.PLANNING_DASHBOARD_QUERY,
