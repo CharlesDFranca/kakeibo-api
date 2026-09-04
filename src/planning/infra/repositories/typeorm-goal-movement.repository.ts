@@ -52,7 +52,7 @@ export class TypeOrmGoalMovementRepository implements IGoalMovementRepository {
     ): Promise<boolean> {
         const result = await this.goalMovementRepository
             .createQueryBuilder('deposit')
-            .innerJoin('wallet', 'wallet', 'wallet.id = deposit.walletId')
+            .innerJoin('deposit.wallet', 'wallet')
             .where('deposit.walletId = :walletId', {
                 walletId,
             })
@@ -66,17 +66,14 @@ export class TypeOrmGoalMovementRepository implements IGoalMovementRepository {
                 const subQuery = qb
                     .subQuery()
                     .select('1')
-                    .from('goal_movements', 'withdraw')
+                    .from(GoalMovementEntity, 'withdraw')
                     .where('withdraw.revertedDepositId = deposit.id')
                     .andWhere('withdraw.type = :withdrawType')
                     .getQuery();
 
                 return `NOT EXISTS ${subQuery}`;
             })
-            .setParameters({
-                depositType: EGoalMovementType.DEPOSIT,
-                withdrawType: EGoalMovementType.WITHDRAW,
-            })
+            .setParameter('withdrawType', EGoalMovementType.WITHDRAW)
             .getExists();
 
         return result;

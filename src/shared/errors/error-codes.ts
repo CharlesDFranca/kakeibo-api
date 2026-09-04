@@ -58,6 +58,7 @@ export const ErrorCodes = {
     TRANSFER_CANNOT_BE_REVERTED: 'TRANSFER_CANNOT_BE_REVERTED',
     TRANSFER_NOT_FOUND: 'TRANSFER_NOT_FOUND',
     SYSTEM_CATEGORY_CANNOT_BE_DELETED: 'SYSTEM_CATEGORY_CANNOT_BE_DELETED',
+    INVALID_DATE_RANGE: 'INVALID_DATE_RANGE',
 } as const;
 
 export type ErrorCode = (typeof ErrorCodes)[keyof typeof ErrorCodes];

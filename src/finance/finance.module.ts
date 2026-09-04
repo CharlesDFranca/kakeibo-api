@@ -9,7 +9,6 @@ import { WalletController } from './presentation/controllers/wallet.controller';
 import { TransactionController } from './presentation/controllers/transaction.controller';
 import { CategoryController } from './presentation/controllers/category.controller';
 
-import { GetFinanceSummaryUseCase } from './app/use-cases/summary/get-finance-summary.usecase';
 import { CreateWalletUseCase } from './app/use-cases/wallets/create-wallet.usecase';
 import { ListWalletsUseCase } from './app/use-cases/wallets/list-wallets.usecase';
 import { DeleteWalletUseCase } from './app/use-cases/wallets/delete-wallet.usecase';
@@ -36,6 +35,8 @@ import { TransferEntity } from './infra/entities/typeorm-transfer.entity';
 import { CategoryDeletionPolicy } from './app/policies/category-deletion.policy';
 import { RemoveCategoryUseCase } from './app/use-cases/categories/remove-category.usecase';
 import { RenameCategoryUseCase } from './app/use-cases/categories/rename-category.usecase';
+import { GetFinanceDashboardUseCase } from './app/use-cases/dashboard';
+import { TypeOrmFinanceDashboardQuery } from './infra/queries/typeorm-finance-dashboard.query';
 
 @Module({
     imports: [
@@ -55,7 +56,6 @@ import { RenameCategoryUseCase } from './app/use-cases/categories/rename-categor
         CategoryController,
     ],
     providers: [
-        GetFinanceSummaryUseCase,
         CreateWalletUseCase,
         ListWalletsUseCase,
         DeleteWalletUseCase,
@@ -67,6 +67,7 @@ import { RenameCategoryUseCase } from './app/use-cases/categories/rename-categor
         RenameCategoryUseCase,
         ListCategoriesUseCase,
         CreateTransferUseCase,
+        GetFinanceDashboardUseCase,
 
         {
             provide: FINANCE_TOKENS.WALLET_DELETION_POLICY,
@@ -97,6 +98,10 @@ import { RenameCategoryUseCase } from './app/use-cases/categories/rename-categor
         {
             provide: FINANCE_TOKENS.TRANSACTION_QUERY,
             useClass: TypeOrmTransactionQuery,
+        },
+        {
+            provide: FINANCE_TOKENS.FINANCE_DASHBOARD_QUERY,
+            useClass: TypeOrmFinanceDashboardQuery,
         },
         {
             provide: FINANCE_TOKENS.UNIT_OF_WORK,
